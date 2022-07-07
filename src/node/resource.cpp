@@ -1,6 +1,10 @@
 #include "resource.hpp"
 #include "nodeimpl.hpp"
 #include "common/logger.hpp"
+#include "functions.hpp"
+
+extern void registerDllEvents();
+extern void registerEngineEvents();
 
 v8::Isolate* GetV8Isolate()
 {
@@ -63,7 +67,9 @@ static node::IsolateData* GetNodeIsolate()
 		v8::HandleScope handleScope(GetV8Isolate());
 
 		v8::Local<v8::ObjectTemplate> global = v8::ObjectTemplate::New(GetV8Isolate());
-		//sampnode::functions::init(GetV8Isolate(), global);
+		functions::init(GetV8Isolate(), global);
+		registerDllEvents();
+		registerEngineEvents();
 		//sampnode::callback::add_event_definitions(GetV8Isolate(), global);
 
 		// create a global variable for resource
