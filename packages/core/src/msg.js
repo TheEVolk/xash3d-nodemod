@@ -13,31 +13,47 @@ export const MsgDest = {
   spec: 9 // Сообщение всем HLTV proxy
 }
 
-export class HNodemodMsg extends EventEmmiter {
+export default class NodemodMsg extends EventEmmiter {
   state = null;
   registeredEventTypes = {};
+  writers = {
+    byte: v => nodemod.eng.writeByte(v),
+    char: v => nodemod.eng.writeChar(v),
+    short: v => nodemod.eng.writeShort(v),
+    long: v => nodemod.eng.writeLong(v),
+    angle: v => nodemod.eng.writeAngle(v),
+    coord: v => nodemod.eng.writeCoord(v),
+    string: v => nodemod.eng.writeString(v),
+    entity: v => nodemod.eng.writeEntity(typeof v === 'number' ? nodemod.eng.indexOfEdict(v) : v),
+  };
 
   constructor() {
     super();
-    this.on('newListener', (eventName) => this.getUserMsgId(eventName));
+    this.on('newListener', (eventName) => this.getUserMsgId(eventName.replace(/^post:/, '')));
 
     nodemod.on('engMessageBegin', (msg_dest, msg_type, origin, entity) => {
-      this.state = {
-        dest: msg_dest,
-        type: msg_type,
-        name: nodemod.getUserMsgName(msg_type),
-        origin,
-        entity,
-        data: [],
-        modify: (newData) => {
-          this.isModified = true;
-          this.data = newData;
-        }
-      };
-      this.emit(state.name, state);
+      const name = nodemod.getUserMsgName(msg_type);
+      if (!this.listeners(name) && !this.listeners(`post:${name}`)) {
+        return;
+      }
+
+      this.state = { dest: msg_dest, type: msg_type, name, origin, entity, data: [], rawData: [] };
     });
 
     // POST потому что кодер захочет сразу из уведа прислать новое сообщенице
+    nodemod.on('engMessageEnd', () => {
+      if (!this.state) {
+        return;
+      }
+
+      const state = this.state;
+      this.emit(state.name, state);
+
+      this.state.isMessageEnd = true; // чтобы методы записи не вызвались повторно
+      this.state.rawData.map(v => this.writers[v.type](v.value));
+      this.state.data = this.state.rawData.map(v => v.value);
+    });
+
     nodemod.on('postEngMessageEnd', () => {
       if (!this.state) {
         return;
@@ -46,25 +62,27 @@ export class HNodemodMsg extends EventEmmiter {
       const state = this.state;
       delete this.state;
 
-      this.emit(state.name, state);
+      this.emit(`post:${state.name}`, state);
     });
 
-    nodemod.on('engWriteByte', v => this.writeValue(v));
-    nodemod.on('engWriteChar', v => this.writeValue(v));
-    nodemod.on('engWriteShort', v => this.writeValue(v));
-    nodemod.on('engWriteLong', v => this.writeValue(v));
-    nodemod.on('engWriteAngle', v => this.writeValue(v));
-    nodemod.on('engWriteCoord', v => this.writeValue(v));
-    nodemod.on('engWriteString', v => this.writeValue(v));
-    nodemod.on('engWriteEntity', v => this.writeValue(v));
+    nodemod.on('engWriteByte', v => this.writeValue(v, 'byte'));
+    nodemod.on('engWriteChar', v => this.writeValue(v, 'char'));
+    nodemod.on('engWriteShort', v => this.writeValue(v, 'short'));
+    nodemod.on('engWriteLong', v => this.writeValue(v, 'long'));
+    nodemod.on('engWriteAngle', v => this.writeValue(v, 'angle'));
+    nodemod.on('engWriteCoord', v => this.writeValue(v, 'coord'));
+    nodemod.on('engWriteString', v => this.writeValue(v, 'string'));
+    nodemod.on('engWriteEntity', v => this.writeValue(v, 'entity'));
   }
 
-  writeValue(value) {
-    if (!this.state) {
+  writeValue(value, type) {
+    if (!this.state || this.state.isMessageEnd) {
       return;
     }
 
     this.state.data.push(value);
+    this.state.rawData.push({ type, value });
+    nodemod.setMetaResult(/* nodemod.mres.ignored */4);
   }
 
   register(eventName, size = -1) {
@@ -89,21 +107,7 @@ export class HNodemodMsg extends EventEmmiter {
       ) : 0
     );
 
-    const writers = {
-      byte: v => nodemod.eng.writeByte(v),
-      char: v => nodemod.eng.writeChar(v),
-      short: v => nodemod.eng.writeShort(v),
-      long: v => nodemod.eng.writeLong(v),
-      angle: v => nodemod.eng.writeAngle(v),
-      coord: v => nodemod.eng.writeCoord(v),
-      string: v => nodemod.eng.writeString(v),
-      entity: v => nodemod.eng.writeEntity(typeof v === 'number' ? nodemod.eng.indexOfEdict(v) : v),
-    };
-
-    options.data.map(v => writers[v.type](v.value));
+    options.data.map(v => this.writers[v.type](v.value));
     nodemod.eng.messageEnd();
   }
 }
-
-//const hnodemodMsg = new HNodemodMsg();
-//export default hnodemodMsg;

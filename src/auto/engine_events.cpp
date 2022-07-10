@@ -2,10 +2,12 @@
   #include <extdll.h>
   #include "node/nodeimpl.hpp"
   #include "node/events.hpp"
+  #include "meta_api.h"
 
   /* BASE EVENTS */
     // nodemod.on('engPrecacheModel', (s) => console.log('engPrecacheModel fired!'));
   int eng_pfnPrecacheModel (const char * s) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engPrecacheModel", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -16,6 +18,7 @@
 
 // nodemod.on('engPrecacheSound', (s) => console.log('engPrecacheSound fired!'));
   int eng_pfnPrecacheSound (const char * s) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engPrecacheSound", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -26,6 +29,7 @@
 
 // nodemod.on('engSetModel', (e, m) => console.log('engSetModel fired!'));
   void eng_pfnSetModel (edict_t * e, const char * m) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engSetModel", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -37,6 +41,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, m).ToLocalChecked(); // m (const c
 
 // nodemod.on('engModelIndex', (m) => console.log('engModelIndex fired!'));
   int eng_pfnModelIndex (const char * m) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engModelIndex", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -47,6 +52,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, m).ToLocalChecked(); // m (const c
 
 // nodemod.on('engModelFrames', (modelIndex) => console.log('engModelFrames fired!'));
   int eng_pfnModelFrames (int modelIndex) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engModelFrames", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -57,6 +63,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, m).ToLocalChecked(); // m (const c
 
 // nodemod.on('engSetSize', (e, rgflMin, rgflMax) => console.log('engSetSize fired!'));
   void eng_pfnSetSize (edict_t * e, const float * rgflMin, const float * rgflMax) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engSetSize", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -69,6 +76,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engChangeLevel', (s1, s2) => console.log('engChangeLevel fired!'));
   void eng_pfnChangeLevel (const char * s1, const char * s2) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engChangeLevel", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -80,6 +88,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, s2).ToLocalChecked(); // s2 (const
 
 // nodemod.on('engGetSpawnParms', (ent) => console.log('engGetSpawnParms fired!'));
   void eng_pfnGetSpawnParms (edict_t * ent) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engGetSpawnParms", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -90,6 +99,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, s2).ToLocalChecked(); // s2 (const
 
 // nodemod.on('engSaveSpawnParms', (ent) => console.log('engSaveSpawnParms fired!'));
   void eng_pfnSaveSpawnParms (edict_t * ent) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engSaveSpawnParms", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -100,6 +110,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, s2).ToLocalChecked(); // s2 (const
 
 // nodemod.on('engVecToYaw', (rgflVector) => console.log('engVecToYaw fired!'));
   float eng_pfnVecToYaw (const float * rgflVector) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engVecToYaw", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -110,6 +121,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, s2).ToLocalChecked(); // s2 (const
 
 // nodemod.on('engVecToAngles', (rgflVectorIn, rgflVectorOut) => console.log('engVecToAngles fired!'));
   void eng_pfnVecToAngles (const float * rgflVectorIn, float * rgflVectorOut) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engVecToAngles", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -121,6 +133,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engMoveToOrigin', (ent, pflGoal, dist, iMoveType) => console.log('engMoveToOrigin fired!'));
   void eng_pfnMoveToOrigin (edict_t * ent, const float * pflGoal, float dist, int iMoveType) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engMoveToOrigin", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
@@ -134,6 +147,7 @@ v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(iMoveType));; // iM
 
 // nodemod.on('engChangeYaw', (ent) => console.log('engChangeYaw fired!'));
   void eng_pfnChangeYaw (edict_t* ent) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engChangeYaw", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -144,6 +158,7 @@ v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(iMoveType));; // iM
 
 // nodemod.on('engChangePitch', (ent) => console.log('engChangePitch fired!'));
   void eng_pfnChangePitch (edict_t* ent) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engChangePitch", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -154,6 +169,7 @@ v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(iMoveType));; // iM
 
 // nodemod.on('engFindEntityByString', (pEdictStartSearchAfter, pszField, pszValue) => console.log('engFindEntityByString fired!'));
   edict_t* eng_pfnFindEntityByString (edict_t * pEdictStartSearchAfter, const char * pszField, const char * pszValue) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engFindEntityByString", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -166,6 +182,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, pszValue).ToLocalChecked(); // psz
 
 // nodemod.on('engGetEntityIllum', (pEnt) => console.log('engGetEntityIllum fired!'));
   int eng_pfnGetEntityIllum (edict_t* pEnt) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engGetEntityIllum", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -176,6 +193,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, pszValue).ToLocalChecked(); // psz
 
 // nodemod.on('engFindEntityInSphere', (pEdictStartSearchAfter, org, rad) => console.log('engFindEntityInSphere fired!'));
   edict_t* eng_pfnFindEntityInSphere (edict_t * pEdictStartSearchAfter, const float * org, float rad) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engFindEntityInSphere", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -188,6 +206,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engFindClientInPvs', (pEdict) => console.log('engFindClientInPvs fired!'));
   edict_t* eng_pfnFindClientInPVS (edict_t * pEdict) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engFindClientInPvs", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -198,6 +217,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engEntitiesInPvs', (pplayer) => console.log('engEntitiesInPvs fired!'));
   edict_t* eng_pfnEntitiesInPVS (edict_t * pplayer) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engEntitiesInPvs", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -208,6 +228,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engMakeVectors', (rgflVector) => console.log('engMakeVectors fired!'));
   void eng_pfnMakeVectors (const float * rgflVector) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engMakeVectors", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -218,6 +239,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engAngleVectors', (rgflVector, forward, right, up) => console.log('engAngleVectors fired!'));
   void eng_pfnAngleVectors (const float * rgflVector, float * forward, float * right, float * up) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engAngleVectors", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
@@ -236,6 +258,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engRemoveEntity', (e) => console.log('engRemoveEntity fired!'));
   void eng_pfnRemoveEntity (edict_t* e) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engRemoveEntity", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -246,6 +269,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engCreateNamedEntity', (className) => console.log('engCreateNamedEntity fired!'));
   edict_t* eng_pfnCreateNamedEntity (int className) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engCreateNamedEntity", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -256,6 +280,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engMakeStatic', (ent) => console.log('engMakeStatic fired!'));
   void eng_pfnMakeStatic (edict_t * ent) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engMakeStatic", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -266,6 +291,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engEntIsOnFloor', (e) => console.log('engEntIsOnFloor fired!'));
   int eng_pfnEntIsOnFloor (edict_t * e) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engEntIsOnFloor", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -276,6 +302,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engDropToFloor', (e) => console.log('engDropToFloor fired!'));
   int eng_pfnDropToFloor (edict_t* e) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engDropToFloor", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -286,6 +313,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engWalkMove', (ent, yaw, dist, iMode) => console.log('engWalkMove fired!'));
   int eng_pfnWalkMove (edict_t * ent, float yaw, float dist, int iMode) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engWalkMove", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
@@ -299,6 +327,7 @@ v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(iMode));; // iMode 
 
 // nodemod.on('engSetOrigin', (e, rgflOrigin) => console.log('engSetOrigin fired!'));
   void eng_pfnSetOrigin (edict_t * e, const float * rgflOrigin) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engSetOrigin", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -310,6 +339,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engEmitSound', (entity, channel, sample, volume, attenuation, fFlags, pitch) => console.log('engEmitSound fired!'));
   void eng_pfnEmitSound (edict_t * entity, int channel, const char * sample, float volume, float attenuation, int fFlags, int pitch) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engEmitSound", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 7;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[7];
@@ -326,6 +356,7 @@ v8_args[6] = v8::Integer::New(isolate, static_cast<uint32_t>(pitch));; // pitch 
 
 // nodemod.on('engEmitAmbientSound', (entity, pos, samp, vol, attenuation, fFlags, pitch) => console.log('engEmitAmbientSound fired!'));
   void eng_pfnEmitAmbientSound (edict_t * entity, const float * pos, const char * samp, float vol, float attenuation, int fFlags, int pitch) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engEmitAmbientSound", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 7;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[7];
@@ -342,6 +373,7 @@ v8_args[6] = v8::Integer::New(isolate, static_cast<uint32_t>(pitch));; // pitch 
 
 // nodemod.on('engTraceLine', (v1, v2, fNoMonsters, pentToSkip, ptr) => console.log('engTraceLine fired!'));
   void eng_pfnTraceLine (const float * v1, const float * v2, int fNoMonsters, edict_t * pentToSkip, TraceResult * ptr) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engTraceLine", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 5;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[5];
@@ -356,6 +388,7 @@ v8_args[4] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engTraceToss', (pent, pentToIgnore, ptr) => console.log('engTraceToss fired!'));
   void eng_pfnTraceToss (edict_t* pent, edict_t* pentToIgnore, TraceResult * ptr) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engTraceToss", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -368,6 +401,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engTraceMonsterHull', (pEdict, v1, v2, fNoMonsters, pentToSkip, ptr) => console.log('engTraceMonsterHull fired!'));
   int eng_pfnTraceMonsterHull (edict_t * pEdict, const float * v1, const float * v2, int fNoMonsters, edict_t * pentToSkip, TraceResult * ptr) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engTraceMonsterHull", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 6;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[6];
@@ -383,6 +417,7 @@ v8_args[5] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engTraceHull', (v1, v2, fNoMonsters, hullNumber, pentToSkip, ptr) => console.log('engTraceHull fired!'));
   void eng_pfnTraceHull (const float * v1, const float * v2, int fNoMonsters, int hullNumber, edict_t * pentToSkip, TraceResult * ptr) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engTraceHull", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 6;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[6];
@@ -398,6 +433,7 @@ v8_args[5] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engTraceModel', (v1, v2, hullNumber, pent, ptr) => console.log('engTraceModel fired!'));
   void eng_pfnTraceModel (const float * v1, const float * v2, int hullNumber, edict_t * pent, TraceResult * ptr) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engTraceModel", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 5;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[5];
@@ -412,6 +448,7 @@ v8_args[4] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engTraceTexture', (pTextureEntity, v1, v2) => console.log('engTraceTexture fired!'));
   const char * eng_pfnTraceTexture (edict_t * pTextureEntity, const float * v1, const float * v2) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engTraceTexture", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -424,6 +461,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engTraceSphere', (v1, v2, fNoMonsters, radius, pentToSkip, ptr) => console.log('engTraceSphere fired!'));
   void eng_pfnTraceSphere (const float * v1, const float * v2, int fNoMonsters, float radius, edict_t * pentToSkip, TraceResult * ptr) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engTraceSphere", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 6;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[6];
@@ -439,6 +477,7 @@ v8_args[5] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engGetAimVector', (ent, speed, rgflReturn) => console.log('engGetAimVector fired!'));
   void eng_pfnGetAimVector (edict_t * ent, float speed, float * rgflReturn) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engGetAimVector", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -451,6 +490,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engServerCommand', (str) => console.log('engServerCommand fired!'));
   void eng_pfnServerCommand (const char * str) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engServerCommand", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -468,6 +508,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engParticleEffect', (org, dir, color, count) => console.log('engParticleEffect fired!'));
   void eng_pfnParticleEffect (const float * org, const float * dir, float color, float count) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engParticleEffect", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
@@ -481,6 +522,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engLightStyle', (style, val) => console.log('engLightStyle fired!'));
   void eng_pfnLightStyle (int style, const char * val) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engLightStyle", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -492,6 +534,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, val).ToLocalChecked(); // val (con
 
 // nodemod.on('engDecalIndex', (name) => console.log('engDecalIndex fired!'));
   int eng_pfnDecalIndex (const char * name) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engDecalIndex", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -502,6 +545,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, val).ToLocalChecked(); // val (con
 
 // nodemod.on('engPointContents', (rgflVector) => console.log('engPointContents fired!'));
   int eng_pfnPointContents (const float * rgflVector) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engPointContents", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -512,6 +556,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, val).ToLocalChecked(); // val (con
 
 // nodemod.on('engMessageBegin', (msg_dest, msg_type, pOrigin, ed) => console.log('engMessageBegin fired!'));
   void eng_pfnMessageBegin (int msg_dest, int msg_type, const float * pOrigin, edict_t * ed) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engMessageBegin", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
@@ -530,6 +575,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engWriteByte', (iValue) => console.log('engWriteByte fired!'));
   void eng_pfnWriteByte (int iValue) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engWriteByte", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -540,6 +586,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engWriteChar', (iValue) => console.log('engWriteChar fired!'));
   void eng_pfnWriteChar (int iValue) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engWriteChar", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -550,6 +597,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engWriteShort', (iValue) => console.log('engWriteShort fired!'));
   void eng_pfnWriteShort (int iValue) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engWriteShort", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -560,6 +608,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engWriteLong', (iValue) => console.log('engWriteLong fired!'));
   void eng_pfnWriteLong (int iValue) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engWriteLong", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -570,6 +619,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engWriteAngle', (flValue) => console.log('engWriteAngle fired!'));
   void eng_pfnWriteAngle (float flValue) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engWriteAngle", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -580,6 +630,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engWriteCoord', (flValue) => console.log('engWriteCoord fired!'));
   void eng_pfnWriteCoord (float flValue) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engWriteCoord", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -590,6 +641,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engWriteString', (sz) => console.log('engWriteString fired!'));
   void eng_pfnWriteString (const char * sz) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engWriteString", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -600,6 +652,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engWriteEntity', (iValue) => console.log('engWriteEntity fired!'));
   void eng_pfnWriteEntity (int iValue) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engWriteEntity", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -610,6 +663,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engCVarRegister', (pCvar) => console.log('engCVarRegister fired!'));
   void eng_pfnCVarRegister (cvar_t * pCvar) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engCVarRegister", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -620,6 +674,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engCVarGetFloat', (szVarName) => console.log('engCVarGetFloat fired!'));
   float eng_pfnCVarGetFloat (const char * szVarName) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engCVarGetFloat", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -630,6 +685,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engCVarGetString', (szVarName) => console.log('engCVarGetString fired!'));
   const char* eng_pfnCVarGetString (const char * szVarName) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engCVarGetString", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -640,6 +696,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engCVarSetFloat', (szVarName, flValue) => console.log('engCVarSetFloat fired!'));
   void eng_pfnCVarSetFloat (const char * szVarName, float flValue) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engCVarSetFloat", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -651,6 +708,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engCVarSetString', (szVarName, szValue) => console.log('engCVarSetString fired!'));
   void eng_pfnCVarSetString (const char * szVarName, const char * szValue) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engCVarSetString", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -666,6 +724,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, szValue).ToLocalChecked(); // szVa
 
 // nodemod.on('engPvAllocEntPrivateData', (pEdict, cb) => console.log('engPvAllocEntPrivateData fired!'));
   void* eng_pfnPvAllocEntPrivateData (edict_t * pEdict, int cb) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engPvAllocEntPrivateData", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -677,6 +736,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
 
 // nodemod.on('engPvEntPrivateData', (pEdict) => console.log('engPvEntPrivateData fired!'));
   void* eng_pfnPvEntPrivateData (edict_t * pEdict) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engPvEntPrivateData", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -687,6 +747,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
 
 // nodemod.on('engFreeEntPrivateData', (pEdict) => console.log('engFreeEntPrivateData fired!'));
   void eng_pfnFreeEntPrivateData (edict_t * pEdict) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engFreeEntPrivateData", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -697,6 +758,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
 
 // nodemod.on('engSzFromIndex', (iString) => console.log('engSzFromIndex fired!'));
   const char * eng_pfnSzFromIndex (int iString) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engSzFromIndex", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -707,6 +769,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
 
 // nodemod.on('engAllocString', (szValue) => console.log('engAllocString fired!'));
   int eng_pfnAllocString (const char * szValue) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engAllocString", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -717,6 +780,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
 
 // nodemod.on('engGetVarsOfEnt', (pEdict) => console.log('engGetVarsOfEnt fired!'));
   struct entvars_s * eng_pfnGetVarsOfEnt (edict_t * pEdict) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engGetVarsOfEnt", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -727,6 +791,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
 
 // nodemod.on('engPEntityOfEntOffset', (iEntOffset) => console.log('engPEntityOfEntOffset fired!'));
   edict_t* eng_pfnPEntityOfEntOffset (int iEntOffset) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engPEntityOfEntOffset", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -737,6 +802,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
 
 // nodemod.on('engEntOffsetOfPEntity', (pEdict) => console.log('engEntOffsetOfPEntity fired!'));
   int eng_pfnEntOffsetOfPEntity (const edict_t * pEdict) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engEntOffsetOfPEntity", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -747,6 +813,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
 
 // nodemod.on('engIndexOfEdict', (pEdict) => console.log('engIndexOfEdict fired!'));
   int eng_pfnIndexOfEdict (const edict_t * pEdict) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engIndexOfEdict", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -757,6 +824,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
 
 // nodemod.on('engPEntityOfEntIndex', (iEntIndex) => console.log('engPEntityOfEntIndex fired!'));
   edict_t* eng_pfnPEntityOfEntIndex (int iEntIndex) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engPEntityOfEntIndex", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -767,6 +835,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
 
 // nodemod.on('engFindEntityByVars', (pvars) => console.log('engFindEntityByVars fired!'));
   edict_t* eng_pfnFindEntityByVars (struct entvars_s* pvars) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engFindEntityByVars", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -777,6 +846,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
 
 // nodemod.on('engGetModelPtr', (pEdict) => console.log('engGetModelPtr fired!'));
   void* eng_pfnGetModelPtr (edict_t* pEdict) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engGetModelPtr", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -787,6 +857,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
 
 // nodemod.on('engRegUserMsg', (pszName, iSize) => console.log('engRegUserMsg fired!'));
   int eng_pfnRegUserMsg (const char * pszName, int iSize) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engRegUserMsg", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -798,6 +869,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(iSize));; // iSize 
 
 // nodemod.on('engAnimationAutomove', (pEdict, flTime) => console.log('engAnimationAutomove fired!'));
   void eng_pfnAnimationAutomove (const edict_t* pEdict, float flTime) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engAnimationAutomove", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -809,6 +881,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engGetBonePosition', (pEdict, iBone, rgflOrigin, rgflAngles) => console.log('engGetBonePosition fired!'));
   void eng_pfnGetBonePosition (const edict_t* pEdict, int iBone, float * rgflOrigin, float * rgflAngles) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engGetBonePosition", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
@@ -822,6 +895,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engFunctionFromName', (pName) => console.log('engFunctionFromName fired!'));
   void* eng_pfnFunctionFromName (const char * pName) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engFunctionFromName", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -832,6 +906,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engNameForFunction', (function) => console.log('engNameForFunction fired!'));
   const char * eng_pfnNameForFunction (void * function) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engNameForFunction", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -842,6 +917,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engClientPrintf', (pEdict, ptype, szMsg) => console.log('engClientPrintf fired!'));
   void eng_pfnClientPrintf (edict_t* pEdict, PRINT_TYPE ptype, const char * szMsg) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engClientPrintf", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -854,6 +930,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, szMsg).ToLocalChecked(); // szMsg 
 
 // nodemod.on('engServerPrint', (szMsg) => console.log('engServerPrint fired!'));
   void eng_pfnServerPrint (const char * szMsg) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engServerPrint", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -869,6 +946,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, szMsg).ToLocalChecked(); // szMsg 
 
 // nodemod.on('engCmdArgv', (argc) => console.log('engCmdArgv fired!'));
   const char * eng_pfnCmd_Argv (int argc) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engCmdArgv", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -884,6 +962,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, szMsg).ToLocalChecked(); // szMsg 
 
 // nodemod.on('engGetAttachment', (pEdict, iAttachment, rgflOrigin, rgflAngles) => console.log('engGetAttachment fired!'));
   void eng_pfnGetAttachment (const edict_t * pEdict, int iAttachment, float * rgflOrigin, float * rgflAngles) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engGetAttachment", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
@@ -897,6 +976,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engCrc32Init', (pulCRC) => console.log('engCrc32Init fired!'));
   void eng_pfnCRC32_Init (CRC32_t * pulCRC) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engCrc32Init", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -907,6 +987,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engCrc32ProcessBuffer', (pulCRC, p, len) => console.log('engCrc32ProcessBuffer fired!'));
   void eng_pfnCRC32_ProcessBuffer (CRC32_t * pulCRC, void * p, int len) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engCrc32ProcessBuffer", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -919,6 +1000,7 @@ v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(len));; // len (int
 
 // nodemod.on('engCrc32ProcessByte', (pulCRC, ch) => console.log('engCrc32ProcessByte fired!'));
   void eng_pfnCRC32_ProcessByte (CRC32_t * pulCRC, unsigned char ch) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engCrc32ProcessByte", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -932,6 +1014,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engRandomLong', (lLow, lHigh) => console.log('engRandomLong fired!'));
   int eng_pfnRandomLong (int lLow, int lHigh) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engRandomLong", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -943,6 +1026,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(lHigh));; // lHigh 
 
 // nodemod.on('engRandomFloat', (flLow, flHigh) => console.log('engRandomFloat fired!'));
   float eng_pfnRandomFloat (float flLow, float flHigh) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engRandomFloat", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -954,6 +1038,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engSetView', (pClient, pViewent) => console.log('engSetView fired!'));
   void eng_pfnSetView (const edict_t * pClient, const edict_t * pViewent) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engSetView", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -970,6 +1055,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engCrosshairAngle', (pClient, pitch, yaw) => console.log('engCrosshairAngle fired!'));
   void eng_pfnCrosshairAngle (const edict_t * pClient, float pitch, float yaw) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engCrosshairAngle", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -982,6 +1068,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engLoadFileForMe', (filename, pLength) => console.log('engLoadFileForMe fired!'));
   byte* eng_pfnLoadFileForMe (const char * filename, int * pLength) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engLoadFileForMe", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -993,6 +1080,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engFreeFile', (buffer) => console.log('engFreeFile fired!'));
   void eng_pfnFreeFile (void * buffer) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engFreeFile", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -1003,6 +1091,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engEndSection', (pszSectionName) => console.log('engEndSection fired!'));
   void eng_pfnEndSection (const char * pszSectionName) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engEndSection", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -1013,6 +1102,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engCompareFileTime', (filename1, filename2, iCompare) => console.log('engCompareFileTime fired!'));
   int eng_pfnCompareFileTime (char * filename1, char * filename2, int * iCompare) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engCompareFileTime", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -1025,6 +1115,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engGetGameDir', (szGetGameDir) => console.log('engGetGameDir fired!'));
   void eng_pfnGetGameDir (char * szGetGameDir) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engGetGameDir", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -1035,6 +1126,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engCvarRegisterVariable', (variable) => console.log('engCvarRegisterVariable fired!'));
   void eng_pfnCvar_RegisterVariable (cvar_t * variable) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engCvarRegisterVariable", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -1045,6 +1137,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engFadeClientVolume', (pEdict, fadePercent, fadeOutSeconds, holdTime, fadeInSeconds) => console.log('engFadeClientVolume fired!'));
   void eng_pfnFadeClientVolume (const edict_t * pEdict, int fadePercent, int fadeOutSeconds, int holdTime, int fadeInSeconds) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engFadeClientVolume", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 5;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[5];
@@ -1059,6 +1152,7 @@ v8_args[4] = v8::Integer::New(isolate, static_cast<uint32_t>(fadeInSeconds));; /
 
 // nodemod.on('engSetClientMaxspeed', (pEdict, fNewMaxspeed) => console.log('engSetClientMaxspeed fired!'));
   void eng_pfnSetClientMaxspeed (const edict_t * pEdict, float fNewMaxspeed) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engSetClientMaxspeed", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -1070,6 +1164,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engCreateFakeClient', (netname) => console.log('engCreateFakeClient fired!'));
   edict_t * eng_pfnCreateFakeClient (const char * netname) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engCreateFakeClient", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -1080,6 +1175,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engRunPlayerMove', (fakeclient, viewangles, forwardmove, sidemove, upmove, buttons, impulse, msec) => console.log('engRunPlayerMove fired!'));
   void eng_pfnRunPlayerMove (edict_t * fakeclient, const float * viewangles, float forwardmove, float sidemove, float upmove, unsigned short buttons, byte impulse, byte msec) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engRunPlayerMove", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 8;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[8];
@@ -1102,6 +1198,7 @@ v8_args[7] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engGetInfoKeyBuffer', (e) => console.log('engGetInfoKeyBuffer fired!'));
   char* eng_pfnGetInfoKeyBuffer (edict_t * e) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engGetInfoKeyBuffer", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -1112,6 +1209,7 @@ v8_args[7] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engInfoKeyValue', (infobuffer, key) => console.log('engInfoKeyValue fired!'));
   char* eng_pfnInfoKeyValue (char * infobuffer, const char * key) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engInfoKeyValue", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -1123,6 +1221,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, key).ToLocalChecked(); // key (con
 
 // nodemod.on('engSetKeyValue', (infobuffer, key, value) => console.log('engSetKeyValue fired!'));
   void eng_pfnSetKeyValue (char * infobuffer, const char * key, const char * value) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engSetKeyValue", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -1135,6 +1234,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, value).ToLocalChecked(); // value 
 
 // nodemod.on('engSetClientKeyValue', (clientIndex, infobuffer, key, value) => console.log('engSetClientKeyValue fired!'));
   void eng_pfnSetClientKeyValue (int clientIndex, char * infobuffer, const char * key, const char * value) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engSetClientKeyValue", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
@@ -1148,6 +1248,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, value).ToLocalChecked(); // value 
 
 // nodemod.on('engIsMapValid', (filename) => console.log('engIsMapValid fired!'));
   int eng_pfnIsMapValid (const char * filename) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engIsMapValid", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -1158,6 +1259,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, value).ToLocalChecked(); // value 
 
 // nodemod.on('engStaticDecal', (origin, decalIndex, entityIndex, modelIndex) => console.log('engStaticDecal fired!'));
   void eng_pfnStaticDecal (const float * origin, int decalIndex, int entityIndex, int modelIndex) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engStaticDecal", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
@@ -1171,6 +1273,7 @@ v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(modelIndex));; // m
 
 // nodemod.on('engPrecacheGeneric', (s) => console.log('engPrecacheGeneric fired!'));
   int eng_pfnPrecacheGeneric (const char * s) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engPrecacheGeneric", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -1181,6 +1284,7 @@ v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(modelIndex));; // m
 
 // nodemod.on('engGetPlayerUserId', (e) => console.log('engGetPlayerUserId fired!'));
   int eng_pfnGetPlayerUserId (edict_t * e) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engGetPlayerUserId", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -1191,6 +1295,7 @@ v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(modelIndex));; // m
 
 // nodemod.on('engBuildSoundMsg', (entity, channel, sample, volume, attenuation, fFlags, pitch, msg_dest, msg_type, pOrigin, ed) => console.log('engBuildSoundMsg fired!'));
   void eng_pfnBuildSoundMsg (edict_t * entity, int channel, const char * sample, float volume, float attenuation, int fFlags, int pitch, int msg_dest, int msg_type, const float * pOrigin, edict_t * ed) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engBuildSoundMsg", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 11;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[11];
@@ -1216,6 +1321,7 @@ v8_args[10] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked()
 
 // nodemod.on('engCVarGetPointer', (szVarName) => console.log('engCVarGetPointer fired!'));
   cvar_t * eng_pfnCVarGetPointer (const char * szVarName) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engCVarGetPointer", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -1226,6 +1332,7 @@ v8_args[10] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked()
 
 // nodemod.on('engGetPlayerWonId', (e) => console.log('engGetPlayerWonId fired!'));
   unsigned int eng_pfnGetPlayerWONId (edict_t * e) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engGetPlayerWonId", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -1236,6 +1343,7 @@ v8_args[10] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked()
 
 // nodemod.on('engInfoRemoveKey', (s, key) => console.log('engInfoRemoveKey fired!'));
   void eng_pfnInfo_RemoveKey (char * s, const char * key) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engInfoRemoveKey", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -1247,6 +1355,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, key).ToLocalChecked(); // key (con
 
 // nodemod.on('engGetPhysicsKeyValue', (pClient, key) => console.log('engGetPhysicsKeyValue fired!'));
   const char * eng_pfnGetPhysicsKeyValue (const edict_t * pClient, const char * key) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engGetPhysicsKeyValue", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -1258,6 +1367,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, key).ToLocalChecked(); // key (con
 
 // nodemod.on('engSetPhysicsKeyValue', (pClient, key, value) => console.log('engSetPhysicsKeyValue fired!'));
   void eng_pfnSetPhysicsKeyValue (const edict_t * pClient, const char * key, const char * value) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engSetPhysicsKeyValue", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -1270,6 +1380,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, value).ToLocalChecked(); // value 
 
 // nodemod.on('engGetPhysicsInfoString', (pClient) => console.log('engGetPhysicsInfoString fired!'));
   const char * eng_pfnGetPhysicsInfoString (const edict_t * pClient) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engGetPhysicsInfoString", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -1280,6 +1391,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, value).ToLocalChecked(); // value 
 
 // nodemod.on('engPrecacheEvent', (type, psz) => console.log('engPrecacheEvent fired!'));
   unsigned short eng_pfnPrecacheEvent (int type, const char* psz) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engPrecacheEvent", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -1291,6 +1403,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engPlaybackEvent', (flags, pInvoker, eventindex, delay, origin, angles, fparam1, fparam2, iparam1, iparam2, bparam1, bparam2) => console.log('engPlaybackEvent fired!'));
   void eng_pfnPlaybackEvent (int flags, const edict_t * pInvoker, unsigned short eventindex, float delay, const float * origin, const float * angles, float fparam1, float fparam2, int iparam1, int iparam2, int bparam1, int bparam2) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engPlaybackEvent", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 12;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[12];
@@ -1312,6 +1425,7 @@ v8_args[11] = v8::Integer::New(isolate, static_cast<uint32_t>(bparam2));; // bpa
 
 // nodemod.on('engSetFatPvs', (org) => console.log('engSetFatPvs fired!'));
   unsigned char * eng_pfnSetFatPVS (const float * org) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engSetFatPvs", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -1322,6 +1436,7 @@ v8_args[11] = v8::Integer::New(isolate, static_cast<uint32_t>(bparam2));; // bpa
 
 // nodemod.on('engSetFatPas', (org) => console.log('engSetFatPas fired!'));
   unsigned char * eng_pfnSetFatPAS (const float * org) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engSetFatPas", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -1332,6 +1447,7 @@ v8_args[11] = v8::Integer::New(isolate, static_cast<uint32_t>(bparam2));; // bpa
 
 // nodemod.on('engCheckVisibility', (entity, pset) => console.log('engCheckVisibility fired!'));
   int eng_pfnCheckVisibility (const edict_t * entity, unsigned char * pset) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engCheckVisibility", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -1343,6 +1459,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engDeltaSetField', (pFields, fieldname) => console.log('engDeltaSetField fired!'));
   void eng_pfnDeltaSetField (struct delta_s * pFields, const char * fieldname) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engDeltaSetField", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -1354,6 +1471,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, fieldname).ToLocalChecked(); // fi
 
 // nodemod.on('engDeltaUnsetField', (pFields, fieldname) => console.log('engDeltaUnsetField fired!'));
   void eng_pfnDeltaUnsetField (struct delta_s * pFields, const char * fieldname) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engDeltaUnsetField", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -1372,6 +1490,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, fieldname).ToLocalChecked(); // fi
 
 // nodemod.on('engCanSkipPlayer', (player) => console.log('engCanSkipPlayer fired!'));
   int eng_pfnCanSkipPlayer (const edict_t * player) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engCanSkipPlayer", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -1382,6 +1501,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, fieldname).ToLocalChecked(); // fi
 
 // nodemod.on('engDeltaFindField', (pFields, fieldname) => console.log('engDeltaFindField fired!'));
   int eng_pfnDeltaFindField (struct delta_s * pFields, const char * fieldname) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engDeltaFindField", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -1393,6 +1513,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, fieldname).ToLocalChecked(); // fi
 
 // nodemod.on('engDeltaSetFieldByIndex', (pFields, fieldNumber) => console.log('engDeltaSetFieldByIndex fired!'));
   void eng_pfnDeltaSetFieldByIndex (struct delta_s * pFields, int fieldNumber) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engDeltaSetFieldByIndex", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -1404,6 +1525,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(fieldNumber));; // 
 
 // nodemod.on('engDeltaUnsetFieldByIndex', (pFields, fieldNumber) => console.log('engDeltaUnsetFieldByIndex fired!'));
   void eng_pfnDeltaUnsetFieldByIndex (struct delta_s * pFields, int fieldNumber) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engDeltaUnsetFieldByIndex", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -1415,6 +1537,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(fieldNumber));; // 
 
 // nodemod.on('engSetGroupMask', (mask, op) => console.log('engSetGroupMask fired!'));
   void eng_pfnSetGroupMask (int mask, int op) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engSetGroupMask", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -1426,6 +1549,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(op));; // op (int)
 
 // nodemod.on('engCreateInstancedBaseline', (classname, baseline) => console.log('engCreateInstancedBaseline fired!'));
   int eng_pfnCreateInstancedBaseline (int classname, struct entity_state_s * baseline) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engCreateInstancedBaseline", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -1437,6 +1561,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engCvarDirectSet', (var, value) => console.log('engCvarDirectSet fired!'));
   void eng_pfnCvar_DirectSet (struct cvar_s * var, const char * value) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engCvarDirectSet", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -1448,6 +1573,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, value).ToLocalChecked(); // value 
 
 // nodemod.on('engForceUnmodified', (type, mins, maxs, filename) => console.log('engForceUnmodified fired!'));
   void eng_pfnForceUnmodified (FORCE_TYPE type, const float * mins, const float * maxs, const char * filename) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engForceUnmodified", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
@@ -1461,6 +1587,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, filename).ToLocalChecked(); // fil
 
 // nodemod.on('engGetPlayerStats', (pClient, ping, packet_loss) => console.log('engGetPlayerStats fired!'));
   void eng_pfnGetPlayerStats (const edict_t * pClient, int * ping, int * packet_loss) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engGetPlayerStats", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -1475,6 +1602,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engVoiceGetClientListening', (iReceiver, iSender) => console.log('engVoiceGetClientListening fired!'));
   qboolean eng_pfnVoice_GetClientListening (int iReceiver, int iSender) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engVoiceGetClientListening", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -1486,6 +1614,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(iSender));; // iSen
 
 // nodemod.on('engVoiceSetClientListening', (iReceiver, iSender, bListen) => console.log('engVoiceSetClientListening fired!'));
   qboolean eng_pfnVoice_SetClientListening (int iReceiver, int iSender, qboolean bListen) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engVoiceSetClientListening", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -1498,6 +1627,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engGetPlayerAuthId', (e) => console.log('engGetPlayerAuthId fired!'));
   const char * eng_pfnGetPlayerAuthId (edict_t * e) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engGetPlayerAuthId", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -1508,6 +1638,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engSequenceGet', (fileName, entryName) => console.log('engSequenceGet fired!'));
   void * eng_pfnSequenceGet (const char * fileName, const char * entryName) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engSequenceGet", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -1519,6 +1650,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, entryName).ToLocalChecked(); // en
 
 // nodemod.on('engSequencePickSentence', (groupName, pickMethod, picked) => console.log('engSequencePickSentence fired!'));
   void * eng_pfnSequencePickSentence (const char * groupName, int pickMethod, int * picked) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engSequencePickSentence", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -1531,6 +1663,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engGetFileSize', (filename) => console.log('engGetFileSize fired!'));
   int eng_pfnGetFileSize (const char * filename) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engGetFileSize", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -1541,6 +1674,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engGetApproxWavePlayLen', (filepath) => console.log('engGetApproxWavePlayLen fired!'));
   unsigned int eng_pfnGetApproxWavePlayLen (const char * filepath) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engGetApproxWavePlayLen", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -1556,6 +1690,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engGetLocalizedStringLength', (label) => console.log('engGetLocalizedStringLength fired!'));
   int eng_pfnGetLocalizedStringLength (const char * label) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engGetLocalizedStringLength", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -1566,6 +1701,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engRegisterTutorMessageShown', (mid) => console.log('engRegisterTutorMessageShown fired!'));
   void eng_pfnRegisterTutorMessageShown (int mid) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engRegisterTutorMessageShown", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -1576,6 +1712,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engGetTimesTutorMessageShown', (mid) => console.log('engGetTimesTutorMessageShown fired!'));
   int eng_pfnGetTimesTutorMessageShown (int mid) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engGetTimesTutorMessageShown", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -1586,6 +1723,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('engProcessTutorMessageDecayBuffer', (buffer, bufferLength) => console.log('engProcessTutorMessageDecayBuffer fired!'));
   void eng_pfnProcessTutorMessageDecayBuffer (int * buffer, int bufferLength) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engProcessTutorMessageDecayBuffer", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -1597,6 +1735,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(bufferLength));; //
 
 // nodemod.on('engConstructTutorMessageDecayBuffer', (buffer, bufferLength) => console.log('engConstructTutorMessageDecayBuffer fired!'));
   void eng_pfnConstructTutorMessageDecayBuffer (int * buffer, int bufferLength) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engConstructTutorMessageDecayBuffer", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -1613,6 +1752,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(bufferLength));; //
 
 // nodemod.on('engQueryClientCvarValue', (player, cvarName) => console.log('engQueryClientCvarValue fired!'));
   void eng_pfnQueryClientCvarValue (const edict_t * player, const char * cvarName) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engQueryClientCvarValue", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -1624,6 +1764,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, cvarName).ToLocalChecked(); // cva
 
 // nodemod.on('engQueryClientCvarValue2', (player, cvarName, requestID) => console.log('engQueryClientCvarValue2 fired!'));
   void eng_pfnQueryClientCvarValue2 (const edict_t * player, const char * cvarName, int requestID) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engQueryClientCvarValue2", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -1636,6 +1777,7 @@ v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(requestID));; // re
 
 // nodemod.on('engCheckParm', (parm, ppnext) => console.log('engCheckParm fired!'));
   int eng_CheckParm (char * parm, char ** ppnext) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("engCheckParm", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -1809,6 +1951,7 @@ eng_CheckParm
   /* POST EVENTS */
     // nodemod.on('postEngPrecacheModel', (s) => console.log('postEngPrecacheModel fired!'));
   int postEng_pfnPrecacheModel (const char * s) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngPrecacheModel", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -1819,6 +1962,7 @@ eng_CheckParm
 
 // nodemod.on('postEngPrecacheSound', (s) => console.log('postEngPrecacheSound fired!'));
   int postEng_pfnPrecacheSound (const char * s) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngPrecacheSound", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -1829,6 +1973,7 @@ eng_CheckParm
 
 // nodemod.on('postEngSetModel', (e, m) => console.log('postEngSetModel fired!'));
   void postEng_pfnSetModel (edict_t * e, const char * m) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngSetModel", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -1840,6 +1985,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, m).ToLocalChecked(); // m (const c
 
 // nodemod.on('postEngModelIndex', (m) => console.log('postEngModelIndex fired!'));
   int postEng_pfnModelIndex (const char * m) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngModelIndex", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -1850,6 +1996,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, m).ToLocalChecked(); // m (const c
 
 // nodemod.on('postEngModelFrames', (modelIndex) => console.log('postEngModelFrames fired!'));
   int postEng_pfnModelFrames (int modelIndex) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngModelFrames", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -1860,6 +2007,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, m).ToLocalChecked(); // m (const c
 
 // nodemod.on('postEngSetSize', (e, rgflMin, rgflMax) => console.log('postEngSetSize fired!'));
   void postEng_pfnSetSize (edict_t * e, const float * rgflMin, const float * rgflMax) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngSetSize", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -1872,6 +2020,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngChangeLevel', (s1, s2) => console.log('postEngChangeLevel fired!'));
   void postEng_pfnChangeLevel (const char * s1, const char * s2) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngChangeLevel", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -1883,6 +2032,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, s2).ToLocalChecked(); // s2 (const
 
 // nodemod.on('postEngGetSpawnParms', (ent) => console.log('postEngGetSpawnParms fired!'));
   void postEng_pfnGetSpawnParms (edict_t * ent) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngGetSpawnParms", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -1893,6 +2043,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, s2).ToLocalChecked(); // s2 (const
 
 // nodemod.on('postEngSaveSpawnParms', (ent) => console.log('postEngSaveSpawnParms fired!'));
   void postEng_pfnSaveSpawnParms (edict_t * ent) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngSaveSpawnParms", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -1903,6 +2054,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, s2).ToLocalChecked(); // s2 (const
 
 // nodemod.on('postEngVecToYaw', (rgflVector) => console.log('postEngVecToYaw fired!'));
   float postEng_pfnVecToYaw (const float * rgflVector) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngVecToYaw", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -1913,6 +2065,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, s2).ToLocalChecked(); // s2 (const
 
 // nodemod.on('postEngVecToAngles', (rgflVectorIn, rgflVectorOut) => console.log('postEngVecToAngles fired!'));
   void postEng_pfnVecToAngles (const float * rgflVectorIn, float * rgflVectorOut) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngVecToAngles", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -1924,6 +2077,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngMoveToOrigin', (ent, pflGoal, dist, iMoveType) => console.log('postEngMoveToOrigin fired!'));
   void postEng_pfnMoveToOrigin (edict_t * ent, const float * pflGoal, float dist, int iMoveType) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngMoveToOrigin", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
@@ -1937,6 +2091,7 @@ v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(iMoveType));; // iM
 
 // nodemod.on('postEngChangeYaw', (ent) => console.log('postEngChangeYaw fired!'));
   void postEng_pfnChangeYaw (edict_t* ent) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngChangeYaw", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -1947,6 +2102,7 @@ v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(iMoveType));; // iM
 
 // nodemod.on('postEngChangePitch', (ent) => console.log('postEngChangePitch fired!'));
   void postEng_pfnChangePitch (edict_t* ent) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngChangePitch", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -1957,6 +2113,7 @@ v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(iMoveType));; // iM
 
 // nodemod.on('postEngFindEntityByString', (pEdictStartSearchAfter, pszField, pszValue) => console.log('postEngFindEntityByString fired!'));
   edict_t* postEng_pfnFindEntityByString (edict_t * pEdictStartSearchAfter, const char * pszField, const char * pszValue) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngFindEntityByString", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -1969,6 +2126,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, pszValue).ToLocalChecked(); // psz
 
 // nodemod.on('postEngGetEntityIllum', (pEnt) => console.log('postEngGetEntityIllum fired!'));
   int postEng_pfnGetEntityIllum (edict_t* pEnt) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngGetEntityIllum", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -1979,6 +2137,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, pszValue).ToLocalChecked(); // psz
 
 // nodemod.on('postEngFindEntityInSphere', (pEdictStartSearchAfter, org, rad) => console.log('postEngFindEntityInSphere fired!'));
   edict_t* postEng_pfnFindEntityInSphere (edict_t * pEdictStartSearchAfter, const float * org, float rad) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngFindEntityInSphere", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -1991,6 +2150,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngFindClientInPvs', (pEdict) => console.log('postEngFindClientInPvs fired!'));
   edict_t* postEng_pfnFindClientInPVS (edict_t * pEdict) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngFindClientInPvs", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2001,6 +2161,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngEntitiesInPvs', (pplayer) => console.log('postEngEntitiesInPvs fired!'));
   edict_t* postEng_pfnEntitiesInPVS (edict_t * pplayer) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngEntitiesInPvs", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2011,6 +2172,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngMakeVectors', (rgflVector) => console.log('postEngMakeVectors fired!'));
   void postEng_pfnMakeVectors (const float * rgflVector) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngMakeVectors", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2021,6 +2183,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngAngleVectors', (rgflVector, forward, right, up) => console.log('postEngAngleVectors fired!'));
   void postEng_pfnAngleVectors (const float * rgflVector, float * forward, float * right, float * up) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngAngleVectors", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
@@ -2039,6 +2202,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngRemoveEntity', (e) => console.log('postEngRemoveEntity fired!'));
   void postEng_pfnRemoveEntity (edict_t* e) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngRemoveEntity", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2049,6 +2213,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngCreateNamedEntity', (className) => console.log('postEngCreateNamedEntity fired!'));
   edict_t* postEng_pfnCreateNamedEntity (int className) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngCreateNamedEntity", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2059,6 +2224,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngMakeStatic', (ent) => console.log('postEngMakeStatic fired!'));
   void postEng_pfnMakeStatic (edict_t * ent) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngMakeStatic", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2069,6 +2235,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngEntIsOnFloor', (e) => console.log('postEngEntIsOnFloor fired!'));
   int postEng_pfnEntIsOnFloor (edict_t * e) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngEntIsOnFloor", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2079,6 +2246,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngDropToFloor', (e) => console.log('postEngDropToFloor fired!'));
   int postEng_pfnDropToFloor (edict_t* e) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngDropToFloor", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2089,6 +2257,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngWalkMove', (ent, yaw, dist, iMode) => console.log('postEngWalkMove fired!'));
   int postEng_pfnWalkMove (edict_t * ent, float yaw, float dist, int iMode) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngWalkMove", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
@@ -2102,6 +2271,7 @@ v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(iMode));; // iMode 
 
 // nodemod.on('postEngSetOrigin', (e, rgflOrigin) => console.log('postEngSetOrigin fired!'));
   void postEng_pfnSetOrigin (edict_t * e, const float * rgflOrigin) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngSetOrigin", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -2113,6 +2283,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngEmitSound', (entity, channel, sample, volume, attenuation, fFlags, pitch) => console.log('postEngEmitSound fired!'));
   void postEng_pfnEmitSound (edict_t * entity, int channel, const char * sample, float volume, float attenuation, int fFlags, int pitch) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngEmitSound", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 7;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[7];
@@ -2129,6 +2300,7 @@ v8_args[6] = v8::Integer::New(isolate, static_cast<uint32_t>(pitch));; // pitch 
 
 // nodemod.on('postEngEmitAmbientSound', (entity, pos, samp, vol, attenuation, fFlags, pitch) => console.log('postEngEmitAmbientSound fired!'));
   void postEng_pfnEmitAmbientSound (edict_t * entity, const float * pos, const char * samp, float vol, float attenuation, int fFlags, int pitch) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngEmitAmbientSound", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 7;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[7];
@@ -2145,6 +2317,7 @@ v8_args[6] = v8::Integer::New(isolate, static_cast<uint32_t>(pitch));; // pitch 
 
 // nodemod.on('postEngTraceLine', (v1, v2, fNoMonsters, pentToSkip, ptr) => console.log('postEngTraceLine fired!'));
   void postEng_pfnTraceLine (const float * v1, const float * v2, int fNoMonsters, edict_t * pentToSkip, TraceResult * ptr) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngTraceLine", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 5;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[5];
@@ -2159,6 +2332,7 @@ v8_args[4] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngTraceToss', (pent, pentToIgnore, ptr) => console.log('postEngTraceToss fired!'));
   void postEng_pfnTraceToss (edict_t* pent, edict_t* pentToIgnore, TraceResult * ptr) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngTraceToss", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -2171,6 +2345,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngTraceMonsterHull', (pEdict, v1, v2, fNoMonsters, pentToSkip, ptr) => console.log('postEngTraceMonsterHull fired!'));
   int postEng_pfnTraceMonsterHull (edict_t * pEdict, const float * v1, const float * v2, int fNoMonsters, edict_t * pentToSkip, TraceResult * ptr) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngTraceMonsterHull", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 6;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[6];
@@ -2186,6 +2361,7 @@ v8_args[5] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngTraceHull', (v1, v2, fNoMonsters, hullNumber, pentToSkip, ptr) => console.log('postEngTraceHull fired!'));
   void postEng_pfnTraceHull (const float * v1, const float * v2, int fNoMonsters, int hullNumber, edict_t * pentToSkip, TraceResult * ptr) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngTraceHull", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 6;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[6];
@@ -2201,6 +2377,7 @@ v8_args[5] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngTraceModel', (v1, v2, hullNumber, pent, ptr) => console.log('postEngTraceModel fired!'));
   void postEng_pfnTraceModel (const float * v1, const float * v2, int hullNumber, edict_t * pent, TraceResult * ptr) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngTraceModel", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 5;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[5];
@@ -2215,6 +2392,7 @@ v8_args[4] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngTraceTexture', (pTextureEntity, v1, v2) => console.log('postEngTraceTexture fired!'));
   const char * postEng_pfnTraceTexture (edict_t * pTextureEntity, const float * v1, const float * v2) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngTraceTexture", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -2227,6 +2405,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngTraceSphere', (v1, v2, fNoMonsters, radius, pentToSkip, ptr) => console.log('postEngTraceSphere fired!'));
   void postEng_pfnTraceSphere (const float * v1, const float * v2, int fNoMonsters, float radius, edict_t * pentToSkip, TraceResult * ptr) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngTraceSphere", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 6;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[6];
@@ -2242,6 +2421,7 @@ v8_args[5] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngGetAimVector', (ent, speed, rgflReturn) => console.log('postEngGetAimVector fired!'));
   void postEng_pfnGetAimVector (edict_t * ent, float speed, float * rgflReturn) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngGetAimVector", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -2254,6 +2434,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngServerCommand', (str) => console.log('postEngServerCommand fired!'));
   void postEng_pfnServerCommand (const char * str) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngServerCommand", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2271,6 +2452,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngParticleEffect', (org, dir, color, count) => console.log('postEngParticleEffect fired!'));
   void postEng_pfnParticleEffect (const float * org, const float * dir, float color, float count) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngParticleEffect", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
@@ -2284,6 +2466,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngLightStyle', (style, val) => console.log('postEngLightStyle fired!'));
   void postEng_pfnLightStyle (int style, const char * val) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngLightStyle", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -2295,6 +2478,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, val).ToLocalChecked(); // val (con
 
 // nodemod.on('postEngDecalIndex', (name) => console.log('postEngDecalIndex fired!'));
   int postEng_pfnDecalIndex (const char * name) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngDecalIndex", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2305,6 +2489,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, val).ToLocalChecked(); // val (con
 
 // nodemod.on('postEngPointContents', (rgflVector) => console.log('postEngPointContents fired!'));
   int postEng_pfnPointContents (const float * rgflVector) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngPointContents", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2315,6 +2500,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, val).ToLocalChecked(); // val (con
 
 // nodemod.on('postEngMessageBegin', (msg_dest, msg_type, pOrigin, ed) => console.log('postEngMessageBegin fired!'));
   void postEng_pfnMessageBegin (int msg_dest, int msg_type, const float * pOrigin, edict_t * ed) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngMessageBegin", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
@@ -2333,6 +2519,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngWriteByte', (iValue) => console.log('postEngWriteByte fired!'));
   void postEng_pfnWriteByte (int iValue) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngWriteByte", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2343,6 +2530,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngWriteChar', (iValue) => console.log('postEngWriteChar fired!'));
   void postEng_pfnWriteChar (int iValue) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngWriteChar", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2353,6 +2541,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngWriteShort', (iValue) => console.log('postEngWriteShort fired!'));
   void postEng_pfnWriteShort (int iValue) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngWriteShort", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2363,6 +2552,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngWriteLong', (iValue) => console.log('postEngWriteLong fired!'));
   void postEng_pfnWriteLong (int iValue) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngWriteLong", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2373,6 +2563,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngWriteAngle', (flValue) => console.log('postEngWriteAngle fired!'));
   void postEng_pfnWriteAngle (float flValue) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngWriteAngle", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2383,6 +2574,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngWriteCoord', (flValue) => console.log('postEngWriteCoord fired!'));
   void postEng_pfnWriteCoord (float flValue) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngWriteCoord", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2393,6 +2585,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngWriteString', (sz) => console.log('postEngWriteString fired!'));
   void postEng_pfnWriteString (const char * sz) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngWriteString", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2403,6 +2596,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngWriteEntity', (iValue) => console.log('postEngWriteEntity fired!'));
   void postEng_pfnWriteEntity (int iValue) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngWriteEntity", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2413,6 +2607,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngCVarRegister', (pCvar) => console.log('postEngCVarRegister fired!'));
   void postEng_pfnCVarRegister (cvar_t * pCvar) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngCVarRegister", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2423,6 +2618,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngCVarGetFloat', (szVarName) => console.log('postEngCVarGetFloat fired!'));
   float postEng_pfnCVarGetFloat (const char * szVarName) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngCVarGetFloat", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2433,6 +2629,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngCVarGetString', (szVarName) => console.log('postEngCVarGetString fired!'));
   const char* postEng_pfnCVarGetString (const char * szVarName) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngCVarGetString", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2443,6 +2640,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngCVarSetFloat', (szVarName, flValue) => console.log('postEngCVarSetFloat fired!'));
   void postEng_pfnCVarSetFloat (const char * szVarName, float flValue) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngCVarSetFloat", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -2454,6 +2652,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngCVarSetString', (szVarName, szValue) => console.log('postEngCVarSetString fired!'));
   void postEng_pfnCVarSetString (const char * szVarName, const char * szValue) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngCVarSetString", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -2469,6 +2668,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, szValue).ToLocalChecked(); // szVa
 
 // nodemod.on('postEngPvAllocEntPrivateData', (pEdict, cb) => console.log('postEngPvAllocEntPrivateData fired!'));
   void* postEng_pfnPvAllocEntPrivateData (edict_t * pEdict, int cb) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngPvAllocEntPrivateData", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -2480,6 +2680,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
 
 // nodemod.on('postEngPvEntPrivateData', (pEdict) => console.log('postEngPvEntPrivateData fired!'));
   void* postEng_pfnPvEntPrivateData (edict_t * pEdict) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngPvEntPrivateData", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2490,6 +2691,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
 
 // nodemod.on('postEngFreeEntPrivateData', (pEdict) => console.log('postEngFreeEntPrivateData fired!'));
   void postEng_pfnFreeEntPrivateData (edict_t * pEdict) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngFreeEntPrivateData", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2500,6 +2702,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
 
 // nodemod.on('postEngSzFromIndex', (iString) => console.log('postEngSzFromIndex fired!'));
   const char * postEng_pfnSzFromIndex (int iString) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngSzFromIndex", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2510,6 +2713,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
 
 // nodemod.on('postEngAllocString', (szValue) => console.log('postEngAllocString fired!'));
   int postEng_pfnAllocString (const char * szValue) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngAllocString", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2520,6 +2724,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
 
 // nodemod.on('postEngGetVarsOfEnt', (pEdict) => console.log('postEngGetVarsOfEnt fired!'));
   struct entvars_s * postEng_pfnGetVarsOfEnt (edict_t * pEdict) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngGetVarsOfEnt", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2530,6 +2735,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
 
 // nodemod.on('postEngPEntityOfEntOffset', (iEntOffset) => console.log('postEngPEntityOfEntOffset fired!'));
   edict_t* postEng_pfnPEntityOfEntOffset (int iEntOffset) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngPEntityOfEntOffset", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2540,6 +2746,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
 
 // nodemod.on('postEngEntOffsetOfPEntity', (pEdict) => console.log('postEngEntOffsetOfPEntity fired!'));
   int postEng_pfnEntOffsetOfPEntity (const edict_t * pEdict) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngEntOffsetOfPEntity", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2550,6 +2757,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
 
 // nodemod.on('postEngIndexOfEdict', (pEdict) => console.log('postEngIndexOfEdict fired!'));
   int postEng_pfnIndexOfEdict (const edict_t * pEdict) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngIndexOfEdict", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2560,6 +2768,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
 
 // nodemod.on('postEngPEntityOfEntIndex', (iEntIndex) => console.log('postEngPEntityOfEntIndex fired!'));
   edict_t* postEng_pfnPEntityOfEntIndex (int iEntIndex) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngPEntityOfEntIndex", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2570,6 +2779,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
 
 // nodemod.on('postEngFindEntityByVars', (pvars) => console.log('postEngFindEntityByVars fired!'));
   edict_t* postEng_pfnFindEntityByVars (struct entvars_s* pvars) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngFindEntityByVars", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2580,6 +2790,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
 
 // nodemod.on('postEngGetModelPtr', (pEdict) => console.log('postEngGetModelPtr fired!'));
   void* postEng_pfnGetModelPtr (edict_t* pEdict) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngGetModelPtr", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2590,6 +2801,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
 
 // nodemod.on('postEngRegUserMsg', (pszName, iSize) => console.log('postEngRegUserMsg fired!'));
   int postEng_pfnRegUserMsg (const char * pszName, int iSize) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngRegUserMsg", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -2601,6 +2813,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(iSize));; // iSize 
 
 // nodemod.on('postEngAnimationAutomove', (pEdict, flTime) => console.log('postEngAnimationAutomove fired!'));
   void postEng_pfnAnimationAutomove (const edict_t* pEdict, float flTime) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngAnimationAutomove", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -2612,6 +2825,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngGetBonePosition', (pEdict, iBone, rgflOrigin, rgflAngles) => console.log('postEngGetBonePosition fired!'));
   void postEng_pfnGetBonePosition (const edict_t* pEdict, int iBone, float * rgflOrigin, float * rgflAngles) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngGetBonePosition", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
@@ -2625,6 +2839,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngFunctionFromName', (pName) => console.log('postEngFunctionFromName fired!'));
   void* postEng_pfnFunctionFromName (const char * pName) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngFunctionFromName", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2635,6 +2850,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngNameForFunction', (function) => console.log('postEngNameForFunction fired!'));
   const char * postEng_pfnNameForFunction (void * function) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngNameForFunction", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2645,6 +2861,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngClientPrintf', (pEdict, ptype, szMsg) => console.log('postEngClientPrintf fired!'));
   void postEng_pfnClientPrintf (edict_t* pEdict, PRINT_TYPE ptype, const char * szMsg) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngClientPrintf", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -2657,6 +2874,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, szMsg).ToLocalChecked(); // szMsg 
 
 // nodemod.on('postEngServerPrint', (szMsg) => console.log('postEngServerPrint fired!'));
   void postEng_pfnServerPrint (const char * szMsg) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngServerPrint", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2672,6 +2890,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, szMsg).ToLocalChecked(); // szMsg 
 
 // nodemod.on('postEngCmdArgv', (argc) => console.log('postEngCmdArgv fired!'));
   const char * postEng_pfnCmd_Argv (int argc) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngCmdArgv", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2687,6 +2906,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, szMsg).ToLocalChecked(); // szMsg 
 
 // nodemod.on('postEngGetAttachment', (pEdict, iAttachment, rgflOrigin, rgflAngles) => console.log('postEngGetAttachment fired!'));
   void postEng_pfnGetAttachment (const edict_t * pEdict, int iAttachment, float * rgflOrigin, float * rgflAngles) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngGetAttachment", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
@@ -2700,6 +2920,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngCrc32Init', (pulCRC) => console.log('postEngCrc32Init fired!'));
   void postEng_pfnCRC32_Init (CRC32_t * pulCRC) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngCrc32Init", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2710,6 +2931,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngCrc32ProcessBuffer', (pulCRC, p, len) => console.log('postEngCrc32ProcessBuffer fired!'));
   void postEng_pfnCRC32_ProcessBuffer (CRC32_t * pulCRC, void * p, int len) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngCrc32ProcessBuffer", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -2722,6 +2944,7 @@ v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(len));; // len (int
 
 // nodemod.on('postEngCrc32ProcessByte', (pulCRC, ch) => console.log('postEngCrc32ProcessByte fired!'));
   void postEng_pfnCRC32_ProcessByte (CRC32_t * pulCRC, unsigned char ch) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngCrc32ProcessByte", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -2735,6 +2958,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngRandomLong', (lLow, lHigh) => console.log('postEngRandomLong fired!'));
   int postEng_pfnRandomLong (int lLow, int lHigh) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngRandomLong", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -2746,6 +2970,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(lHigh));; // lHigh 
 
 // nodemod.on('postEngRandomFloat', (flLow, flHigh) => console.log('postEngRandomFloat fired!'));
   float postEng_pfnRandomFloat (float flLow, float flHigh) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngRandomFloat", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -2757,6 +2982,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngSetView', (pClient, pViewent) => console.log('postEngSetView fired!'));
   void postEng_pfnSetView (const edict_t * pClient, const edict_t * pViewent) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngSetView", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -2773,6 +2999,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngCrosshairAngle', (pClient, pitch, yaw) => console.log('postEngCrosshairAngle fired!'));
   void postEng_pfnCrosshairAngle (const edict_t * pClient, float pitch, float yaw) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngCrosshairAngle", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -2785,6 +3012,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngLoadFileForMe', (filename, pLength) => console.log('postEngLoadFileForMe fired!'));
   byte* postEng_pfnLoadFileForMe (const char * filename, int * pLength) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngLoadFileForMe", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -2796,6 +3024,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngFreeFile', (buffer) => console.log('postEngFreeFile fired!'));
   void postEng_pfnFreeFile (void * buffer) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngFreeFile", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2806,6 +3035,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngEndSection', (pszSectionName) => console.log('postEngEndSection fired!'));
   void postEng_pfnEndSection (const char * pszSectionName) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngEndSection", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2816,6 +3046,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngCompareFileTime', (filename1, filename2, iCompare) => console.log('postEngCompareFileTime fired!'));
   int postEng_pfnCompareFileTime (char * filename1, char * filename2, int * iCompare) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngCompareFileTime", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -2828,6 +3059,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngGetGameDir', (szGetGameDir) => console.log('postEngGetGameDir fired!'));
   void postEng_pfnGetGameDir (char * szGetGameDir) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngGetGameDir", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2838,6 +3070,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngCvarRegisterVariable', (variable) => console.log('postEngCvarRegisterVariable fired!'));
   void postEng_pfnCvar_RegisterVariable (cvar_t * variable) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngCvarRegisterVariable", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2848,6 +3081,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngFadeClientVolume', (pEdict, fadePercent, fadeOutSeconds, holdTime, fadeInSeconds) => console.log('postEngFadeClientVolume fired!'));
   void postEng_pfnFadeClientVolume (const edict_t * pEdict, int fadePercent, int fadeOutSeconds, int holdTime, int fadeInSeconds) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngFadeClientVolume", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 5;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[5];
@@ -2862,6 +3096,7 @@ v8_args[4] = v8::Integer::New(isolate, static_cast<uint32_t>(fadeInSeconds));; /
 
 // nodemod.on('postEngSetClientMaxspeed', (pEdict, fNewMaxspeed) => console.log('postEngSetClientMaxspeed fired!'));
   void postEng_pfnSetClientMaxspeed (const edict_t * pEdict, float fNewMaxspeed) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngSetClientMaxspeed", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -2873,6 +3108,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngCreateFakeClient', (netname) => console.log('postEngCreateFakeClient fired!'));
   edict_t * postEng_pfnCreateFakeClient (const char * netname) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngCreateFakeClient", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2883,6 +3119,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngRunPlayerMove', (fakeclient, viewangles, forwardmove, sidemove, upmove, buttons, impulse, msec) => console.log('postEngRunPlayerMove fired!'));
   void postEng_pfnRunPlayerMove (edict_t * fakeclient, const float * viewangles, float forwardmove, float sidemove, float upmove, unsigned short buttons, byte impulse, byte msec) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngRunPlayerMove", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 8;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[8];
@@ -2905,6 +3142,7 @@ v8_args[7] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngGetInfoKeyBuffer', (e) => console.log('postEngGetInfoKeyBuffer fired!'));
   char* postEng_pfnGetInfoKeyBuffer (edict_t * e) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngGetInfoKeyBuffer", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2915,6 +3153,7 @@ v8_args[7] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngInfoKeyValue', (infobuffer, key) => console.log('postEngInfoKeyValue fired!'));
   char* postEng_pfnInfoKeyValue (char * infobuffer, const char * key) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngInfoKeyValue", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -2926,6 +3165,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, key).ToLocalChecked(); // key (con
 
 // nodemod.on('postEngSetKeyValue', (infobuffer, key, value) => console.log('postEngSetKeyValue fired!'));
   void postEng_pfnSetKeyValue (char * infobuffer, const char * key, const char * value) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngSetKeyValue", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -2938,6 +3178,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, value).ToLocalChecked(); // value 
 
 // nodemod.on('postEngSetClientKeyValue', (clientIndex, infobuffer, key, value) => console.log('postEngSetClientKeyValue fired!'));
   void postEng_pfnSetClientKeyValue (int clientIndex, char * infobuffer, const char * key, const char * value) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngSetClientKeyValue", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
@@ -2951,6 +3192,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, value).ToLocalChecked(); // value 
 
 // nodemod.on('postEngIsMapValid', (filename) => console.log('postEngIsMapValid fired!'));
   int postEng_pfnIsMapValid (const char * filename) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngIsMapValid", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2961,6 +3203,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, value).ToLocalChecked(); // value 
 
 // nodemod.on('postEngStaticDecal', (origin, decalIndex, entityIndex, modelIndex) => console.log('postEngStaticDecal fired!'));
   void postEng_pfnStaticDecal (const float * origin, int decalIndex, int entityIndex, int modelIndex) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngStaticDecal", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
@@ -2974,6 +3217,7 @@ v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(modelIndex));; // m
 
 // nodemod.on('postEngPrecacheGeneric', (s) => console.log('postEngPrecacheGeneric fired!'));
   int postEng_pfnPrecacheGeneric (const char * s) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngPrecacheGeneric", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2984,6 +3228,7 @@ v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(modelIndex));; // m
 
 // nodemod.on('postEngGetPlayerUserId', (e) => console.log('postEngGetPlayerUserId fired!'));
   int postEng_pfnGetPlayerUserId (edict_t * e) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngGetPlayerUserId", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -2994,6 +3239,7 @@ v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(modelIndex));; // m
 
 // nodemod.on('postEngBuildSoundMsg', (entity, channel, sample, volume, attenuation, fFlags, pitch, msg_dest, msg_type, pOrigin, ed) => console.log('postEngBuildSoundMsg fired!'));
   void postEng_pfnBuildSoundMsg (edict_t * entity, int channel, const char * sample, float volume, float attenuation, int fFlags, int pitch, int msg_dest, int msg_type, const float * pOrigin, edict_t * ed) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngBuildSoundMsg", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 11;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[11];
@@ -3019,6 +3265,7 @@ v8_args[10] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked()
 
 // nodemod.on('postEngCVarGetPointer', (szVarName) => console.log('postEngCVarGetPointer fired!'));
   cvar_t * postEng_pfnCVarGetPointer (const char * szVarName) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngCVarGetPointer", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -3029,6 +3276,7 @@ v8_args[10] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked()
 
 // nodemod.on('postEngGetPlayerWonId', (e) => console.log('postEngGetPlayerWonId fired!'));
   unsigned int postEng_pfnGetPlayerWONId (edict_t * e) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngGetPlayerWonId", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -3039,6 +3287,7 @@ v8_args[10] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked()
 
 // nodemod.on('postEngInfoRemoveKey', (s, key) => console.log('postEngInfoRemoveKey fired!'));
   void postEng_pfnInfo_RemoveKey (char * s, const char * key) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngInfoRemoveKey", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -3050,6 +3299,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, key).ToLocalChecked(); // key (con
 
 // nodemod.on('postEngGetPhysicsKeyValue', (pClient, key) => console.log('postEngGetPhysicsKeyValue fired!'));
   const char * postEng_pfnGetPhysicsKeyValue (const edict_t * pClient, const char * key) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngGetPhysicsKeyValue", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -3061,6 +3311,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, key).ToLocalChecked(); // key (con
 
 // nodemod.on('postEngSetPhysicsKeyValue', (pClient, key, value) => console.log('postEngSetPhysicsKeyValue fired!'));
   void postEng_pfnSetPhysicsKeyValue (const edict_t * pClient, const char * key, const char * value) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngSetPhysicsKeyValue", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -3073,6 +3324,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, value).ToLocalChecked(); // value 
 
 // nodemod.on('postEngGetPhysicsInfoString', (pClient) => console.log('postEngGetPhysicsInfoString fired!'));
   const char * postEng_pfnGetPhysicsInfoString (const edict_t * pClient) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngGetPhysicsInfoString", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -3083,6 +3335,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, value).ToLocalChecked(); // value 
 
 // nodemod.on('postEngPrecacheEvent', (type, psz) => console.log('postEngPrecacheEvent fired!'));
   unsigned short postEng_pfnPrecacheEvent (int type, const char* psz) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngPrecacheEvent", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -3094,6 +3347,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngPlaybackEvent', (flags, pInvoker, eventindex, delay, origin, angles, fparam1, fparam2, iparam1, iparam2, bparam1, bparam2) => console.log('postEngPlaybackEvent fired!'));
   void postEng_pfnPlaybackEvent (int flags, const edict_t * pInvoker, unsigned short eventindex, float delay, const float * origin, const float * angles, float fparam1, float fparam2, int iparam1, int iparam2, int bparam1, int bparam2) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngPlaybackEvent", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 12;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[12];
@@ -3115,6 +3369,7 @@ v8_args[11] = v8::Integer::New(isolate, static_cast<uint32_t>(bparam2));; // bpa
 
 // nodemod.on('postEngSetFatPvs', (org) => console.log('postEngSetFatPvs fired!'));
   unsigned char * postEng_pfnSetFatPVS (const float * org) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngSetFatPvs", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -3125,6 +3380,7 @@ v8_args[11] = v8::Integer::New(isolate, static_cast<uint32_t>(bparam2));; // bpa
 
 // nodemod.on('postEngSetFatPas', (org) => console.log('postEngSetFatPas fired!'));
   unsigned char * postEng_pfnSetFatPAS (const float * org) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngSetFatPas", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -3135,6 +3391,7 @@ v8_args[11] = v8::Integer::New(isolate, static_cast<uint32_t>(bparam2));; // bpa
 
 // nodemod.on('postEngCheckVisibility', (entity, pset) => console.log('postEngCheckVisibility fired!'));
   int postEng_pfnCheckVisibility (const edict_t * entity, unsigned char * pset) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngCheckVisibility", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -3146,6 +3403,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngDeltaSetField', (pFields, fieldname) => console.log('postEngDeltaSetField fired!'));
   void postEng_pfnDeltaSetField (struct delta_s * pFields, const char * fieldname) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngDeltaSetField", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -3157,6 +3415,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, fieldname).ToLocalChecked(); // fi
 
 // nodemod.on('postEngDeltaUnsetField', (pFields, fieldname) => console.log('postEngDeltaUnsetField fired!'));
   void postEng_pfnDeltaUnsetField (struct delta_s * pFields, const char * fieldname) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngDeltaUnsetField", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -3175,6 +3434,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, fieldname).ToLocalChecked(); // fi
 
 // nodemod.on('postEngCanSkipPlayer', (player) => console.log('postEngCanSkipPlayer fired!'));
   int postEng_pfnCanSkipPlayer (const edict_t * player) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngCanSkipPlayer", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -3185,6 +3445,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, fieldname).ToLocalChecked(); // fi
 
 // nodemod.on('postEngDeltaFindField', (pFields, fieldname) => console.log('postEngDeltaFindField fired!'));
   int postEng_pfnDeltaFindField (struct delta_s * pFields, const char * fieldname) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngDeltaFindField", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -3196,6 +3457,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, fieldname).ToLocalChecked(); // fi
 
 // nodemod.on('postEngDeltaSetFieldByIndex', (pFields, fieldNumber) => console.log('postEngDeltaSetFieldByIndex fired!'));
   void postEng_pfnDeltaSetFieldByIndex (struct delta_s * pFields, int fieldNumber) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngDeltaSetFieldByIndex", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -3207,6 +3469,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(fieldNumber));; // 
 
 // nodemod.on('postEngDeltaUnsetFieldByIndex', (pFields, fieldNumber) => console.log('postEngDeltaUnsetFieldByIndex fired!'));
   void postEng_pfnDeltaUnsetFieldByIndex (struct delta_s * pFields, int fieldNumber) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngDeltaUnsetFieldByIndex", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -3218,6 +3481,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(fieldNumber));; // 
 
 // nodemod.on('postEngSetGroupMask', (mask, op) => console.log('postEngSetGroupMask fired!'));
   void postEng_pfnSetGroupMask (int mask, int op) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngSetGroupMask", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -3229,6 +3493,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(op));; // op (int)
 
 // nodemod.on('postEngCreateInstancedBaseline', (classname, baseline) => console.log('postEngCreateInstancedBaseline fired!'));
   int postEng_pfnCreateInstancedBaseline (int classname, struct entity_state_s * baseline) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngCreateInstancedBaseline", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -3240,6 +3505,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngCvarDirectSet', (var, value) => console.log('postEngCvarDirectSet fired!'));
   void postEng_pfnCvar_DirectSet (struct cvar_s * var, const char * value) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngCvarDirectSet", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -3251,6 +3517,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, value).ToLocalChecked(); // value 
 
 // nodemod.on('postEngForceUnmodified', (type, mins, maxs, filename) => console.log('postEngForceUnmodified fired!'));
   void postEng_pfnForceUnmodified (FORCE_TYPE type, const float * mins, const float * maxs, const char * filename) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngForceUnmodified", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
@@ -3264,6 +3531,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, filename).ToLocalChecked(); // fil
 
 // nodemod.on('postEngGetPlayerStats', (pClient, ping, packet_loss) => console.log('postEngGetPlayerStats fired!'));
   void postEng_pfnGetPlayerStats (const edict_t * pClient, int * ping, int * packet_loss) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngGetPlayerStats", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -3278,6 +3546,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngVoiceGetClientListening', (iReceiver, iSender) => console.log('postEngVoiceGetClientListening fired!'));
   qboolean postEng_pfnVoice_GetClientListening (int iReceiver, int iSender) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngVoiceGetClientListening", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -3289,6 +3558,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(iSender));; // iSen
 
 // nodemod.on('postEngVoiceSetClientListening', (iReceiver, iSender, bListen) => console.log('postEngVoiceSetClientListening fired!'));
   qboolean postEng_pfnVoice_SetClientListening (int iReceiver, int iSender, qboolean bListen) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngVoiceSetClientListening", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -3301,6 +3571,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngGetPlayerAuthId', (e) => console.log('postEngGetPlayerAuthId fired!'));
   const char * postEng_pfnGetPlayerAuthId (edict_t * e) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngGetPlayerAuthId", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -3311,6 +3582,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngSequenceGet', (fileName, entryName) => console.log('postEngSequenceGet fired!'));
   void * postEng_pfnSequenceGet (const char * fileName, const char * entryName) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngSequenceGet", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -3322,6 +3594,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, entryName).ToLocalChecked(); // en
 
 // nodemod.on('postEngSequencePickSentence', (groupName, pickMethod, picked) => console.log('postEngSequencePickSentence fired!'));
   void * postEng_pfnSequencePickSentence (const char * groupName, int pickMethod, int * picked) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngSequencePickSentence", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -3334,6 +3607,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngGetFileSize', (filename) => console.log('postEngGetFileSize fired!'));
   int postEng_pfnGetFileSize (const char * filename) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngGetFileSize", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -3344,6 +3618,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngGetApproxWavePlayLen', (filepath) => console.log('postEngGetApproxWavePlayLen fired!'));
   unsigned int postEng_pfnGetApproxWavePlayLen (const char * filepath) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngGetApproxWavePlayLen", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -3359,6 +3634,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngGetLocalizedStringLength', (label) => console.log('postEngGetLocalizedStringLength fired!'));
   int postEng_pfnGetLocalizedStringLength (const char * label) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngGetLocalizedStringLength", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -3369,6 +3645,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngRegisterTutorMessageShown', (mid) => console.log('postEngRegisterTutorMessageShown fired!'));
   void postEng_pfnRegisterTutorMessageShown (int mid) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngRegisterTutorMessageShown", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -3379,6 +3656,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngGetTimesTutorMessageShown', (mid) => console.log('postEngGetTimesTutorMessageShown fired!'));
   int postEng_pfnGetTimesTutorMessageShown (int mid) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngGetTimesTutorMessageShown", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -3389,6 +3667,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postEngProcessTutorMessageDecayBuffer', (buffer, bufferLength) => console.log('postEngProcessTutorMessageDecayBuffer fired!'));
   void postEng_pfnProcessTutorMessageDecayBuffer (int * buffer, int bufferLength) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngProcessTutorMessageDecayBuffer", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -3400,6 +3679,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(bufferLength));; //
 
 // nodemod.on('postEngConstructTutorMessageDecayBuffer', (buffer, bufferLength) => console.log('postEngConstructTutorMessageDecayBuffer fired!'));
   void postEng_pfnConstructTutorMessageDecayBuffer (int * buffer, int bufferLength) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngConstructTutorMessageDecayBuffer", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -3416,6 +3696,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(bufferLength));; //
 
 // nodemod.on('postEngQueryClientCvarValue', (player, cvarName) => console.log('postEngQueryClientCvarValue fired!'));
   void postEng_pfnQueryClientCvarValue (const edict_t * player, const char * cvarName) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngQueryClientCvarValue", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -3427,6 +3708,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, cvarName).ToLocalChecked(); // cva
 
 // nodemod.on('postEngQueryClientCvarValue2', (player, cvarName, requestID) => console.log('postEngQueryClientCvarValue2 fired!'));
   void postEng_pfnQueryClientCvarValue2 (const edict_t * player, const char * cvarName, int requestID) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngQueryClientCvarValue2", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -3439,6 +3721,7 @@ v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(requestID));; // re
 
 // nodemod.on('postEngCheckParm', (parm, ppnext) => console.log('postEngCheckParm fired!'));
   int postEng_CheckParm (char * parm, char ** ppnext) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postEngCheckParm", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];

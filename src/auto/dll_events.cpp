@@ -2,6 +2,7 @@
   #include <extdll.h>
   #include "node/nodeimpl.hpp"
   #include "node/events.hpp"
+  #include "meta_api.h"
 
   /* BASE EVENTS */
     // nodemod.on('dllGameInit', () => console.log('dllGameInit fired!'));
@@ -11,6 +12,7 @@
 
 // nodemod.on('dllSpawn', (pent) => console.log('dllSpawn fired!'));
   int dll_pfnSpawn (edict_t * pent) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllSpawn", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -21,6 +23,7 @@
 
 // nodemod.on('dllThink', (pent) => console.log('dllThink fired!'));
   void dll_pfnThink (edict_t * pent) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllThink", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -31,6 +34,7 @@
 
 // nodemod.on('dllUse', (pentUsed, pentOther) => console.log('dllUse fired!'));
   void dll_pfnUse (edict_t * pentUsed, edict_t * pentOther) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllUse", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -42,6 +46,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('dllTouch', (pentTouched, pentOther) => console.log('dllTouch fired!'));
   void dll_pfnTouch (edict_t * pentTouched, edict_t * pentOther) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllTouch", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -53,6 +58,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('dllBlocked', (pentBlocked, pentOther) => console.log('dllBlocked fired!'));
   void dll_pfnBlocked (edict_t * pentBlocked, edict_t * pentOther) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllBlocked", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -64,6 +70,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('dllKeyValue', (pentKeyvalue, pkvd) => console.log('dllKeyValue fired!'));
   void dll_pfnKeyValue (edict_t * pentKeyvalue, KeyValueData * pkvd) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllKeyValue", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -75,6 +82,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('dllSave', (pent, pSaveData) => console.log('dllSave fired!'));
   void dll_pfnSave (edict_t * pent, SAVERESTOREDATA * pSaveData) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllSave", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -86,6 +94,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('dllRestore', (pent, pSaveData, globalEntity) => console.log('dllRestore fired!'));
   int dll_pfnRestore (edict_t * pent, SAVERESTOREDATA * pSaveData, int globalEntity) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllRestore", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -98,6 +107,7 @@ v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(globalEntity));; //
 
 // nodemod.on('dllSetAbsBox', (pent) => console.log('dllSetAbsBox fired!'));
   void dll_pfnSetAbsBox (edict_t * pent) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllSetAbsBox", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -108,6 +118,7 @@ v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(globalEntity));; //
 
 // nodemod.on('dllSaveWriteFields', (value0, value1, value2, value3, value4) => console.log('dllSaveWriteFields fired!'));
   void dll_pfnSaveWriteFields (SAVERESTOREDATA* value0, const char* value1, void* value2, TYPEDESCRIPTION* value3, int value4) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllSaveWriteFields", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 5;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[5];
@@ -122,6 +133,7 @@ v8_args[4] = v8::Integer::New(isolate, static_cast<uint32_t>(value4));; // value
 
 // nodemod.on('dllSaveReadFields', (value0, value1, value2, value3, value4) => console.log('dllSaveReadFields fired!'));
   void dll_pfnSaveReadFields (SAVERESTOREDATA* value0, const char* value1, void* value2, TYPEDESCRIPTION* value3, int value4) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllSaveReadFields", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 5;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[5];
@@ -136,6 +148,7 @@ v8_args[4] = v8::Integer::New(isolate, static_cast<uint32_t>(value4));; // value
 
 // nodemod.on('dllSaveGlobalState', (value0) => console.log('dllSaveGlobalState fired!'));
   void dll_pfnSaveGlobalState (SAVERESTOREDATA * value0) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllSaveGlobalState", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -146,6 +159,7 @@ v8_args[4] = v8::Integer::New(isolate, static_cast<uint32_t>(value4));; // value
 
 // nodemod.on('dllRestoreGlobalState', (value0) => console.log('dllRestoreGlobalState fired!'));
   void dll_pfnRestoreGlobalState (SAVERESTOREDATA * value0) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllRestoreGlobalState", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -161,6 +175,7 @@ v8_args[4] = v8::Integer::New(isolate, static_cast<uint32_t>(value4));; // value
 
 // nodemod.on('dllClientConnect', (pEntity, pszName, pszAddress, szRejectReason[128]) => console.log('dllClientConnect fired!'));
   qboolean dll_pfnClientConnect (edict_t * pEntity, const char * pszName, const char * pszAddress, char szRejectReason[128]) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllClientConnect", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
@@ -174,6 +189,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('dllClientDisconnect', (pEntity) => console.log('dllClientDisconnect fired!'));
   void dll_pfnClientDisconnect (edict_t * pEntity) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllClientDisconnect", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -184,6 +200,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('dllClientKill', (pEntity) => console.log('dllClientKill fired!'));
   void dll_pfnClientKill (edict_t * pEntity) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllClientKill", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -194,6 +211,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('dllClientPutInServer', (pEntity) => console.log('dllClientPutInServer fired!'));
   void dll_pfnClientPutInServer (edict_t * pEntity) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllClientPutInServer", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -204,6 +222,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('dllClientCommand', (pEntity) => console.log('dllClientCommand fired!'));
   void dll_pfnClientCommand (edict_t * pEntity) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllClientCommand", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -214,6 +233,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('dllClientUserInfoChanged', (pEntity, infobuffer) => console.log('dllClientUserInfoChanged fired!'));
   void dll_pfnClientUserInfoChanged (edict_t * pEntity, char * infobuffer) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllClientUserInfoChanged", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -225,6 +245,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('dllServerActivate', (pEdictList, edictCount, clientMax) => console.log('dllServerActivate fired!'));
   void dll_pfnServerActivate (edict_t * pEdictList, int edictCount, int clientMax) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllServerActivate", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -242,6 +263,7 @@ v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(clientMax));; // cl
 
 // nodemod.on('dllPlayerPreThink', (pEntity) => console.log('dllPlayerPreThink fired!'));
   void dll_pfnPlayerPreThink (edict_t * pEntity) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllPlayerPreThink", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -252,6 +274,7 @@ v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(clientMax));; // cl
 
 // nodemod.on('dllPlayerPostThink', (pEntity) => console.log('dllPlayerPostThink fired!'));
   void dll_pfnPlayerPostThink (edict_t * pEntity) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllPlayerPostThink", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -282,6 +305,7 @@ v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(clientMax));; // cl
 
 // nodemod.on('dllPlayerCustomization', (pEntity, pCustom) => console.log('dllPlayerCustomization fired!'));
   void dll_pfnPlayerCustomization (edict_t * pEntity, customization_t * pCustom) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllPlayerCustomization", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -293,6 +317,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('dllSpectatorConnect', (pEntity) => console.log('dllSpectatorConnect fired!'));
   void dll_pfnSpectatorConnect (edict_t * pEntity) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllSpectatorConnect", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -303,6 +328,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('dllSpectatorDisconnect', (pEntity) => console.log('dllSpectatorDisconnect fired!'));
   void dll_pfnSpectatorDisconnect (edict_t * pEntity) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllSpectatorDisconnect", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -313,6 +339,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('dllSpectatorThink', (pEntity) => console.log('dllSpectatorThink fired!'));
   void dll_pfnSpectatorThink (edict_t * pEntity) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllSpectatorThink", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -323,6 +350,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('dllSysError', (error_string) => console.log('dllSysError fired!'));
   void dll_pfnSys_Error (const char * error_string) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllSysError", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -333,6 +361,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('dllPmMove', (ppmove, server) => console.log('dllPmMove fired!'));
   void dll_pfnPM_Move (struct playermove_s * ppmove, qboolean server) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllPmMove", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -344,6 +373,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('dllPmInit', (ppmove) => console.log('dllPmInit fired!'));
   void dll_pfnPM_Init (struct playermove_s * ppmove) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllPmInit", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -354,6 +384,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('dllPmFindTextureType', (name) => console.log('dllPmFindTextureType fired!'));
   char dll_pfnPM_FindTextureType (const char * name) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllPmFindTextureType", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -364,6 +395,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('dllSetupVisibility', (pViewEntity, pClient, pvs, pas) => console.log('dllSetupVisibility fired!'));
   void dll_pfnSetupVisibility (struct edict_s * pViewEntity, struct edict_s * pClient, unsigned char ** pvs, unsigned char ** pas) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllSetupVisibility", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
@@ -377,6 +409,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('dllUpdateClientData', (ent, sendweapons, cd) => console.log('dllUpdateClientData fired!'));
   void dll_pfnUpdateClientData (const struct edict_s * ent, int sendweapons, struct clientdata_s * cd) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllUpdateClientData", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -389,6 +422,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('dllAddToFullPack', (state, e, ent, host, hostflags, player, pSet) => console.log('dllAddToFullPack fired!'));
   int dll_pfnAddToFullPack (struct entity_state_s * state, int e, edict_t * ent, edict_t * host, int hostflags, int player, unsigned char * pSet) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllAddToFullPack", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 7;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[7];
@@ -405,6 +439,7 @@ v8_args[6] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('dllCreateBaseline', (player, eindex, baseline, entity, playermodelindex, player_mins, player_maxs) => console.log('dllCreateBaseline fired!'));
   void dll_pfnCreateBaseline (int player, int eindex, struct entity_state_s * baseline, struct edict_s * entity, int playermodelindex, vec3_t player_mins, vec3_t player_maxs) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllCreateBaseline", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 7;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[7];
@@ -426,6 +461,7 @@ v8_args[6] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('dllGetWeaponData', (player, info) => console.log('dllGetWeaponData fired!'));
   int dll_pfnGetWeaponData (struct edict_s * player, struct weapon_data_s * info) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllGetWeaponData", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -437,6 +473,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('dllCmdStart', (player, cmd, random_seed) => console.log('dllCmdStart fired!'));
   void dll_pfnCmdStart (const edict_t * player, const struct usercmd_s * cmd, unsigned int random_seed) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllCmdStart", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -449,6 +486,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('dllCmdEnd', (player) => console.log('dllCmdEnd fired!'));
   void dll_pfnCmdEnd (const edict_t * player) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllCmdEnd", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -459,6 +497,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('dllConnectionlessPacket', (net_from, args, response_buffer, response_buffer_size) => console.log('dllConnectionlessPacket fired!'));
   int dll_pfnConnectionlessPacket (const struct netadr_s * net_from, const char * args, char * response_buffer, int * response_buffer_size) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllConnectionlessPacket", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
@@ -472,6 +511,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('dllGetHullBounds', (hullnumber, mins, maxs) => console.log('dllGetHullBounds fired!'));
   int dll_pfnGetHullBounds (int hullnumber, float * mins, float * maxs) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllGetHullBounds", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -489,6 +529,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('dllInconsistentFile', (player, filename, disconnect_message) => console.log('dllInconsistentFile fired!'));
   int dll_pfnInconsistentFile (const struct edict_s * player, const char * filename, char * disconnect_message) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllInconsistentFile", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -565,6 +606,7 @@ dll_pfnAllowLagCompensation
 
 // nodemod.on('postDllSpawn', (pent) => console.log('postDllSpawn fired!'));
   int postDll_pfnSpawn (edict_t * pent) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllSpawn", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -575,6 +617,7 @@ dll_pfnAllowLagCompensation
 
 // nodemod.on('postDllThink', (pent) => console.log('postDllThink fired!'));
   void postDll_pfnThink (edict_t * pent) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllThink", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -585,6 +628,7 @@ dll_pfnAllowLagCompensation
 
 // nodemod.on('postDllUse', (pentUsed, pentOther) => console.log('postDllUse fired!'));
   void postDll_pfnUse (edict_t * pentUsed, edict_t * pentOther) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllUse", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -596,6 +640,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postDllTouch', (pentTouched, pentOther) => console.log('postDllTouch fired!'));
   void postDll_pfnTouch (edict_t * pentTouched, edict_t * pentOther) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllTouch", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -607,6 +652,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postDllBlocked', (pentBlocked, pentOther) => console.log('postDllBlocked fired!'));
   void postDll_pfnBlocked (edict_t * pentBlocked, edict_t * pentOther) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllBlocked", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -618,6 +664,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postDllKeyValue', (pentKeyvalue, pkvd) => console.log('postDllKeyValue fired!'));
   void postDll_pfnKeyValue (edict_t * pentKeyvalue, KeyValueData * pkvd) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllKeyValue", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -629,6 +676,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postDllSave', (pent, pSaveData) => console.log('postDllSave fired!'));
   void postDll_pfnSave (edict_t * pent, SAVERESTOREDATA * pSaveData) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllSave", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -640,6 +688,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postDllRestore', (pent, pSaveData, globalEntity) => console.log('postDllRestore fired!'));
   int postDll_pfnRestore (edict_t * pent, SAVERESTOREDATA * pSaveData, int globalEntity) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllRestore", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -652,6 +701,7 @@ v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(globalEntity));; //
 
 // nodemod.on('postDllSetAbsBox', (pent) => console.log('postDllSetAbsBox fired!'));
   void postDll_pfnSetAbsBox (edict_t * pent) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllSetAbsBox", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -662,6 +712,7 @@ v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(globalEntity));; //
 
 // nodemod.on('postDllSaveWriteFields', (value0, value1, value2, value3, value4) => console.log('postDllSaveWriteFields fired!'));
   void postDll_pfnSaveWriteFields (SAVERESTOREDATA* value0, const char* value1, void* value2, TYPEDESCRIPTION* value3, int value4) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllSaveWriteFields", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 5;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[5];
@@ -676,6 +727,7 @@ v8_args[4] = v8::Integer::New(isolate, static_cast<uint32_t>(value4));; // value
 
 // nodemod.on('postDllSaveReadFields', (value0, value1, value2, value3, value4) => console.log('postDllSaveReadFields fired!'));
   void postDll_pfnSaveReadFields (SAVERESTOREDATA* value0, const char* value1, void* value2, TYPEDESCRIPTION* value3, int value4) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllSaveReadFields", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 5;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[5];
@@ -690,6 +742,7 @@ v8_args[4] = v8::Integer::New(isolate, static_cast<uint32_t>(value4));; // value
 
 // nodemod.on('postDllSaveGlobalState', (value0) => console.log('postDllSaveGlobalState fired!'));
   void postDll_pfnSaveGlobalState (SAVERESTOREDATA * value0) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllSaveGlobalState", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -700,6 +753,7 @@ v8_args[4] = v8::Integer::New(isolate, static_cast<uint32_t>(value4));; // value
 
 // nodemod.on('postDllRestoreGlobalState', (value0) => console.log('postDllRestoreGlobalState fired!'));
   void postDll_pfnRestoreGlobalState (SAVERESTOREDATA * value0) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllRestoreGlobalState", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -715,6 +769,7 @@ v8_args[4] = v8::Integer::New(isolate, static_cast<uint32_t>(value4));; // value
 
 // nodemod.on('postDllClientConnect', (pEntity, pszName, pszAddress, szRejectReason[128]) => console.log('postDllClientConnect fired!'));
   qboolean postDll_pfnClientConnect (edict_t * pEntity, const char * pszName, const char * pszAddress, char szRejectReason[128]) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllClientConnect", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
@@ -728,6 +783,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postDllClientDisconnect', (pEntity) => console.log('postDllClientDisconnect fired!'));
   void postDll_pfnClientDisconnect (edict_t * pEntity) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllClientDisconnect", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -738,6 +794,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postDllClientKill', (pEntity) => console.log('postDllClientKill fired!'));
   void postDll_pfnClientKill (edict_t * pEntity) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllClientKill", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -748,6 +805,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postDllClientPutInServer', (pEntity) => console.log('postDllClientPutInServer fired!'));
   void postDll_pfnClientPutInServer (edict_t * pEntity) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllClientPutInServer", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -758,6 +816,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postDllClientCommand', (pEntity) => console.log('postDllClientCommand fired!'));
   void postDll_pfnClientCommand (edict_t * pEntity) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllClientCommand", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -768,6 +827,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postDllClientUserInfoChanged', (pEntity, infobuffer) => console.log('postDllClientUserInfoChanged fired!'));
   void postDll_pfnClientUserInfoChanged (edict_t * pEntity, char * infobuffer) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllClientUserInfoChanged", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -779,6 +839,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postDllServerActivate', (pEdictList, edictCount, clientMax) => console.log('postDllServerActivate fired!'));
   void postDll_pfnServerActivate (edict_t * pEdictList, int edictCount, int clientMax) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllServerActivate", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -796,6 +857,7 @@ v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(clientMax));; // cl
 
 // nodemod.on('postDllPlayerPreThink', (pEntity) => console.log('postDllPlayerPreThink fired!'));
   void postDll_pfnPlayerPreThink (edict_t * pEntity) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllPlayerPreThink", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -806,6 +868,7 @@ v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(clientMax));; // cl
 
 // nodemod.on('postDllPlayerPostThink', (pEntity) => console.log('postDllPlayerPostThink fired!'));
   void postDll_pfnPlayerPostThink (edict_t * pEntity) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllPlayerPostThink", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -836,6 +899,7 @@ v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(clientMax));; // cl
 
 // nodemod.on('postDllPlayerCustomization', (pEntity, pCustom) => console.log('postDllPlayerCustomization fired!'));
   void postDll_pfnPlayerCustomization (edict_t * pEntity, customization_t * pCustom) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllPlayerCustomization", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -847,6 +911,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postDllSpectatorConnect', (pEntity) => console.log('postDllSpectatorConnect fired!'));
   void postDll_pfnSpectatorConnect (edict_t * pEntity) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllSpectatorConnect", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -857,6 +922,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postDllSpectatorDisconnect', (pEntity) => console.log('postDllSpectatorDisconnect fired!'));
   void postDll_pfnSpectatorDisconnect (edict_t * pEntity) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllSpectatorDisconnect", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -867,6 +933,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postDllSpectatorThink', (pEntity) => console.log('postDllSpectatorThink fired!'));
   void postDll_pfnSpectatorThink (edict_t * pEntity) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllSpectatorThink", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -877,6 +944,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postDllSysError', (error_string) => console.log('postDllSysError fired!'));
   void postDll_pfnSys_Error (const char * error_string) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllSysError", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -887,6 +955,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postDllPmMove', (ppmove, server) => console.log('postDllPmMove fired!'));
   void postDll_pfnPM_Move (struct playermove_s * ppmove, qboolean server) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllPmMove", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -898,6 +967,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postDllPmInit', (ppmove) => console.log('postDllPmInit fired!'));
   void postDll_pfnPM_Init (struct playermove_s * ppmove) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllPmInit", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -908,6 +978,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postDllPmFindTextureType', (name) => console.log('postDllPmFindTextureType fired!'));
   char postDll_pfnPM_FindTextureType (const char * name) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllPmFindTextureType", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -918,6 +989,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postDllSetupVisibility', (pViewEntity, pClient, pvs, pas) => console.log('postDllSetupVisibility fired!'));
   void postDll_pfnSetupVisibility (struct edict_s * pViewEntity, struct edict_s * pClient, unsigned char ** pvs, unsigned char ** pas) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllSetupVisibility", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
@@ -931,6 +1003,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postDllUpdateClientData', (ent, sendweapons, cd) => console.log('postDllUpdateClientData fired!'));
   void postDll_pfnUpdateClientData (const struct edict_s * ent, int sendweapons, struct clientdata_s * cd) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllUpdateClientData", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -943,6 +1016,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postDllAddToFullPack', (state, e, ent, host, hostflags, player, pSet) => console.log('postDllAddToFullPack fired!'));
   int postDll_pfnAddToFullPack (struct entity_state_s * state, int e, edict_t * ent, edict_t * host, int hostflags, int player, unsigned char * pSet) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllAddToFullPack", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 7;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[7];
@@ -959,6 +1033,7 @@ v8_args[6] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postDllCreateBaseline', (player, eindex, baseline, entity, playermodelindex, player_mins, player_maxs) => console.log('postDllCreateBaseline fired!'));
   void postDll_pfnCreateBaseline (int player, int eindex, struct entity_state_s * baseline, struct edict_s * entity, int playermodelindex, vec3_t player_mins, vec3_t player_maxs) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllCreateBaseline", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 7;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[7];
@@ -980,6 +1055,7 @@ v8_args[6] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postDllGetWeaponData', (player, info) => console.log('postDllGetWeaponData fired!'));
   int postDll_pfnGetWeaponData (struct edict_s * player, struct weapon_data_s * info) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllGetWeaponData", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
@@ -991,6 +1067,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postDllCmdStart', (player, cmd, random_seed) => console.log('postDllCmdStart fired!'));
   void postDll_pfnCmdStart (const edict_t * player, const struct usercmd_s * cmd, unsigned int random_seed) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllCmdStart", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -1003,6 +1080,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postDllCmdEnd', (player) => console.log('postDllCmdEnd fired!'));
   void postDll_pfnCmdEnd (const edict_t * player) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllCmdEnd", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
@@ -1013,6 +1091,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postDllConnectionlessPacket', (net_from, args, response_buffer, response_buffer_size) => console.log('postDllConnectionlessPacket fired!'));
   int postDll_pfnConnectionlessPacket (const struct netadr_s * net_from, const char * args, char * response_buffer, int * response_buffer_size) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllConnectionlessPacket", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
@@ -1026,6 +1105,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postDllGetHullBounds', (hullnumber, mins, maxs) => console.log('postDllGetHullBounds fired!'));
   int postDll_pfnGetHullBounds (int hullnumber, float * mins, float * maxs) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllGetHullBounds", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
@@ -1043,6 +1123,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
 
 // nodemod.on('postDllInconsistentFile', (player, filename, disconnect_message) => console.log('postDllInconsistentFile fired!'));
   int postDll_pfnInconsistentFile (const struct edict_s * player, const char * filename, char * disconnect_message) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllInconsistentFile", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];

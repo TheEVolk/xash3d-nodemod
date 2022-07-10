@@ -4,7 +4,7 @@ project(nodemod)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-SET(CMAKE_CXX_FLAGS "-std=c++14 -m32 -Wno-return-type")
+SET(CMAKE_CXX_FLAGS "-std=c++14 -m32 -Wno-return-type -fpermissive")
 add_link_options(
 		"-static-libgcc"
 		"-static-libstdc++"
@@ -71,6 +71,9 @@ set( S_SOURCES
 
     ${SRC_PATH}/auto/dll_events.cpp
     ${SRC_PATH}/auto/engine_events.cpp
+    ${SRC_PATH}/auto/engine_functions.cpp
+
+    ${SRC_PATH}/structures/entity.cpp
 )
 
 add_library(nodemod SHARED ${S_SOURCES})

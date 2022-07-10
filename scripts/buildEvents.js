@@ -3,6 +3,8 @@ import {
   camelCase
 } from 'change-case';
 import { promises as fs } from 'fs';
+import fileMaker from './fileMaker.js';
+import generator from './generator.js';
 
 const generators = {
   'const char *': v => `v8::String::NewFromUtf8(isolate, ${v}).ToLocalChecked()`,
@@ -46,6 +48,7 @@ function getFunction(func, prefix) {
 
   return `${description}
   ${func.type} ${prefix}_${func.name} (${func.args.map(v => `${v.type} ${v.name}`).join(', ')}) {
+  SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("${eventName}", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = ${func.args.length};
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[${func.args.length}];
@@ -109,14 +112,16 @@ function parseFunction(line) {
       type: type.trim(),
       name,
       args,
-      rawArgs: argsPart
+      rawArgs: argsPart,
+      original: line
     };
   }
   catch (error) {
     console.log(`Error function: ${line}\n${error.stack}`);
     return {
       type: 'NULL',
-      name: line.match(/\(\*([0-9a-zA-Z_]+)\)/)[1]
+      name: line.match(/\(\*([0-9a-zA-Z_]+)\)/)[1],
+      original: line
     };
   }
 }
@@ -133,10 +138,21 @@ function parseFunction(line) {
 
   const baseDllFunctions = getFunctions(dllFunctions, 'dll');
   const postDllFunctions = getFunctions(dllFunctions, 'postDll');
+
+  const computed = {
+    dll: dllFunctions.map(v => computeFunction(v, 'dll')),
+    eng: engineFunctions.filter(v => !v.name.includes('CRC32')).map(v => computeFunction(v, 'eng'))
+  };
+
+  await fs.writeFile('./packages/types/@types/index.d.ts', fileMaker.typings.makeIndex(computed));
+  const { engineFunctionsFile, dllFunctionsFile } = fileMaker.makeFunctions(computed);
+  await fs.writeFile('./src/auto/engine_functions.cpp', engineFunctionsFile);
+
   const file = `// This file builded by: node scripts/buildEvents.js
   #include <extdll.h>
   #include "node/nodeimpl.hpp"
   #include "node/events.hpp"
+  #include "meta_api.h"
 
   /* BASE EVENTS */
     ${baseDllFunctions.functions.join('\n\n')}
@@ -169,6 +185,7 @@ function parseFunction(line) {
   #include <extdll.h>
   #include "node/nodeimpl.hpp"
   #include "node/events.hpp"
+  #include "meta_api.h"
 
   /* BASE EVENTS */
     ${baseEngineFunctions.functions.join('\n\n')}
@@ -194,4 +211,36 @@ function parseFunction(line) {
   `;
 
   await fs.writeFile('./src/auto/engine_events.cpp', engineFile);
+
+
 })();
+
+function computeFunctionApi(func, source) {
+  const jsName = camelCase(func.name.replace(/^pfn/, ''));
+  return {
+    original: func.original,
+    definition: `{ "${camelCase(func.name.replace(/^pfn/, ''))}", sf_${source}_${func.name} }`,
+    body: `// nodemod.eng.${jsName}();\n${generator.generateCppFunction(func, 'g_engfuncs', 'sf_eng')}`,
+    typing: `${jsName}: (${func.args.map(v => v.name).join(', ')}) => unknown`
+  };
+}
+
+function tc(original, f) {
+  try {
+    return { status: 'success', ...f() };
+  } catch (error) {
+    console.log(error.stack);
+    return {
+      status: 'failed',
+      reason: error.message,
+      original
+    };
+  }
+}
+
+function computeFunction(func, source) {
+  return {
+    api: tc(func.original, () => computeFunctionApi(func, source)),
+    // event: tc(() => computeFunctionEvent(func, source)),
+  };
+}

@@ -1,11 +1,6 @@
 #pragma once
 #include <sstream>
 
-#define L_INFO Log().Get(LogLevel::LOG_INFO)
-#define L_DEBUG Log().Get(LogLevel::LOG_DEBUG)
-#define L_WARN Log().Get(LogLevel::LOG_WARN)
-#define L_ERROR Log().Get(LogLevel::LOG_ERROR)
-
 enum class LogLevel
 {
 	LOG_ERROR = 0, // level 1
@@ -14,6 +9,12 @@ enum class LogLevel
 	LOG_INFO = 3, // level 4
 	LOG_FULL = 4
 };
+
+#define L_INFO Log().Get(LogLevel::LOG_INFO)
+#define L_DEBUG Log().Get(LogLevel::LOG_DEBUG)
+#define L_WARN Log().Get(LogLevel::LOG_WARN)
+#define L_ERROR Log().Get(LogLevel::LOG_ERROR)
+
 
 class Log
 {

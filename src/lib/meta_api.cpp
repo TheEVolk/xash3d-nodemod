@@ -1,6 +1,8 @@
 #include <extdll.h>
 #include <meta_api.h>
 #include "node/nodeimpl.hpp"
+#include "v8.h"
+#include "node/utils.hpp"
 
 #define NODEMOD_VERSION "0.1.0"
 
@@ -60,7 +62,31 @@ C_DLLEXPORT int Meta_Detach(PLUG_LOADTIME now, PL_UNLOAD_REASON reason)
 	return TRUE;
 }
 
-int main() {
-	//nodeImpl.Initialize();
-//nodeImpl.loadScript();
+void getUserMsgId(const v8::FunctionCallbackInfo<v8::Value>& info) {
+	v8::Locker locker(info.GetIsolate());
+	v8::HandleScope scope(info.GetIsolate());
+	auto context = info.GetIsolate()->GetCurrentContext();
+
+  info.GetReturnValue().Set(
+  v8::Number::New(info.GetIsolate(), GET_USER_MSG_ID(&Plugin_info, utils::js2string(info.GetIsolate(), info[0]), NULL))
+	);
+}
+
+void getUserMsgName(const v8::FunctionCallbackInfo<v8::Value>& info) {
+	v8::Locker locker(info.GetIsolate());
+	v8::HandleScope scope(info.GetIsolate());
+	auto context = info.GetIsolate()->GetCurrentContext();
+
+  info.GetReturnValue().Set(
+  v8::String::NewFromUtf8(info.GetIsolate(), GET_USER_MSG_NAME(&Plugin_info, info[0]->Int32Value(context).ToChecked(), NULL))
+	.ToLocalChecked()
+	);
+}
+
+void setMetaResult(const v8::FunctionCallbackInfo<v8::Value>& info) {
+	v8::Locker locker(info.GetIsolate());
+	v8::HandleScope scope(info.GetIsolate());
+	auto context = info.GetIsolate()->GetCurrentContext();
+
+	SET_META_RESULT((META_RES)info[0]->Int32Value(context).ToChecked());
 }
