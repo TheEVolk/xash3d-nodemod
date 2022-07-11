@@ -12,8 +12,8 @@ add_link_options(
 add_compile_definitions(linux)
 
 
-set ( HLSDK_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../hlsdk-xash3d )
-set ( METAMOD_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../metamod  )
+set(HLSDK_PATH ${CMAKE_CURRENT_SOURCE_DIR}/deps/hlsdk)
+set(METAMOD_PATH ${CMAKE_CURRENT_SOURCE_DIR}/deps/metamod)
 
 # HlSdk
 include_directories( ${HLSDK_PATH}/common )
@@ -29,25 +29,21 @@ include_directories( ${METAMOD_PATH} )
 # NodeJS
 if(WIN32)
 	set(NODE_FILE "libnode.dll")
+    set(SYS_PATH win32)
 else()
 	set(NODE_FILE "libnode.so.93")
-endif()
-
-if (WIN32)
-	set(SYS_PATH win32)
-else()
     set(SYS_PATH linux)
 endif()
 
 add_definitions(-DBUILDING_NODE_EXTENSION=1 -DEXTERNAL_NAPI=1)
 
-set(NODE_PATH "${PROJECT_SOURCE_DIR}/deps/node/lib/Release/${SYS_PATH}")
+set(NODEJS_PATH "${PROJECT_SOURCE_DIR}/deps/node/lib/Release/${SYS_PATH}")
 include_directories(
 ${PROJECT_SOURCE_DIR}/deps/node/include
 	${PROJECT_SOURCE_DIR}/deps/v8
 )
 
-link_directories(${NODE_PATH})
+link_directories(${NODEJS_PATH})
 
 # Engine source files
 include_directories( src/ )
@@ -77,6 +73,6 @@ set( S_SOURCES
 )
 
 add_library(nodemod SHARED ${S_SOURCES})
-target_link_libraries(nodemod dl pthread uv ${NODE_PATH}/libnode.so.93)
+target_link_libraries(nodemod dl pthread uv ${NODEJS_PATH}/libnode.so.93)
 #add_executable(nodemod2 ${S_SOURCES})
-#target_link_libraries(nodemod2 dl pthread uv ${NODE_PATH}/libnode.so.93)
+#target_link_libraries(nodemod2 dl pthread uv ${NODEJS_PATH}/libnode.so.93)

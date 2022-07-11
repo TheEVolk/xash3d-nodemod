@@ -1,0 +1,6 @@
+[submodule "deps/hlsdk"]
+	path = deps/hlsdk
+	url = https://github.com/FWGS/hlsdk-portable
+[submodule "deps/metamod"]
+	path = deps/metamod
+	url = https://github.com/alliedmodders/metamod-hl1.git
