@@ -9,14 +9,13 @@
 * высокая поддержка (под nodejs есть почти все, базы данных, пакеты, API интеграции и так далее)
 
 ## Компиляция
-Для компиляции требуются metamod и hlsdk. Затем, требуется установленный nodejs.
+Для компиляции требуется установленный nodejs.
 ```
-git clone https://github.com/TheEVolk/xash3d-nodemod.git
+git clone --recursive https://github.com/TheEVolk/xash3d-nodemod.git
 cd xash3d-nodemod
 node scripts/buildEvents.js
 mkdir build && cd build
-cmake .. -DHLSDK_PATH=/path/to/hlsdk -DMETAMOD_PATH=/path/to/metamod
-make
+cmake --build . --config Debug
 ```
 
 ## Установка и запуск
