@@ -23,7 +23,7 @@ export default class NodemodMsg extends EventEmmiter {
     long: v => nodemod.eng.writeLong(v),
     angle: v => nodemod.eng.writeAngle(v),
     coord: v => nodemod.eng.writeCoord(v),
-    string: v => nodemod.eng.writeString(v),
+    string: v => nodemod.eng.writeString(v || ''),
     entity: v => nodemod.eng.writeEntity(typeof v === 'number' ? nodemod.eng.indexOfEdict(v) : v),
   };
 
@@ -33,7 +33,7 @@ export default class NodemodMsg extends EventEmmiter {
 
     nodemod.on('engMessageBegin', (msg_dest, msg_type, origin, entity) => {
       const name = nodemod.getUserMsgName(msg_type);
-      if (!this.listeners(name) && !this.listeners(`post:${name}`)) {
+      if (!this.listeners(name).length && !this.listeners(`post:${name}`).length) {
         return;
       }
 
@@ -65,18 +65,19 @@ export default class NodemodMsg extends EventEmmiter {
       this.emit(`post:${state.name}`, state);
     });
 
-    nodemod.on('engWriteByte', v => this.writeValue(v, 'byte'));
-    nodemod.on('engWriteChar', v => this.writeValue(v, 'char'));
-    nodemod.on('engWriteShort', v => this.writeValue(v, 'short'));
-    nodemod.on('engWriteLong', v => this.writeValue(v, 'long'));
-    nodemod.on('engWriteAngle', v => this.writeValue(v, 'angle'));
-    nodemod.on('engWriteCoord', v => this.writeValue(v, 'coord'));
-    nodemod.on('engWriteString', v => this.writeValue(v, 'string'));
+    nodemod.on('engWriteByte', v => this.writeValue(v || 0, 'byte'));
+    nodemod.on('engWriteChar', v => this.writeValue(v || '', 'char'));
+    nodemod.on('engWriteShort', v => this.writeValue(v || 0, 'short'));
+    nodemod.on('engWriteLong', v => this.writeValue(v || 0, 'long'));
+    nodemod.on('engWriteAngle', v => this.writeValue(v || 0, 'angle'));
+    nodemod.on('engWriteCoord', v => this.writeValue(v || 0, 'coord'));
+    nodemod.on('engWriteString', v => this.writeValue(v || '', 'string'));
     nodemod.on('engWriteEntity', v => this.writeValue(v, 'entity'));
   }
 
   writeValue(value, type) {
     if (!this.state || this.state.isMessageEnd) {
+      nodemod.setMetaResult(0);
       return;
     }
 
@@ -99,7 +100,7 @@ export default class NodemodMsg extends EventEmmiter {
 
   send(options) {
     nodemod.eng.messageBegin(
-      options.dest,
+      options.dest || (options.entity ? MsgDest.one : MsgDest.all),
       typeof options.type === 'string' ? this.getUserMsgId(options.type) : options.type,
       options.origin || [0, 0, 0],
       options.entity ? (

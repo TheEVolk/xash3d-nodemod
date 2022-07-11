@@ -1,5 +1,0 @@
-{
-  "name": "@hnodemod/msg",
-  "type": "module",
-  "main": "src/index.js"
-}

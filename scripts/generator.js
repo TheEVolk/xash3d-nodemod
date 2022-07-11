@@ -1,8 +1,11 @@
+import customs from './customs.js';
+
 // Генератор транслейтов
 const generator = {
   js2cpp(type, value) {
     const extractorGenerator = {
       'const char *': `utils::js2string(isolate, ${value})`,
+      'char *': `utils::js2string(isolate, ${value})`,
       int: `${value}->Int32Value(context).ToChecked()`,
       float: `${value}->NumberValue(context).ToChecked()`,
       qboolean: `${value}->BooleanValue(isolate)`,
@@ -16,7 +19,7 @@ const generator = {
       return extractorGenerator[type];
     }
 
-    const [_, name] = type.match(/(.+)\*/) || [];
+    const [_, name] = type.match(/(?:const )?(?:struct )?(.+)\*/) || [];
     if (name) {
       const structs = {
         edict_t: `structures::unwrapEntity(isolate, ${value})`
@@ -33,19 +36,22 @@ const generator = {
 
   cpp2js(type, value) {
     const types = {
+      'unsigned int': `v8::Number::New(isolate, ${value})`,
       int: `v8::Number::New(isolate, ${value})`,
       float: `v8::Number::New(isolate, ${value})`,
-      qboolean: `v8::Boolean::New(isolate, ${value})`
+      qboolean: `v8::Boolean::New(isolate, ${value})`,
+      vec3_t: `utils::vect2js(isolate, ${value})`
     };
 
     if (types[type]) {
       return types[type];
     }
 
-    const [_, name] = type.match(/(.+)\*/) || [];
+    const [_, name] = type.match(/(?:const )?(?:struct )?(.+)\*/) || [];
     if (name) {
       const structs = {
-        edict_t: `structures::wrapEntity(isolate, ${value})`
+        edict_t: `structures::wrapEntity(isolate, ${value})`,
+        char: `v8::String::NewFromUtf8(isolate, ${value}).ToLocalChecked()`
       };
 
       if (structs[name.trim()]) {
@@ -80,6 +86,7 @@ const generator = {
   },
 
   generateCppFunction(func, source, prefix) {
+    const customBody = customs[func.name]?.api?.body;
     return `void ${prefix}_${func.name}(const v8::FunctionCallbackInfo<v8::Value>& info)
 {
 	auto isolate = info.GetIsolate();
@@ -87,7 +94,7 @@ const generator = {
 	v8::HandleScope scope(isolate);
 	auto context = isolate->GetCurrentContext();
 
-  ${this.packReturn(func, `(*${source}.${func.name})(${func.args.map((v, i) => this.js2cpp(v.type, `info[${i}]`)).join(',\n')})`)};
+  ${customBody || this.packReturn(func, `(*${source}.${func.name})(${func.args.map((v, i) => this.js2cpp(v.type, `info[${i}]`)).join(',\n')})`)};
 }`;
   }
 }

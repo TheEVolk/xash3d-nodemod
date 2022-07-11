@@ -76,6 +76,20 @@
 		}
 	}
 
+	void event::clearListeners(const v8::FunctionCallbackInfo<v8::Value>& info)
+	{
+			/*auto isolate = info.GetIsolate();
+			v8::Locker locker(isolate);
+			v8::Isolate::Scope isolateScope(isolate);
+			v8::HandleScope scope(isolate);
+
+			v8::Local<v8::Context> _context = isolate->GetCurrentContext();
+
+			v8::Context::Scope contextScope(_context);*/
+
+			events.clear();
+	}
+
 	void event::remove_listener(const v8::FunctionCallbackInfo<v8::Value>& info)
 	{
 		if (info.Length() > 0)

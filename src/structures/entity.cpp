@@ -91,6 +91,13 @@ void createEntityTemplate(v8::Isolate* isolate)
     SETTERL(v.origin, SETVEC3)
   );
 
+  // controller
+  _entity->SetAccessor(
+    v8::String::NewFromUtf8(isolate, "origin").ToLocalChecked(),
+    GETTER(v.origin, GETVEC3),
+    SETTERL(v.origin, SETVEC3)
+  );
+
     structures::entity.Set(isolate, _entity);
 }
 }

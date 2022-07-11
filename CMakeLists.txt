@@ -12,8 +12,8 @@ add_link_options(
 add_compile_definitions(linux)
 
 
-set ( HLSDK_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../../../hlsdk-xash3d )
-set ( METAMOD_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../../../metamod  )
+set ( HLSDK_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../hlsdk-xash3d )
+set ( METAMOD_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../metamod  )
 
 # HlSdk
 include_directories( ${HLSDK_PATH}/common )

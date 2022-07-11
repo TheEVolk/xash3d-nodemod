@@ -3,6 +3,8 @@
   #include "node/nodeimpl.hpp"
   #include "node/events.hpp"
   #include "meta_api.h"
+  #include "node/utils.hpp"
+  #include "structures/structures.hpp"
 
   /* BASE EVENTS */
     // nodemod.on('dllGameInit', () => console.log('dllGameInit fired!'));
@@ -16,7 +18,7 @@
     event::findAndCall("dllSpawn", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pent (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pent); // pent (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -27,7 +29,7 @@
     event::findAndCall("dllThink", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pent (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pent); // pent (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -38,8 +40,8 @@
     event::findAndCall("dllUse", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pentUsed (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pentOther (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pentUsed); // pentUsed (edict_t *)
+v8_args[1] = structures::wrapEntity(isolate, pentOther); // pentOther (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -50,8 +52,8 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("dllTouch", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pentTouched (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pentOther (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pentTouched); // pentTouched (edict_t *)
+v8_args[1] = structures::wrapEntity(isolate, pentOther); // pentOther (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -62,8 +64,8 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("dllBlocked", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pentBlocked (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pentOther (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pentBlocked); // pentBlocked (edict_t *)
+v8_args[1] = structures::wrapEntity(isolate, pentOther); // pentOther (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -74,8 +76,8 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("dllKeyValue", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pentKeyvalue (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pkvd (KeyValueData *)
+      v8_args[0] = structures::wrapEntity(isolate, pentKeyvalue); // pentKeyvalue (edict_t *)
+v8_args[1] = v8::External::New(isolate, pkvd /* KeyValueData  */); // pkvd (KeyValueData *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -86,8 +88,8 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("dllSave", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pent (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pSaveData (SAVERESTOREDATA *)
+      v8_args[0] = structures::wrapEntity(isolate, pent); // pent (edict_t *)
+v8_args[1] = v8::External::New(isolate, pSaveData /* SAVERESTOREDATA  */); // pSaveData (SAVERESTOREDATA *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -98,9 +100,9 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("dllRestore", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pent (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pSaveData (SAVERESTOREDATA *)
-v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(globalEntity));; // globalEntity (int)
+      v8_args[0] = structures::wrapEntity(isolate, pent); // pent (edict_t *)
+v8_args[1] = v8::External::New(isolate, pSaveData /* SAVERESTOREDATA  */); // pSaveData (SAVERESTOREDATA *)
+v8_args[2] = v8::Number::New(isolate, globalEntity); // globalEntity (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -111,7 +113,7 @@ v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(globalEntity));; //
     event::findAndCall("dllSetAbsBox", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pent (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pent); // pent (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -122,11 +124,11 @@ v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(globalEntity));; //
     event::findAndCall("dllSaveWriteFields", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 5;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[5];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // value0 (SAVERESTOREDATA*)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // value1 (const char*)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // value2 (void*)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // value3 (TYPEDESCRIPTION*)
-v8_args[4] = v8::Integer::New(isolate, static_cast<uint32_t>(value4));; // value4 (int)
+      v8_args[0] = v8::External::New(isolate, value0 /* SAVERESTOREDATA */); // value0 (SAVERESTOREDATA*)
+v8_args[1] = v8::String::NewFromUtf8(isolate, value1).ToLocalChecked(); // value1 (const char*)
+v8_args[2] = v8::External::New(isolate, value2 /* void */); // value2 (void*)
+v8_args[3] = v8::External::New(isolate, value3 /* TYPEDESCRIPTION */); // value3 (TYPEDESCRIPTION*)
+v8_args[4] = v8::Number::New(isolate, value4); // value4 (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -137,11 +139,11 @@ v8_args[4] = v8::Integer::New(isolate, static_cast<uint32_t>(value4));; // value
     event::findAndCall("dllSaveReadFields", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 5;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[5];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // value0 (SAVERESTOREDATA*)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // value1 (const char*)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // value2 (void*)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // value3 (TYPEDESCRIPTION*)
-v8_args[4] = v8::Integer::New(isolate, static_cast<uint32_t>(value4));; // value4 (int)
+      v8_args[0] = v8::External::New(isolate, value0 /* SAVERESTOREDATA */); // value0 (SAVERESTOREDATA*)
+v8_args[1] = v8::String::NewFromUtf8(isolate, value1).ToLocalChecked(); // value1 (const char*)
+v8_args[2] = v8::External::New(isolate, value2 /* void */); // value2 (void*)
+v8_args[3] = v8::External::New(isolate, value3 /* TYPEDESCRIPTION */); // value3 (TYPEDESCRIPTION*)
+v8_args[4] = v8::Number::New(isolate, value4); // value4 (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -152,7 +154,7 @@ v8_args[4] = v8::Integer::New(isolate, static_cast<uint32_t>(value4));; // value
     event::findAndCall("dllSaveGlobalState", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // value0 (SAVERESTOREDATA *)
+      v8_args[0] = v8::External::New(isolate, value0 /* SAVERESTOREDATA  */); // value0 (SAVERESTOREDATA *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -163,7 +165,7 @@ v8_args[4] = v8::Integer::New(isolate, static_cast<uint32_t>(value4));; // value
     event::findAndCall("dllRestoreGlobalState", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // value0 (SAVERESTOREDATA *)
+      v8_args[0] = v8::External::New(isolate, value0 /* SAVERESTOREDATA  */); // value0 (SAVERESTOREDATA *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -173,16 +175,16 @@ v8_args[4] = v8::Integer::New(isolate, static_cast<uint32_t>(value4));; // value
     event::findAndCall("dllResetGlobalState", nullptr, 0);
   }
 
-// nodemod.on('dllClientConnect', (pEntity, pszName, pszAddress, szRejectReason[128]) => console.log('dllClientConnect fired!'));
-  qboolean dll_pfnClientConnect (edict_t * pEntity, const char * pszName, const char * pszAddress, char szRejectReason[128]) {
+// nodemod.on('dllClientConnect', (pEntity, pszName, pszAddress, szRejectReason) => console.log('dllClientConnect fired!'));
+  qboolean dll_pfnClientConnect (edict_t * pEntity, const char * pszName, const char * pszAddress, char* szRejectReason) {
   SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllClientConnect", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEntity (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pEntity); // pEntity (edict_t *)
 v8_args[1] = v8::String::NewFromUtf8(isolate, pszName).ToLocalChecked(); // pszName (const char *)
 v8_args[2] = v8::String::NewFromUtf8(isolate, pszAddress).ToLocalChecked(); // pszAddress (const char *)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // szRejectReason[128] (char)
+v8_args[3] = v8::String::NewFromUtf8(isolate, szRejectReason).ToLocalChecked(); // szRejectReason (char*)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -193,7 +195,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("dllClientDisconnect", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEntity (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pEntity); // pEntity (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -204,7 +206,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("dllClientKill", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEntity (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pEntity); // pEntity (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -215,7 +217,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("dllClientPutInServer", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEntity (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pEntity); // pEntity (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -226,7 +228,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("dllClientCommand", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEntity (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pEntity); // pEntity (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -237,8 +239,8 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("dllClientUserInfoChanged", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEntity (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // infobuffer (char *)
+      v8_args[0] = structures::wrapEntity(isolate, pEntity); // pEntity (edict_t *)
+v8_args[1] = v8::String::NewFromUtf8(isolate, infobuffer).ToLocalChecked(); // infobuffer (char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -249,9 +251,9 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("dllServerActivate", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEdictList (edict_t *)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(edictCount));; // edictCount (int)
-v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(clientMax));; // clientMax (int)
+      v8_args[0] = structures::wrapEntity(isolate, pEdictList); // pEdictList (edict_t *)
+v8_args[1] = v8::Number::New(isolate, edictCount); // edictCount (int)
+v8_args[2] = v8::Number::New(isolate, clientMax); // clientMax (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -267,7 +269,7 @@ v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(clientMax));; // cl
     event::findAndCall("dllPlayerPreThink", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEntity (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pEntity); // pEntity (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -278,7 +280,7 @@ v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(clientMax));; // cl
     event::findAndCall("dllPlayerPostThink", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEntity (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pEntity); // pEntity (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -309,8 +311,8 @@ v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(clientMax));; // cl
     event::findAndCall("dllPlayerCustomization", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEntity (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pCustom (customization_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pEntity); // pEntity (edict_t *)
+v8_args[1] = v8::External::New(isolate, pCustom /* customization_t  */); // pCustom (customization_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -321,7 +323,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("dllSpectatorConnect", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEntity (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pEntity); // pEntity (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -332,7 +334,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("dllSpectatorDisconnect", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEntity (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pEntity); // pEntity (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -343,7 +345,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("dllSpectatorThink", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEntity (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pEntity); // pEntity (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -365,8 +367,8 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("dllPmMove", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ppmove (struct playermove_s *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // server (qboolean)
+      v8_args[0] = v8::External::New(isolate, ppmove /* playermove_s  */); // ppmove (struct playermove_s *)
+v8_args[1] = v8::Boolean::New(isolate, server); // server (qboolean)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -377,7 +379,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("dllPmInit", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ppmove (struct playermove_s *)
+      v8_args[0] = v8::External::New(isolate, ppmove /* playermove_s  */); // ppmove (struct playermove_s *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -399,10 +401,10 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("dllSetupVisibility", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pViewEntity (struct edict_s *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pClient (struct edict_s *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pvs (unsigned char **)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pas (unsigned char **)
+      v8_args[0] = v8::External::New(isolate, pViewEntity /* edict_s  */); // pViewEntity (struct edict_s *)
+v8_args[1] = v8::External::New(isolate, pClient /* edict_s  */); // pClient (struct edict_s *)
+v8_args[2] = v8::External::New(isolate, pvs /* unsigned char * */); // pvs (unsigned char **)
+v8_args[3] = v8::External::New(isolate, pas /* unsigned char * */); // pas (unsigned char **)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -413,9 +415,9 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("dllUpdateClientData", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ent (const struct edict_s *)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(sendweapons));; // sendweapons (int)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // cd (struct clientdata_s *)
+      v8_args[0] = v8::External::New(isolate, ent /* edict_s  */); // ent (const struct edict_s *)
+v8_args[1] = v8::Number::New(isolate, sendweapons); // sendweapons (int)
+v8_args[2] = v8::External::New(isolate, cd /* clientdata_s  */); // cd (struct clientdata_s *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -426,13 +428,13 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("dllAddToFullPack", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 7;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[7];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // state (struct entity_state_s *)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(e));; // e (int)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ent (edict_t *)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // host (edict_t *)
-v8_args[4] = v8::Integer::New(isolate, static_cast<uint32_t>(hostflags));; // hostflags (int)
-v8_args[5] = v8::Integer::New(isolate, static_cast<uint32_t>(player));; // player (int)
-v8_args[6] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pSet (unsigned char *)
+      v8_args[0] = v8::External::New(isolate, state /* entity_state_s  */); // state (struct entity_state_s *)
+v8_args[1] = v8::Number::New(isolate, e); // e (int)
+v8_args[2] = structures::wrapEntity(isolate, ent); // ent (edict_t *)
+v8_args[3] = structures::wrapEntity(isolate, host); // host (edict_t *)
+v8_args[4] = v8::Number::New(isolate, hostflags); // hostflags (int)
+v8_args[5] = v8::Number::New(isolate, player); // player (int)
+v8_args[6] = v8::External::New(isolate, pSet /* unsigned char  */); // pSet (unsigned char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -443,13 +445,13 @@ v8_args[6] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("dllCreateBaseline", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 7;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[7];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(player));; // player (int)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(eindex));; // eindex (int)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // baseline (struct entity_state_s *)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // entity (struct edict_s *)
-v8_args[4] = v8::Integer::New(isolate, static_cast<uint32_t>(playermodelindex));; // playermodelindex (int)
-v8_args[5] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // player_mins (vec3_t)
-v8_args[6] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // player_maxs (vec3_t)
+      v8_args[0] = v8::Number::New(isolate, player); // player (int)
+v8_args[1] = v8::Number::New(isolate, eindex); // eindex (int)
+v8_args[2] = v8::External::New(isolate, baseline /* entity_state_s  */); // baseline (struct entity_state_s *)
+v8_args[3] = v8::External::New(isolate, entity /* edict_s  */); // entity (struct edict_s *)
+v8_args[4] = v8::Number::New(isolate, playermodelindex); // playermodelindex (int)
+v8_args[5] = utils::vect2js(isolate, player_mins); // player_mins (vec3_t)
+v8_args[6] = utils::vect2js(isolate, player_maxs); // player_maxs (vec3_t)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -465,8 +467,8 @@ v8_args[6] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("dllGetWeaponData", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // player (struct edict_s *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // info (struct weapon_data_s *)
+      v8_args[0] = v8::External::New(isolate, player /* edict_s  */); // player (struct edict_s *)
+v8_args[1] = v8::External::New(isolate, info /* weapon_data_s  */); // info (struct weapon_data_s *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -477,9 +479,9 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("dllCmdStart", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // player (const edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // cmd (const struct usercmd_s *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // random_seed (unsigned int)
+      v8_args[0] = structures::wrapEntity(isolate, player); // player (const edict_t *)
+v8_args[1] = v8::External::New(isolate, cmd /* usercmd_s  */); // cmd (const struct usercmd_s *)
+v8_args[2] = v8::Number::New(isolate, random_seed); // random_seed (unsigned int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -490,7 +492,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("dllCmdEnd", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // player (const edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, player); // player (const edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -501,10 +503,10 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("dllConnectionlessPacket", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // net_from (const struct netadr_s *)
+      v8_args[0] = v8::External::New(isolate, net_from /* netadr_s  */); // net_from (const struct netadr_s *)
 v8_args[1] = v8::String::NewFromUtf8(isolate, args).ToLocalChecked(); // args (const char *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // response_buffer (char *)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // response_buffer_size (int *)
+v8_args[2] = v8::String::NewFromUtf8(isolate, response_buffer).ToLocalChecked(); // response_buffer (char *)
+v8_args[3] = v8::External::New(isolate, response_buffer_size /* int  */); // response_buffer_size (int *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -515,9 +517,9 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("dllGetHullBounds", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(hullnumber));; // hullnumber (int)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // mins (float *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // maxs (float *)
+      v8_args[0] = v8::Number::New(isolate, hullnumber); // hullnumber (int)
+v8_args[1] = v8::External::New(isolate, mins /* float  */); // mins (float *)
+v8_args[2] = v8::External::New(isolate, maxs /* float  */); // maxs (float *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -533,9 +535,9 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("dllInconsistentFile", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // player (const struct edict_s *)
+      v8_args[0] = v8::External::New(isolate, player /* edict_s  */); // player (const struct edict_s *)
 v8_args[1] = v8::String::NewFromUtf8(isolate, filename).ToLocalChecked(); // filename (const char *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // disconnect_message (char *)
+v8_args[2] = v8::String::NewFromUtf8(isolate, disconnect_message).ToLocalChecked(); // disconnect_message (char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -610,7 +612,7 @@ dll_pfnAllowLagCompensation
     event::findAndCall("postDllSpawn", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pent (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pent); // pent (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -621,7 +623,7 @@ dll_pfnAllowLagCompensation
     event::findAndCall("postDllThink", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pent (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pent); // pent (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -632,8 +634,8 @@ dll_pfnAllowLagCompensation
     event::findAndCall("postDllUse", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pentUsed (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pentOther (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pentUsed); // pentUsed (edict_t *)
+v8_args[1] = structures::wrapEntity(isolate, pentOther); // pentOther (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -644,8 +646,8 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postDllTouch", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pentTouched (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pentOther (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pentTouched); // pentTouched (edict_t *)
+v8_args[1] = structures::wrapEntity(isolate, pentOther); // pentOther (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -656,8 +658,8 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postDllBlocked", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pentBlocked (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pentOther (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pentBlocked); // pentBlocked (edict_t *)
+v8_args[1] = structures::wrapEntity(isolate, pentOther); // pentOther (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -668,8 +670,8 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postDllKeyValue", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pentKeyvalue (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pkvd (KeyValueData *)
+      v8_args[0] = structures::wrapEntity(isolate, pentKeyvalue); // pentKeyvalue (edict_t *)
+v8_args[1] = v8::External::New(isolate, pkvd /* KeyValueData  */); // pkvd (KeyValueData *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -680,8 +682,8 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postDllSave", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pent (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pSaveData (SAVERESTOREDATA *)
+      v8_args[0] = structures::wrapEntity(isolate, pent); // pent (edict_t *)
+v8_args[1] = v8::External::New(isolate, pSaveData /* SAVERESTOREDATA  */); // pSaveData (SAVERESTOREDATA *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -692,9 +694,9 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postDllRestore", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pent (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pSaveData (SAVERESTOREDATA *)
-v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(globalEntity));; // globalEntity (int)
+      v8_args[0] = structures::wrapEntity(isolate, pent); // pent (edict_t *)
+v8_args[1] = v8::External::New(isolate, pSaveData /* SAVERESTOREDATA  */); // pSaveData (SAVERESTOREDATA *)
+v8_args[2] = v8::Number::New(isolate, globalEntity); // globalEntity (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -705,7 +707,7 @@ v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(globalEntity));; //
     event::findAndCall("postDllSetAbsBox", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pent (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pent); // pent (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -716,11 +718,11 @@ v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(globalEntity));; //
     event::findAndCall("postDllSaveWriteFields", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 5;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[5];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // value0 (SAVERESTOREDATA*)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // value1 (const char*)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // value2 (void*)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // value3 (TYPEDESCRIPTION*)
-v8_args[4] = v8::Integer::New(isolate, static_cast<uint32_t>(value4));; // value4 (int)
+      v8_args[0] = v8::External::New(isolate, value0 /* SAVERESTOREDATA */); // value0 (SAVERESTOREDATA*)
+v8_args[1] = v8::String::NewFromUtf8(isolate, value1).ToLocalChecked(); // value1 (const char*)
+v8_args[2] = v8::External::New(isolate, value2 /* void */); // value2 (void*)
+v8_args[3] = v8::External::New(isolate, value3 /* TYPEDESCRIPTION */); // value3 (TYPEDESCRIPTION*)
+v8_args[4] = v8::Number::New(isolate, value4); // value4 (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -731,11 +733,11 @@ v8_args[4] = v8::Integer::New(isolate, static_cast<uint32_t>(value4));; // value
     event::findAndCall("postDllSaveReadFields", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 5;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[5];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // value0 (SAVERESTOREDATA*)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // value1 (const char*)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // value2 (void*)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // value3 (TYPEDESCRIPTION*)
-v8_args[4] = v8::Integer::New(isolate, static_cast<uint32_t>(value4));; // value4 (int)
+      v8_args[0] = v8::External::New(isolate, value0 /* SAVERESTOREDATA */); // value0 (SAVERESTOREDATA*)
+v8_args[1] = v8::String::NewFromUtf8(isolate, value1).ToLocalChecked(); // value1 (const char*)
+v8_args[2] = v8::External::New(isolate, value2 /* void */); // value2 (void*)
+v8_args[3] = v8::External::New(isolate, value3 /* TYPEDESCRIPTION */); // value3 (TYPEDESCRIPTION*)
+v8_args[4] = v8::Number::New(isolate, value4); // value4 (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -746,7 +748,7 @@ v8_args[4] = v8::Integer::New(isolate, static_cast<uint32_t>(value4));; // value
     event::findAndCall("postDllSaveGlobalState", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // value0 (SAVERESTOREDATA *)
+      v8_args[0] = v8::External::New(isolate, value0 /* SAVERESTOREDATA  */); // value0 (SAVERESTOREDATA *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -757,7 +759,7 @@ v8_args[4] = v8::Integer::New(isolate, static_cast<uint32_t>(value4));; // value
     event::findAndCall("postDllRestoreGlobalState", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // value0 (SAVERESTOREDATA *)
+      v8_args[0] = v8::External::New(isolate, value0 /* SAVERESTOREDATA  */); // value0 (SAVERESTOREDATA *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -767,16 +769,16 @@ v8_args[4] = v8::Integer::New(isolate, static_cast<uint32_t>(value4));; // value
     event::findAndCall("postDllResetGlobalState", nullptr, 0);
   }
 
-// nodemod.on('postDllClientConnect', (pEntity, pszName, pszAddress, szRejectReason[128]) => console.log('postDllClientConnect fired!'));
-  qboolean postDll_pfnClientConnect (edict_t * pEntity, const char * pszName, const char * pszAddress, char szRejectReason[128]) {
+// nodemod.on('postDllClientConnect', (pEntity, pszName, pszAddress, szRejectReason) => console.log('postDllClientConnect fired!'));
+  qboolean postDll_pfnClientConnect (edict_t * pEntity, const char * pszName, const char * pszAddress, char* szRejectReason) {
   SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllClientConnect", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEntity (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pEntity); // pEntity (edict_t *)
 v8_args[1] = v8::String::NewFromUtf8(isolate, pszName).ToLocalChecked(); // pszName (const char *)
 v8_args[2] = v8::String::NewFromUtf8(isolate, pszAddress).ToLocalChecked(); // pszAddress (const char *)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // szRejectReason[128] (char)
+v8_args[3] = v8::String::NewFromUtf8(isolate, szRejectReason).ToLocalChecked(); // szRejectReason (char*)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -787,7 +789,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postDllClientDisconnect", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEntity (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pEntity); // pEntity (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -798,7 +800,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postDllClientKill", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEntity (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pEntity); // pEntity (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -809,7 +811,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postDllClientPutInServer", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEntity (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pEntity); // pEntity (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -820,7 +822,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postDllClientCommand", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEntity (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pEntity); // pEntity (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -831,8 +833,8 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postDllClientUserInfoChanged", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEntity (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // infobuffer (char *)
+      v8_args[0] = structures::wrapEntity(isolate, pEntity); // pEntity (edict_t *)
+v8_args[1] = v8::String::NewFromUtf8(isolate, infobuffer).ToLocalChecked(); // infobuffer (char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -843,9 +845,9 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postDllServerActivate", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEdictList (edict_t *)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(edictCount));; // edictCount (int)
-v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(clientMax));; // clientMax (int)
+      v8_args[0] = structures::wrapEntity(isolate, pEdictList); // pEdictList (edict_t *)
+v8_args[1] = v8::Number::New(isolate, edictCount); // edictCount (int)
+v8_args[2] = v8::Number::New(isolate, clientMax); // clientMax (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -861,7 +863,7 @@ v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(clientMax));; // cl
     event::findAndCall("postDllPlayerPreThink", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEntity (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pEntity); // pEntity (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -872,7 +874,7 @@ v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(clientMax));; // cl
     event::findAndCall("postDllPlayerPostThink", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEntity (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pEntity); // pEntity (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -903,8 +905,8 @@ v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(clientMax));; // cl
     event::findAndCall("postDllPlayerCustomization", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEntity (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pCustom (customization_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pEntity); // pEntity (edict_t *)
+v8_args[1] = v8::External::New(isolate, pCustom /* customization_t  */); // pCustom (customization_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -915,7 +917,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postDllSpectatorConnect", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEntity (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pEntity); // pEntity (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -926,7 +928,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postDllSpectatorDisconnect", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEntity (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pEntity); // pEntity (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -937,7 +939,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postDllSpectatorThink", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEntity (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pEntity); // pEntity (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -959,8 +961,8 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postDllPmMove", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ppmove (struct playermove_s *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // server (qboolean)
+      v8_args[0] = v8::External::New(isolate, ppmove /* playermove_s  */); // ppmove (struct playermove_s *)
+v8_args[1] = v8::Boolean::New(isolate, server); // server (qboolean)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -971,7 +973,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postDllPmInit", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ppmove (struct playermove_s *)
+      v8_args[0] = v8::External::New(isolate, ppmove /* playermove_s  */); // ppmove (struct playermove_s *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -993,10 +995,10 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postDllSetupVisibility", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pViewEntity (struct edict_s *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pClient (struct edict_s *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pvs (unsigned char **)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pas (unsigned char **)
+      v8_args[0] = v8::External::New(isolate, pViewEntity /* edict_s  */); // pViewEntity (struct edict_s *)
+v8_args[1] = v8::External::New(isolate, pClient /* edict_s  */); // pClient (struct edict_s *)
+v8_args[2] = v8::External::New(isolate, pvs /* unsigned char * */); // pvs (unsigned char **)
+v8_args[3] = v8::External::New(isolate, pas /* unsigned char * */); // pas (unsigned char **)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1007,9 +1009,9 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postDllUpdateClientData", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ent (const struct edict_s *)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(sendweapons));; // sendweapons (int)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // cd (struct clientdata_s *)
+      v8_args[0] = v8::External::New(isolate, ent /* edict_s  */); // ent (const struct edict_s *)
+v8_args[1] = v8::Number::New(isolate, sendweapons); // sendweapons (int)
+v8_args[2] = v8::External::New(isolate, cd /* clientdata_s  */); // cd (struct clientdata_s *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1020,13 +1022,13 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postDllAddToFullPack", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 7;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[7];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // state (struct entity_state_s *)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(e));; // e (int)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ent (edict_t *)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // host (edict_t *)
-v8_args[4] = v8::Integer::New(isolate, static_cast<uint32_t>(hostflags));; // hostflags (int)
-v8_args[5] = v8::Integer::New(isolate, static_cast<uint32_t>(player));; // player (int)
-v8_args[6] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pSet (unsigned char *)
+      v8_args[0] = v8::External::New(isolate, state /* entity_state_s  */); // state (struct entity_state_s *)
+v8_args[1] = v8::Number::New(isolate, e); // e (int)
+v8_args[2] = structures::wrapEntity(isolate, ent); // ent (edict_t *)
+v8_args[3] = structures::wrapEntity(isolate, host); // host (edict_t *)
+v8_args[4] = v8::Number::New(isolate, hostflags); // hostflags (int)
+v8_args[5] = v8::Number::New(isolate, player); // player (int)
+v8_args[6] = v8::External::New(isolate, pSet /* unsigned char  */); // pSet (unsigned char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1037,13 +1039,13 @@ v8_args[6] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postDllCreateBaseline", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 7;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[7];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(player));; // player (int)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(eindex));; // eindex (int)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // baseline (struct entity_state_s *)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // entity (struct edict_s *)
-v8_args[4] = v8::Integer::New(isolate, static_cast<uint32_t>(playermodelindex));; // playermodelindex (int)
-v8_args[5] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // player_mins (vec3_t)
-v8_args[6] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // player_maxs (vec3_t)
+      v8_args[0] = v8::Number::New(isolate, player); // player (int)
+v8_args[1] = v8::Number::New(isolate, eindex); // eindex (int)
+v8_args[2] = v8::External::New(isolate, baseline /* entity_state_s  */); // baseline (struct entity_state_s *)
+v8_args[3] = v8::External::New(isolate, entity /* edict_s  */); // entity (struct edict_s *)
+v8_args[4] = v8::Number::New(isolate, playermodelindex); // playermodelindex (int)
+v8_args[5] = utils::vect2js(isolate, player_mins); // player_mins (vec3_t)
+v8_args[6] = utils::vect2js(isolate, player_maxs); // player_maxs (vec3_t)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1059,8 +1061,8 @@ v8_args[6] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postDllGetWeaponData", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // player (struct edict_s *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // info (struct weapon_data_s *)
+      v8_args[0] = v8::External::New(isolate, player /* edict_s  */); // player (struct edict_s *)
+v8_args[1] = v8::External::New(isolate, info /* weapon_data_s  */); // info (struct weapon_data_s *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1071,9 +1073,9 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postDllCmdStart", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // player (const edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // cmd (const struct usercmd_s *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // random_seed (unsigned int)
+      v8_args[0] = structures::wrapEntity(isolate, player); // player (const edict_t *)
+v8_args[1] = v8::External::New(isolate, cmd /* usercmd_s  */); // cmd (const struct usercmd_s *)
+v8_args[2] = v8::Number::New(isolate, random_seed); // random_seed (unsigned int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1084,7 +1086,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postDllCmdEnd", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // player (const edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, player); // player (const edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1095,10 +1097,10 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postDllConnectionlessPacket", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // net_from (const struct netadr_s *)
+      v8_args[0] = v8::External::New(isolate, net_from /* netadr_s  */); // net_from (const struct netadr_s *)
 v8_args[1] = v8::String::NewFromUtf8(isolate, args).ToLocalChecked(); // args (const char *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // response_buffer (char *)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // response_buffer_size (int *)
+v8_args[2] = v8::String::NewFromUtf8(isolate, response_buffer).ToLocalChecked(); // response_buffer (char *)
+v8_args[3] = v8::External::New(isolate, response_buffer_size /* int  */); // response_buffer_size (int *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1109,9 +1111,9 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postDllGetHullBounds", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(hullnumber));; // hullnumber (int)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // mins (float *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // maxs (float *)
+      v8_args[0] = v8::Number::New(isolate, hullnumber); // hullnumber (int)
+v8_args[1] = v8::External::New(isolate, mins /* float  */); // mins (float *)
+v8_args[2] = v8::External::New(isolate, maxs /* float  */); // maxs (float *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1127,9 +1129,9 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postDllInconsistentFile", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // player (const struct edict_s *)
+      v8_args[0] = v8::External::New(isolate, player /* edict_s  */); // player (const struct edict_s *)
 v8_args[1] = v8::String::NewFromUtf8(isolate, filename).ToLocalChecked(); // filename (const char *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // disconnect_message (char *)
+v8_args[2] = v8::String::NewFromUtf8(isolate, disconnect_message).ToLocalChecked(); // disconnect_message (char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }

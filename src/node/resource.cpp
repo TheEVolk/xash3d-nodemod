@@ -31,7 +31,6 @@ static node::IsolateData* GetNodeIsolate()
 
 	Resource::~Resource()
 	{
-		Stop();
 	}
 
 	void Resource::Init()
@@ -101,6 +100,10 @@ static node::IsolateData* GetNodeIsolate()
 
 	void Resource::Stop()
 	{
+		v8::Locker locker(GetV8Isolate());
+		v8::Isolate::Scope isolateScope(GetV8Isolate());
+		// v8::Isolate::Scope isolateScope(GetV8Isolate());
+
 		node::Stop(nodeEnvironment.get());
 		node::FreeEnvironment(nodeEnvironment.get());
 		context.Reset();

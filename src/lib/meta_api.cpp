@@ -59,6 +59,8 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME now, META_FUNCTIONS *pFunctionTable, m
 
 C_DLLEXPORT int Meta_Detach(PLUG_LOADTIME now, PL_UNLOAD_REASON reason)
 {
+	g_engfuncs.pfnServerPrint("Stopping nodemod...\n");
+	nodeImpl.Stop();
 	return TRUE;
 }
 

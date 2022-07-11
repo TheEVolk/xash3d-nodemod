@@ -3,6 +3,8 @@
   #include "node/nodeimpl.hpp"
   #include "node/events.hpp"
   #include "meta_api.h"
+  #include "node/utils.hpp"
+  #include "structures/structures.hpp"
 
   /* BASE EVENTS */
     // nodemod.on('engPrecacheModel', (s) => console.log('engPrecacheModel fired!'));
@@ -33,7 +35,7 @@
     event::findAndCall("engSetModel", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // e (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, e); // e (edict_t *)
 v8_args[1] = v8::String::NewFromUtf8(isolate, m).ToLocalChecked(); // m (const char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
@@ -56,7 +58,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, m).ToLocalChecked(); // m (const c
     event::findAndCall("engModelFrames", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(modelIndex));; // modelIndex (int)
+      v8_args[0] = v8::Number::New(isolate, modelIndex); // modelIndex (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -67,9 +69,9 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, m).ToLocalChecked(); // m (const c
     event::findAndCall("engSetSize", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // e (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // rgflMin (const float *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // rgflMax (const float *)
+      v8_args[0] = structures::wrapEntity(isolate, e); // e (edict_t *)
+v8_args[1] = v8::External::New(isolate, rgflMin /* float  */); // rgflMin (const float *)
+v8_args[2] = v8::External::New(isolate, rgflMax /* float  */); // rgflMax (const float *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -92,7 +94,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, s2).ToLocalChecked(); // s2 (const
     event::findAndCall("engGetSpawnParms", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ent (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, ent); // ent (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -103,7 +105,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, s2).ToLocalChecked(); // s2 (const
     event::findAndCall("engSaveSpawnParms", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ent (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, ent); // ent (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -114,7 +116,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, s2).ToLocalChecked(); // s2 (const
     event::findAndCall("engVecToYaw", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // rgflVector (const float *)
+      v8_args[0] = v8::External::New(isolate, rgflVector /* float  */); // rgflVector (const float *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -125,8 +127,8 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, s2).ToLocalChecked(); // s2 (const
     event::findAndCall("engVecToAngles", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // rgflVectorIn (const float *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // rgflVectorOut (float *)
+      v8_args[0] = v8::External::New(isolate, rgflVectorIn /* float  */); // rgflVectorIn (const float *)
+v8_args[1] = v8::External::New(isolate, rgflVectorOut /* float  */); // rgflVectorOut (float *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -137,10 +139,10 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engMoveToOrigin", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ent (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pflGoal (const float *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // dist (float)
-v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(iMoveType));; // iMoveType (int)
+      v8_args[0] = structures::wrapEntity(isolate, ent); // ent (edict_t *)
+v8_args[1] = v8::External::New(isolate, pflGoal /* float  */); // pflGoal (const float *)
+v8_args[2] = v8::Number::New(isolate, dist); // dist (float)
+v8_args[3] = v8::Number::New(isolate, iMoveType); // iMoveType (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -151,7 +153,7 @@ v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(iMoveType));; // iM
     event::findAndCall("engChangeYaw", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ent (edict_t*)
+      v8_args[0] = structures::wrapEntity(isolate, ent); // ent (edict_t*)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -162,7 +164,7 @@ v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(iMoveType));; // iM
     event::findAndCall("engChangePitch", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ent (edict_t*)
+      v8_args[0] = structures::wrapEntity(isolate, ent); // ent (edict_t*)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -173,7 +175,7 @@ v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(iMoveType));; // iM
     event::findAndCall("engFindEntityByString", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEdictStartSearchAfter (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pEdictStartSearchAfter); // pEdictStartSearchAfter (edict_t *)
 v8_args[1] = v8::String::NewFromUtf8(isolate, pszField).ToLocalChecked(); // pszField (const char *)
 v8_args[2] = v8::String::NewFromUtf8(isolate, pszValue).ToLocalChecked(); // pszValue (const char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
@@ -186,7 +188,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, pszValue).ToLocalChecked(); // psz
     event::findAndCall("engGetEntityIllum", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEnt (edict_t*)
+      v8_args[0] = structures::wrapEntity(isolate, pEnt); // pEnt (edict_t*)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -197,9 +199,9 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, pszValue).ToLocalChecked(); // psz
     event::findAndCall("engFindEntityInSphere", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEdictStartSearchAfter (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // org (const float *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // rad (float)
+      v8_args[0] = structures::wrapEntity(isolate, pEdictStartSearchAfter); // pEdictStartSearchAfter (edict_t *)
+v8_args[1] = v8::External::New(isolate, org /* float  */); // org (const float *)
+v8_args[2] = v8::Number::New(isolate, rad); // rad (float)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -210,7 +212,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engFindClientInPvs", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEdict (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pEdict); // pEdict (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -221,7 +223,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engEntitiesInPvs", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pplayer (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pplayer); // pplayer (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -232,7 +234,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engMakeVectors", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // rgflVector (const float *)
+      v8_args[0] = v8::External::New(isolate, rgflVector /* float  */); // rgflVector (const float *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -243,10 +245,10 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engAngleVectors", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // rgflVector (const float *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // forward (float *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // right (float *)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // up (float *)
+      v8_args[0] = v8::External::New(isolate, rgflVector /* float  */); // rgflVector (const float *)
+v8_args[1] = v8::External::New(isolate, forward /* float  */); // forward (float *)
+v8_args[2] = v8::External::New(isolate, right /* float  */); // right (float *)
+v8_args[3] = v8::External::New(isolate, up /* float  */); // up (float *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -262,7 +264,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engRemoveEntity", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // e (edict_t*)
+      v8_args[0] = structures::wrapEntity(isolate, e); // e (edict_t*)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -273,7 +275,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engCreateNamedEntity", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(className));; // className (int)
+      v8_args[0] = v8::Number::New(isolate, className); // className (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -284,7 +286,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engMakeStatic", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ent (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, ent); // ent (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -295,7 +297,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engEntIsOnFloor", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // e (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, e); // e (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -306,7 +308,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engDropToFloor", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // e (edict_t*)
+      v8_args[0] = structures::wrapEntity(isolate, e); // e (edict_t*)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -317,10 +319,10 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engWalkMove", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ent (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // yaw (float)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // dist (float)
-v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(iMode));; // iMode (int)
+      v8_args[0] = structures::wrapEntity(isolate, ent); // ent (edict_t *)
+v8_args[1] = v8::Number::New(isolate, yaw); // yaw (float)
+v8_args[2] = v8::Number::New(isolate, dist); // dist (float)
+v8_args[3] = v8::Number::New(isolate, iMode); // iMode (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -331,8 +333,8 @@ v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(iMode));; // iMode 
     event::findAndCall("engSetOrigin", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // e (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // rgflOrigin (const float *)
+      v8_args[0] = structures::wrapEntity(isolate, e); // e (edict_t *)
+v8_args[1] = v8::External::New(isolate, rgflOrigin /* float  */); // rgflOrigin (const float *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -343,13 +345,13 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engEmitSound", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 7;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[7];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // entity (edict_t *)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(channel));; // channel (int)
+      v8_args[0] = structures::wrapEntity(isolate, entity); // entity (edict_t *)
+v8_args[1] = v8::Number::New(isolate, channel); // channel (int)
 v8_args[2] = v8::String::NewFromUtf8(isolate, sample).ToLocalChecked(); // sample (const char *)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // volume (float)
-v8_args[4] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // attenuation (float)
-v8_args[5] = v8::Integer::New(isolate, static_cast<uint32_t>(fFlags));; // fFlags (int)
-v8_args[6] = v8::Integer::New(isolate, static_cast<uint32_t>(pitch));; // pitch (int)
+v8_args[3] = v8::Number::New(isolate, volume); // volume (float)
+v8_args[4] = v8::Number::New(isolate, attenuation); // attenuation (float)
+v8_args[5] = v8::Number::New(isolate, fFlags); // fFlags (int)
+v8_args[6] = v8::Number::New(isolate, pitch); // pitch (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -360,13 +362,13 @@ v8_args[6] = v8::Integer::New(isolate, static_cast<uint32_t>(pitch));; // pitch 
     event::findAndCall("engEmitAmbientSound", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 7;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[7];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // entity (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pos (const float *)
+      v8_args[0] = structures::wrapEntity(isolate, entity); // entity (edict_t *)
+v8_args[1] = v8::External::New(isolate, pos /* float  */); // pos (const float *)
 v8_args[2] = v8::String::NewFromUtf8(isolate, samp).ToLocalChecked(); // samp (const char *)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // vol (float)
-v8_args[4] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // attenuation (float)
-v8_args[5] = v8::Integer::New(isolate, static_cast<uint32_t>(fFlags));; // fFlags (int)
-v8_args[6] = v8::Integer::New(isolate, static_cast<uint32_t>(pitch));; // pitch (int)
+v8_args[3] = v8::Number::New(isolate, vol); // vol (float)
+v8_args[4] = v8::Number::New(isolate, attenuation); // attenuation (float)
+v8_args[5] = v8::Number::New(isolate, fFlags); // fFlags (int)
+v8_args[6] = v8::Number::New(isolate, pitch); // pitch (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -377,11 +379,11 @@ v8_args[6] = v8::Integer::New(isolate, static_cast<uint32_t>(pitch));; // pitch 
     event::findAndCall("engTraceLine", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 5;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[5];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // v1 (const float *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // v2 (const float *)
-v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(fNoMonsters));; // fNoMonsters (int)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pentToSkip (edict_t *)
-v8_args[4] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ptr (TraceResult *)
+      v8_args[0] = v8::External::New(isolate, v1 /* float  */); // v1 (const float *)
+v8_args[1] = v8::External::New(isolate, v2 /* float  */); // v2 (const float *)
+v8_args[2] = v8::Number::New(isolate, fNoMonsters); // fNoMonsters (int)
+v8_args[3] = structures::wrapEntity(isolate, pentToSkip); // pentToSkip (edict_t *)
+v8_args[4] = v8::External::New(isolate, ptr /* TraceResult  */); // ptr (TraceResult *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -392,9 +394,9 @@ v8_args[4] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engTraceToss", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pent (edict_t*)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pentToIgnore (edict_t*)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ptr (TraceResult *)
+      v8_args[0] = structures::wrapEntity(isolate, pent); // pent (edict_t*)
+v8_args[1] = structures::wrapEntity(isolate, pentToIgnore); // pentToIgnore (edict_t*)
+v8_args[2] = v8::External::New(isolate, ptr /* TraceResult  */); // ptr (TraceResult *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -405,12 +407,12 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engTraceMonsterHull", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 6;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[6];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEdict (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // v1 (const float *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // v2 (const float *)
-v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(fNoMonsters));; // fNoMonsters (int)
-v8_args[4] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pentToSkip (edict_t *)
-v8_args[5] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ptr (TraceResult *)
+      v8_args[0] = structures::wrapEntity(isolate, pEdict); // pEdict (edict_t *)
+v8_args[1] = v8::External::New(isolate, v1 /* float  */); // v1 (const float *)
+v8_args[2] = v8::External::New(isolate, v2 /* float  */); // v2 (const float *)
+v8_args[3] = v8::Number::New(isolate, fNoMonsters); // fNoMonsters (int)
+v8_args[4] = structures::wrapEntity(isolate, pentToSkip); // pentToSkip (edict_t *)
+v8_args[5] = v8::External::New(isolate, ptr /* TraceResult  */); // ptr (TraceResult *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -421,12 +423,12 @@ v8_args[5] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engTraceHull", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 6;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[6];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // v1 (const float *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // v2 (const float *)
-v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(fNoMonsters));; // fNoMonsters (int)
-v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(hullNumber));; // hullNumber (int)
-v8_args[4] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pentToSkip (edict_t *)
-v8_args[5] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ptr (TraceResult *)
+      v8_args[0] = v8::External::New(isolate, v1 /* float  */); // v1 (const float *)
+v8_args[1] = v8::External::New(isolate, v2 /* float  */); // v2 (const float *)
+v8_args[2] = v8::Number::New(isolate, fNoMonsters); // fNoMonsters (int)
+v8_args[3] = v8::Number::New(isolate, hullNumber); // hullNumber (int)
+v8_args[4] = structures::wrapEntity(isolate, pentToSkip); // pentToSkip (edict_t *)
+v8_args[5] = v8::External::New(isolate, ptr /* TraceResult  */); // ptr (TraceResult *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -437,11 +439,11 @@ v8_args[5] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engTraceModel", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 5;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[5];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // v1 (const float *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // v2 (const float *)
-v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(hullNumber));; // hullNumber (int)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pent (edict_t *)
-v8_args[4] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ptr (TraceResult *)
+      v8_args[0] = v8::External::New(isolate, v1 /* float  */); // v1 (const float *)
+v8_args[1] = v8::External::New(isolate, v2 /* float  */); // v2 (const float *)
+v8_args[2] = v8::Number::New(isolate, hullNumber); // hullNumber (int)
+v8_args[3] = structures::wrapEntity(isolate, pent); // pent (edict_t *)
+v8_args[4] = v8::External::New(isolate, ptr /* TraceResult  */); // ptr (TraceResult *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -452,9 +454,9 @@ v8_args[4] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engTraceTexture", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pTextureEntity (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // v1 (const float *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // v2 (const float *)
+      v8_args[0] = structures::wrapEntity(isolate, pTextureEntity); // pTextureEntity (edict_t *)
+v8_args[1] = v8::External::New(isolate, v1 /* float  */); // v1 (const float *)
+v8_args[2] = v8::External::New(isolate, v2 /* float  */); // v2 (const float *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -465,12 +467,12 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engTraceSphere", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 6;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[6];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // v1 (const float *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // v2 (const float *)
-v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(fNoMonsters));; // fNoMonsters (int)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // radius (float)
-v8_args[4] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pentToSkip (edict_t *)
-v8_args[5] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ptr (TraceResult *)
+      v8_args[0] = v8::External::New(isolate, v1 /* float  */); // v1 (const float *)
+v8_args[1] = v8::External::New(isolate, v2 /* float  */); // v2 (const float *)
+v8_args[2] = v8::Number::New(isolate, fNoMonsters); // fNoMonsters (int)
+v8_args[3] = v8::Number::New(isolate, radius); // radius (float)
+v8_args[4] = structures::wrapEntity(isolate, pentToSkip); // pentToSkip (edict_t *)
+v8_args[5] = v8::External::New(isolate, ptr /* TraceResult  */); // ptr (TraceResult *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -481,9 +483,9 @@ v8_args[5] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engGetAimVector", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ent (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // speed (float)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // rgflReturn (float *)
+      v8_args[0] = structures::wrapEntity(isolate, ent); // ent (edict_t *)
+v8_args[1] = v8::Number::New(isolate, speed); // speed (float)
+v8_args[2] = v8::External::New(isolate, rgflReturn /* float  */); // rgflReturn (float *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -512,10 +514,10 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engParticleEffect", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // org (const float *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // dir (const float *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // color (float)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // count (float)
+      v8_args[0] = v8::External::New(isolate, org /* float  */); // org (const float *)
+v8_args[1] = v8::External::New(isolate, dir /* float  */); // dir (const float *)
+v8_args[2] = v8::Number::New(isolate, color); // color (float)
+v8_args[3] = v8::Number::New(isolate, count); // count (float)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -526,7 +528,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engLightStyle", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(style));; // style (int)
+      v8_args[0] = v8::Number::New(isolate, style); // style (int)
 v8_args[1] = v8::String::NewFromUtf8(isolate, val).ToLocalChecked(); // val (const char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
@@ -549,7 +551,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, val).ToLocalChecked(); // val (con
     event::findAndCall("engPointContents", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // rgflVector (const float *)
+      v8_args[0] = v8::External::New(isolate, rgflVector /* float  */); // rgflVector (const float *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -560,10 +562,10 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, val).ToLocalChecked(); // val (con
     event::findAndCall("engMessageBegin", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(msg_dest));; // msg_dest (int)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(msg_type));; // msg_type (int)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pOrigin (const float *)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ed (edict_t *)
+      v8_args[0] = v8::Number::New(isolate, msg_dest); // msg_dest (int)
+v8_args[1] = v8::Number::New(isolate, msg_type); // msg_type (int)
+v8_args[2] = v8::External::New(isolate, pOrigin /* float  */); // pOrigin (const float *)
+v8_args[3] = structures::wrapEntity(isolate, ed); // ed (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -579,7 +581,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engWriteByte", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(iValue));; // iValue (int)
+      v8_args[0] = v8::Number::New(isolate, iValue); // iValue (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -590,7 +592,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engWriteChar", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(iValue));; // iValue (int)
+      v8_args[0] = v8::Number::New(isolate, iValue); // iValue (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -601,7 +603,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engWriteShort", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(iValue));; // iValue (int)
+      v8_args[0] = v8::Number::New(isolate, iValue); // iValue (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -612,7 +614,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engWriteLong", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(iValue));; // iValue (int)
+      v8_args[0] = v8::Number::New(isolate, iValue); // iValue (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -623,7 +625,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engWriteAngle", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // flValue (float)
+      v8_args[0] = v8::Number::New(isolate, flValue); // flValue (float)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -634,7 +636,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engWriteCoord", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // flValue (float)
+      v8_args[0] = v8::Number::New(isolate, flValue); // flValue (float)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -656,7 +658,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engWriteEntity", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(iValue));; // iValue (int)
+      v8_args[0] = v8::Number::New(isolate, iValue); // iValue (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -667,7 +669,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engCVarRegister", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pCvar (cvar_t *)
+      v8_args[0] = v8::External::New(isolate, pCvar /* cvar_t  */); // pCvar (cvar_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -701,7 +703,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
       v8_args[0] = v8::String::NewFromUtf8(isolate, szVarName).ToLocalChecked(); // szVarName (const char *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // flValue (float)
+v8_args[1] = v8::Number::New(isolate, flValue); // flValue (float)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -728,8 +730,8 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, szValue).ToLocalChecked(); // szVa
     event::findAndCall("engPvAllocEntPrivateData", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEdict (edict_t *)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
+      v8_args[0] = structures::wrapEntity(isolate, pEdict); // pEdict (edict_t *)
+v8_args[1] = v8::Number::New(isolate, cb); // cb (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -740,7 +742,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
     event::findAndCall("engPvEntPrivateData", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEdict (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pEdict); // pEdict (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -751,7 +753,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
     event::findAndCall("engFreeEntPrivateData", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEdict (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pEdict); // pEdict (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -762,7 +764,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
     event::findAndCall("engSzFromIndex", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(iString));; // iString (int)
+      v8_args[0] = v8::Number::New(isolate, iString); // iString (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -784,7 +786,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
     event::findAndCall("engGetVarsOfEnt", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEdict (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pEdict); // pEdict (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -795,7 +797,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
     event::findAndCall("engPEntityOfEntOffset", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(iEntOffset));; // iEntOffset (int)
+      v8_args[0] = v8::Number::New(isolate, iEntOffset); // iEntOffset (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -806,7 +808,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
     event::findAndCall("engEntOffsetOfPEntity", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEdict (const edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pEdict); // pEdict (const edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -817,7 +819,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
     event::findAndCall("engIndexOfEdict", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEdict (const edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pEdict); // pEdict (const edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -828,7 +830,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
     event::findAndCall("engPEntityOfEntIndex", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(iEntIndex));; // iEntIndex (int)
+      v8_args[0] = v8::Number::New(isolate, iEntIndex); // iEntIndex (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -839,7 +841,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
     event::findAndCall("engFindEntityByVars", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pvars (struct entvars_s*)
+      v8_args[0] = v8::External::New(isolate, pvars /* entvars_s */); // pvars (struct entvars_s*)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -850,7 +852,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
     event::findAndCall("engGetModelPtr", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEdict (edict_t*)
+      v8_args[0] = structures::wrapEntity(isolate, pEdict); // pEdict (edict_t*)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -862,7 +864,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
       v8_args[0] = v8::String::NewFromUtf8(isolate, pszName).ToLocalChecked(); // pszName (const char *)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(iSize));; // iSize (int)
+v8_args[1] = v8::Number::New(isolate, iSize); // iSize (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -873,8 +875,8 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(iSize));; // iSize 
     event::findAndCall("engAnimationAutomove", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEdict (const edict_t*)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // flTime (float)
+      v8_args[0] = structures::wrapEntity(isolate, pEdict); // pEdict (const edict_t*)
+v8_args[1] = v8::Number::New(isolate, flTime); // flTime (float)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -885,10 +887,10 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engGetBonePosition", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEdict (const edict_t*)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(iBone));; // iBone (int)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // rgflOrigin (float *)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // rgflAngles (float *)
+      v8_args[0] = structures::wrapEntity(isolate, pEdict); // pEdict (const edict_t*)
+v8_args[1] = v8::Number::New(isolate, iBone); // iBone (int)
+v8_args[2] = v8::External::New(isolate, rgflOrigin /* float  */); // rgflOrigin (float *)
+v8_args[3] = v8::External::New(isolate, rgflAngles /* float  */); // rgflAngles (float *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -910,7 +912,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engNameForFunction", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // function (void *)
+      v8_args[0] = v8::External::New(isolate, function /* void  */); // function (void *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -921,8 +923,8 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engClientPrintf", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEdict (edict_t*)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ptype (PRINT_TYPE)
+      v8_args[0] = structures::wrapEntity(isolate, pEdict); // pEdict (edict_t*)
+v8_args[1] = v8::Boolean::New(isolate, false); // ptype (PRINT_TYPE)
 v8_args[2] = v8::String::NewFromUtf8(isolate, szMsg).ToLocalChecked(); // szMsg (const char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
@@ -950,7 +952,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, szMsg).ToLocalChecked(); // szMsg 
     event::findAndCall("engCmdArgv", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(argc));; // argc (int)
+      v8_args[0] = v8::Number::New(isolate, argc); // argc (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -966,10 +968,10 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, szMsg).ToLocalChecked(); // szMsg 
     event::findAndCall("engGetAttachment", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEdict (const edict_t *)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(iAttachment));; // iAttachment (int)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // rgflOrigin (float *)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // rgflAngles (float *)
+      v8_args[0] = structures::wrapEntity(isolate, pEdict); // pEdict (const edict_t *)
+v8_args[1] = v8::Number::New(isolate, iAttachment); // iAttachment (int)
+v8_args[2] = v8::External::New(isolate, rgflOrigin /* float  */); // rgflOrigin (float *)
+v8_args[3] = v8::External::New(isolate, rgflAngles /* float  */); // rgflAngles (float *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -980,7 +982,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engCrc32Init", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pulCRC (CRC32_t *)
+      v8_args[0] = v8::External::New(isolate, pulCRC /* CRC32_t  */); // pulCRC (CRC32_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -991,9 +993,9 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engCrc32ProcessBuffer", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pulCRC (CRC32_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // p (void *)
-v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(len));; // len (int)
+      v8_args[0] = v8::External::New(isolate, pulCRC /* CRC32_t  */); // pulCRC (CRC32_t *)
+v8_args[1] = v8::External::New(isolate, p /* void  */); // p (void *)
+v8_args[2] = v8::Number::New(isolate, len); // len (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1004,8 +1006,8 @@ v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(len));; // len (int
     event::findAndCall("engCrc32ProcessByte", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pulCRC (CRC32_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ch (unsigned char)
+      v8_args[0] = v8::External::New(isolate, pulCRC /* CRC32_t  */); // pulCRC (CRC32_t *)
+v8_args[1] = v8::Boolean::New(isolate, false); // ch (unsigned char)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1018,8 +1020,8 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engRandomLong", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(lLow));; // lLow (int)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(lHigh));; // lHigh (int)
+      v8_args[0] = v8::Number::New(isolate, lLow); // lLow (int)
+v8_args[1] = v8::Number::New(isolate, lHigh); // lHigh (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1030,8 +1032,8 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(lHigh));; // lHigh 
     event::findAndCall("engRandomFloat", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // flLow (float)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // flHigh (float)
+      v8_args[0] = v8::Number::New(isolate, flLow); // flLow (float)
+v8_args[1] = v8::Number::New(isolate, flHigh); // flHigh (float)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1042,8 +1044,8 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engSetView", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pClient (const edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pViewent (const edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pClient); // pClient (const edict_t *)
+v8_args[1] = structures::wrapEntity(isolate, pViewent); // pViewent (const edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1059,9 +1061,9 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engCrosshairAngle", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pClient (const edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pitch (float)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // yaw (float)
+      v8_args[0] = structures::wrapEntity(isolate, pClient); // pClient (const edict_t *)
+v8_args[1] = v8::Number::New(isolate, pitch); // pitch (float)
+v8_args[2] = v8::Number::New(isolate, yaw); // yaw (float)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1073,7 +1075,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
       v8_args[0] = v8::String::NewFromUtf8(isolate, filename).ToLocalChecked(); // filename (const char *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pLength (int *)
+v8_args[1] = v8::External::New(isolate, pLength /* int  */); // pLength (int *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1084,7 +1086,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engFreeFile", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // buffer (void *)
+      v8_args[0] = v8::External::New(isolate, buffer /* void  */); // buffer (void *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1106,9 +1108,9 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engCompareFileTime", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // filename1 (char *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // filename2 (char *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // iCompare (int *)
+      v8_args[0] = v8::String::NewFromUtf8(isolate, filename1).ToLocalChecked(); // filename1 (char *)
+v8_args[1] = v8::String::NewFromUtf8(isolate, filename2).ToLocalChecked(); // filename2 (char *)
+v8_args[2] = v8::External::New(isolate, iCompare /* int  */); // iCompare (int *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1119,7 +1121,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engGetGameDir", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // szGetGameDir (char *)
+      v8_args[0] = v8::String::NewFromUtf8(isolate, szGetGameDir).ToLocalChecked(); // szGetGameDir (char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1130,7 +1132,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engCvarRegisterVariable", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // variable (cvar_t *)
+      v8_args[0] = v8::External::New(isolate, variable /* cvar_t  */); // variable (cvar_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1141,11 +1143,11 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engFadeClientVolume", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 5;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[5];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEdict (const edict_t *)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(fadePercent));; // fadePercent (int)
-v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(fadeOutSeconds));; // fadeOutSeconds (int)
-v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(holdTime));; // holdTime (int)
-v8_args[4] = v8::Integer::New(isolate, static_cast<uint32_t>(fadeInSeconds));; // fadeInSeconds (int)
+      v8_args[0] = structures::wrapEntity(isolate, pEdict); // pEdict (const edict_t *)
+v8_args[1] = v8::Number::New(isolate, fadePercent); // fadePercent (int)
+v8_args[2] = v8::Number::New(isolate, fadeOutSeconds); // fadeOutSeconds (int)
+v8_args[3] = v8::Number::New(isolate, holdTime); // holdTime (int)
+v8_args[4] = v8::Number::New(isolate, fadeInSeconds); // fadeInSeconds (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1156,8 +1158,8 @@ v8_args[4] = v8::Integer::New(isolate, static_cast<uint32_t>(fadeInSeconds));; /
     event::findAndCall("engSetClientMaxspeed", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEdict (const edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // fNewMaxspeed (float)
+      v8_args[0] = structures::wrapEntity(isolate, pEdict); // pEdict (const edict_t *)
+v8_args[1] = v8::Number::New(isolate, fNewMaxspeed); // fNewMaxspeed (float)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1179,14 +1181,14 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engRunPlayerMove", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 8;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[8];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // fakeclient (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // viewangles (const float *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // forwardmove (float)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // sidemove (float)
-v8_args[4] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // upmove (float)
-v8_args[5] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // buttons (unsigned short)
-v8_args[6] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // impulse (byte)
-v8_args[7] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // msec (byte)
+      v8_args[0] = structures::wrapEntity(isolate, fakeclient); // fakeclient (edict_t *)
+v8_args[1] = v8::External::New(isolate, viewangles /* float  */); // viewangles (const float *)
+v8_args[2] = v8::Number::New(isolate, forwardmove); // forwardmove (float)
+v8_args[3] = v8::Number::New(isolate, sidemove); // sidemove (float)
+v8_args[4] = v8::Number::New(isolate, upmove); // upmove (float)
+v8_args[5] = v8::Boolean::New(isolate, false); // buttons (unsigned short)
+v8_args[6] = v8::Boolean::New(isolate, false); // impulse (byte)
+v8_args[7] = v8::Boolean::New(isolate, false); // msec (byte)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1202,7 +1204,7 @@ v8_args[7] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engGetInfoKeyBuffer", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // e (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, e); // e (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1213,7 +1215,7 @@ v8_args[7] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engInfoKeyValue", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // infobuffer (char *)
+      v8_args[0] = v8::String::NewFromUtf8(isolate, infobuffer).ToLocalChecked(); // infobuffer (char *)
 v8_args[1] = v8::String::NewFromUtf8(isolate, key).ToLocalChecked(); // key (const char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
@@ -1225,7 +1227,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, key).ToLocalChecked(); // key (con
     event::findAndCall("engSetKeyValue", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // infobuffer (char *)
+      v8_args[0] = v8::String::NewFromUtf8(isolate, infobuffer).ToLocalChecked(); // infobuffer (char *)
 v8_args[1] = v8::String::NewFromUtf8(isolate, key).ToLocalChecked(); // key (const char *)
 v8_args[2] = v8::String::NewFromUtf8(isolate, value).ToLocalChecked(); // value (const char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
@@ -1238,8 +1240,8 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, value).ToLocalChecked(); // value 
     event::findAndCall("engSetClientKeyValue", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(clientIndex));; // clientIndex (int)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // infobuffer (char *)
+      v8_args[0] = v8::Number::New(isolate, clientIndex); // clientIndex (int)
+v8_args[1] = v8::String::NewFromUtf8(isolate, infobuffer).ToLocalChecked(); // infobuffer (char *)
 v8_args[2] = v8::String::NewFromUtf8(isolate, key).ToLocalChecked(); // key (const char *)
 v8_args[3] = v8::String::NewFromUtf8(isolate, value).ToLocalChecked(); // value (const char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
@@ -1263,10 +1265,10 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, value).ToLocalChecked(); // value 
     event::findAndCall("engStaticDecal", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // origin (const float *)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(decalIndex));; // decalIndex (int)
-v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(entityIndex));; // entityIndex (int)
-v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(modelIndex));; // modelIndex (int)
+      v8_args[0] = v8::External::New(isolate, origin /* float  */); // origin (const float *)
+v8_args[1] = v8::Number::New(isolate, decalIndex); // decalIndex (int)
+v8_args[2] = v8::Number::New(isolate, entityIndex); // entityIndex (int)
+v8_args[3] = v8::Number::New(isolate, modelIndex); // modelIndex (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1288,7 +1290,7 @@ v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(modelIndex));; // m
     event::findAndCall("engGetPlayerUserId", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // e (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, e); // e (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1299,17 +1301,17 @@ v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(modelIndex));; // m
     event::findAndCall("engBuildSoundMsg", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 11;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[11];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // entity (edict_t *)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(channel));; // channel (int)
+      v8_args[0] = structures::wrapEntity(isolate, entity); // entity (edict_t *)
+v8_args[1] = v8::Number::New(isolate, channel); // channel (int)
 v8_args[2] = v8::String::NewFromUtf8(isolate, sample).ToLocalChecked(); // sample (const char *)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // volume (float)
-v8_args[4] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // attenuation (float)
-v8_args[5] = v8::Integer::New(isolate, static_cast<uint32_t>(fFlags));; // fFlags (int)
-v8_args[6] = v8::Integer::New(isolate, static_cast<uint32_t>(pitch));; // pitch (int)
-v8_args[7] = v8::Integer::New(isolate, static_cast<uint32_t>(msg_dest));; // msg_dest (int)
-v8_args[8] = v8::Integer::New(isolate, static_cast<uint32_t>(msg_type));; // msg_type (int)
-v8_args[9] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pOrigin (const float *)
-v8_args[10] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ed (edict_t *)
+v8_args[3] = v8::Number::New(isolate, volume); // volume (float)
+v8_args[4] = v8::Number::New(isolate, attenuation); // attenuation (float)
+v8_args[5] = v8::Number::New(isolate, fFlags); // fFlags (int)
+v8_args[6] = v8::Number::New(isolate, pitch); // pitch (int)
+v8_args[7] = v8::Number::New(isolate, msg_dest); // msg_dest (int)
+v8_args[8] = v8::Number::New(isolate, msg_type); // msg_type (int)
+v8_args[9] = v8::External::New(isolate, pOrigin /* float  */); // pOrigin (const float *)
+v8_args[10] = structures::wrapEntity(isolate, ed); // ed (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1336,7 +1338,7 @@ v8_args[10] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked()
     event::findAndCall("engGetPlayerWonId", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // e (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, e); // e (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1347,7 +1349,7 @@ v8_args[10] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked()
     event::findAndCall("engInfoRemoveKey", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // s (char *)
+      v8_args[0] = v8::String::NewFromUtf8(isolate, s).ToLocalChecked(); // s (char *)
 v8_args[1] = v8::String::NewFromUtf8(isolate, key).ToLocalChecked(); // key (const char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
@@ -1359,7 +1361,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, key).ToLocalChecked(); // key (con
     event::findAndCall("engGetPhysicsKeyValue", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pClient (const edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pClient); // pClient (const edict_t *)
 v8_args[1] = v8::String::NewFromUtf8(isolate, key).ToLocalChecked(); // key (const char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
@@ -1371,7 +1373,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, key).ToLocalChecked(); // key (con
     event::findAndCall("engSetPhysicsKeyValue", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pClient (const edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pClient); // pClient (const edict_t *)
 v8_args[1] = v8::String::NewFromUtf8(isolate, key).ToLocalChecked(); // key (const char *)
 v8_args[2] = v8::String::NewFromUtf8(isolate, value).ToLocalChecked(); // value (const char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
@@ -1384,7 +1386,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, value).ToLocalChecked(); // value 
     event::findAndCall("engGetPhysicsInfoString", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pClient (const edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pClient); // pClient (const edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1395,8 +1397,8 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, value).ToLocalChecked(); // value 
     event::findAndCall("engPrecacheEvent", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(type));; // type (int)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // psz (const char*)
+      v8_args[0] = v8::Number::New(isolate, type); // type (int)
+v8_args[1] = v8::String::NewFromUtf8(isolate, psz).ToLocalChecked(); // psz (const char*)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1407,18 +1409,18 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engPlaybackEvent", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 12;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[12];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(flags));; // flags (int)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pInvoker (const edict_t *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // eventindex (unsigned short)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // delay (float)
-v8_args[4] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // origin (const float *)
-v8_args[5] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // angles (const float *)
-v8_args[6] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // fparam1 (float)
-v8_args[7] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // fparam2 (float)
-v8_args[8] = v8::Integer::New(isolate, static_cast<uint32_t>(iparam1));; // iparam1 (int)
-v8_args[9] = v8::Integer::New(isolate, static_cast<uint32_t>(iparam2));; // iparam2 (int)
-v8_args[10] = v8::Integer::New(isolate, static_cast<uint32_t>(bparam1));; // bparam1 (int)
-v8_args[11] = v8::Integer::New(isolate, static_cast<uint32_t>(bparam2));; // bparam2 (int)
+      v8_args[0] = v8::Number::New(isolate, flags); // flags (int)
+v8_args[1] = structures::wrapEntity(isolate, pInvoker); // pInvoker (const edict_t *)
+v8_args[2] = v8::Boolean::New(isolate, false); // eventindex (unsigned short)
+v8_args[3] = v8::Number::New(isolate, delay); // delay (float)
+v8_args[4] = v8::External::New(isolate, origin /* float  */); // origin (const float *)
+v8_args[5] = v8::External::New(isolate, angles /* float  */); // angles (const float *)
+v8_args[6] = v8::Number::New(isolate, fparam1); // fparam1 (float)
+v8_args[7] = v8::Number::New(isolate, fparam2); // fparam2 (float)
+v8_args[8] = v8::Number::New(isolate, iparam1); // iparam1 (int)
+v8_args[9] = v8::Number::New(isolate, iparam2); // iparam2 (int)
+v8_args[10] = v8::Number::New(isolate, bparam1); // bparam1 (int)
+v8_args[11] = v8::Number::New(isolate, bparam2); // bparam2 (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1429,7 +1431,7 @@ v8_args[11] = v8::Integer::New(isolate, static_cast<uint32_t>(bparam2));; // bpa
     event::findAndCall("engSetFatPvs", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // org (const float *)
+      v8_args[0] = v8::External::New(isolate, org /* float  */); // org (const float *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1440,7 +1442,7 @@ v8_args[11] = v8::Integer::New(isolate, static_cast<uint32_t>(bparam2));; // bpa
     event::findAndCall("engSetFatPas", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // org (const float *)
+      v8_args[0] = v8::External::New(isolate, org /* float  */); // org (const float *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1451,8 +1453,8 @@ v8_args[11] = v8::Integer::New(isolate, static_cast<uint32_t>(bparam2));; // bpa
     event::findAndCall("engCheckVisibility", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // entity (const edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pset (unsigned char *)
+      v8_args[0] = structures::wrapEntity(isolate, entity); // entity (const edict_t *)
+v8_args[1] = v8::External::New(isolate, pset /* unsigned char  */); // pset (unsigned char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1463,7 +1465,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engDeltaSetField", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pFields (struct delta_s *)
+      v8_args[0] = v8::External::New(isolate, pFields /* delta_s  */); // pFields (struct delta_s *)
 v8_args[1] = v8::String::NewFromUtf8(isolate, fieldname).ToLocalChecked(); // fieldname (const char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
@@ -1475,7 +1477,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, fieldname).ToLocalChecked(); // fi
     event::findAndCall("engDeltaUnsetField", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pFields (struct delta_s *)
+      v8_args[0] = v8::External::New(isolate, pFields /* delta_s  */); // pFields (struct delta_s *)
 v8_args[1] = v8::String::NewFromUtf8(isolate, fieldname).ToLocalChecked(); // fieldname (const char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
@@ -1494,7 +1496,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, fieldname).ToLocalChecked(); // fi
     event::findAndCall("engCanSkipPlayer", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // player (const edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, player); // player (const edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1505,7 +1507,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, fieldname).ToLocalChecked(); // fi
     event::findAndCall("engDeltaFindField", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pFields (struct delta_s *)
+      v8_args[0] = v8::External::New(isolate, pFields /* delta_s  */); // pFields (struct delta_s *)
 v8_args[1] = v8::String::NewFromUtf8(isolate, fieldname).ToLocalChecked(); // fieldname (const char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
@@ -1517,8 +1519,8 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, fieldname).ToLocalChecked(); // fi
     event::findAndCall("engDeltaSetFieldByIndex", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pFields (struct delta_s *)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(fieldNumber));; // fieldNumber (int)
+      v8_args[0] = v8::External::New(isolate, pFields /* delta_s  */); // pFields (struct delta_s *)
+v8_args[1] = v8::Number::New(isolate, fieldNumber); // fieldNumber (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1529,8 +1531,8 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(fieldNumber));; // 
     event::findAndCall("engDeltaUnsetFieldByIndex", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pFields (struct delta_s *)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(fieldNumber));; // fieldNumber (int)
+      v8_args[0] = v8::External::New(isolate, pFields /* delta_s  */); // pFields (struct delta_s *)
+v8_args[1] = v8::Number::New(isolate, fieldNumber); // fieldNumber (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1541,8 +1543,8 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(fieldNumber));; // 
     event::findAndCall("engSetGroupMask", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(mask));; // mask (int)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(op));; // op (int)
+      v8_args[0] = v8::Number::New(isolate, mask); // mask (int)
+v8_args[1] = v8::Number::New(isolate, op); // op (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1553,8 +1555,8 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(op));; // op (int)
     event::findAndCall("engCreateInstancedBaseline", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(classname));; // classname (int)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // baseline (struct entity_state_s *)
+      v8_args[0] = v8::Number::New(isolate, classname); // classname (int)
+v8_args[1] = v8::External::New(isolate, baseline /* entity_state_s  */); // baseline (struct entity_state_s *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1565,7 +1567,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engCvarDirectSet", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // var (struct cvar_s *)
+      v8_args[0] = v8::External::New(isolate, var /* cvar_s  */); // var (struct cvar_s *)
 v8_args[1] = v8::String::NewFromUtf8(isolate, value).ToLocalChecked(); // value (const char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
@@ -1577,9 +1579,9 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, value).ToLocalChecked(); // value 
     event::findAndCall("engForceUnmodified", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // type (FORCE_TYPE)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // mins (const float *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // maxs (const float *)
+      v8_args[0] = v8::Boolean::New(isolate, false); // type (FORCE_TYPE)
+v8_args[1] = v8::External::New(isolate, mins /* float  */); // mins (const float *)
+v8_args[2] = v8::External::New(isolate, maxs /* float  */); // maxs (const float *)
 v8_args[3] = v8::String::NewFromUtf8(isolate, filename).ToLocalChecked(); // filename (const char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
@@ -1591,9 +1593,9 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, filename).ToLocalChecked(); // fil
     event::findAndCall("engGetPlayerStats", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pClient (const edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ping (int *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // packet_loss (int *)
+      v8_args[0] = structures::wrapEntity(isolate, pClient); // pClient (const edict_t *)
+v8_args[1] = v8::External::New(isolate, ping /* int  */); // ping (int *)
+v8_args[2] = v8::External::New(isolate, packet_loss /* int  */); // packet_loss (int *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1606,8 +1608,8 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engVoiceGetClientListening", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(iReceiver));; // iReceiver (int)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(iSender));; // iSender (int)
+      v8_args[0] = v8::Number::New(isolate, iReceiver); // iReceiver (int)
+v8_args[1] = v8::Number::New(isolate, iSender); // iSender (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1618,9 +1620,9 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(iSender));; // iSen
     event::findAndCall("engVoiceSetClientListening", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(iReceiver));; // iReceiver (int)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(iSender));; // iSender (int)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // bListen (qboolean)
+      v8_args[0] = v8::Number::New(isolate, iReceiver); // iReceiver (int)
+v8_args[1] = v8::Number::New(isolate, iSender); // iSender (int)
+v8_args[2] = v8::Boolean::New(isolate, bListen); // bListen (qboolean)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1631,7 +1633,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engGetPlayerAuthId", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // e (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, e); // e (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1655,8 +1657,8 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, entryName).ToLocalChecked(); // en
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
       v8_args[0] = v8::String::NewFromUtf8(isolate, groupName).ToLocalChecked(); // groupName (const char *)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(pickMethod));; // pickMethod (int)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // picked (int *)
+v8_args[1] = v8::Number::New(isolate, pickMethod); // pickMethod (int)
+v8_args[2] = v8::External::New(isolate, picked /* int  */); // picked (int *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1705,7 +1707,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engRegisterTutorMessageShown", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(mid));; // mid (int)
+      v8_args[0] = v8::Number::New(isolate, mid); // mid (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1716,7 +1718,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engGetTimesTutorMessageShown", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(mid));; // mid (int)
+      v8_args[0] = v8::Number::New(isolate, mid); // mid (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1727,8 +1729,8 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("engProcessTutorMessageDecayBuffer", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // buffer (int *)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(bufferLength));; // bufferLength (int)
+      v8_args[0] = v8::External::New(isolate, buffer /* int  */); // buffer (int *)
+v8_args[1] = v8::Number::New(isolate, bufferLength); // bufferLength (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1739,8 +1741,8 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(bufferLength));; //
     event::findAndCall("engConstructTutorMessageDecayBuffer", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // buffer (int *)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(bufferLength));; // bufferLength (int)
+      v8_args[0] = v8::External::New(isolate, buffer /* int  */); // buffer (int *)
+v8_args[1] = v8::Number::New(isolate, bufferLength); // bufferLength (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1756,7 +1758,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(bufferLength));; //
     event::findAndCall("engQueryClientCvarValue", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // player (const edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, player); // player (const edict_t *)
 v8_args[1] = v8::String::NewFromUtf8(isolate, cvarName).ToLocalChecked(); // cvarName (const char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
@@ -1768,9 +1770,9 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, cvarName).ToLocalChecked(); // cva
     event::findAndCall("engQueryClientCvarValue2", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // player (const edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, player); // player (const edict_t *)
 v8_args[1] = v8::String::NewFromUtf8(isolate, cvarName).ToLocalChecked(); // cvarName (const char *)
-v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(requestID));; // requestID (int)
+v8_args[2] = v8::Number::New(isolate, requestID); // requestID (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1781,8 +1783,8 @@ v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(requestID));; // re
     event::findAndCall("engCheckParm", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // parm (char *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ppnext (char **)
+      v8_args[0] = v8::String::NewFromUtf8(isolate, parm).ToLocalChecked(); // parm (char *)
+v8_args[1] = v8::External::New(isolate, ppnext /* char * */); // ppnext (char **)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -1977,7 +1979,7 @@ eng_CheckParm
     event::findAndCall("postEngSetModel", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // e (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, e); // e (edict_t *)
 v8_args[1] = v8::String::NewFromUtf8(isolate, m).ToLocalChecked(); // m (const char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
@@ -2000,7 +2002,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, m).ToLocalChecked(); // m (const c
     event::findAndCall("postEngModelFrames", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(modelIndex));; // modelIndex (int)
+      v8_args[0] = v8::Number::New(isolate, modelIndex); // modelIndex (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2011,9 +2013,9 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, m).ToLocalChecked(); // m (const c
     event::findAndCall("postEngSetSize", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // e (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // rgflMin (const float *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // rgflMax (const float *)
+      v8_args[0] = structures::wrapEntity(isolate, e); // e (edict_t *)
+v8_args[1] = v8::External::New(isolate, rgflMin /* float  */); // rgflMin (const float *)
+v8_args[2] = v8::External::New(isolate, rgflMax /* float  */); // rgflMax (const float *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2036,7 +2038,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, s2).ToLocalChecked(); // s2 (const
     event::findAndCall("postEngGetSpawnParms", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ent (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, ent); // ent (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2047,7 +2049,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, s2).ToLocalChecked(); // s2 (const
     event::findAndCall("postEngSaveSpawnParms", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ent (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, ent); // ent (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2058,7 +2060,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, s2).ToLocalChecked(); // s2 (const
     event::findAndCall("postEngVecToYaw", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // rgflVector (const float *)
+      v8_args[0] = v8::External::New(isolate, rgflVector /* float  */); // rgflVector (const float *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2069,8 +2071,8 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, s2).ToLocalChecked(); // s2 (const
     event::findAndCall("postEngVecToAngles", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // rgflVectorIn (const float *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // rgflVectorOut (float *)
+      v8_args[0] = v8::External::New(isolate, rgflVectorIn /* float  */); // rgflVectorIn (const float *)
+v8_args[1] = v8::External::New(isolate, rgflVectorOut /* float  */); // rgflVectorOut (float *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2081,10 +2083,10 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngMoveToOrigin", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ent (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pflGoal (const float *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // dist (float)
-v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(iMoveType));; // iMoveType (int)
+      v8_args[0] = structures::wrapEntity(isolate, ent); // ent (edict_t *)
+v8_args[1] = v8::External::New(isolate, pflGoal /* float  */); // pflGoal (const float *)
+v8_args[2] = v8::Number::New(isolate, dist); // dist (float)
+v8_args[3] = v8::Number::New(isolate, iMoveType); // iMoveType (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2095,7 +2097,7 @@ v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(iMoveType));; // iM
     event::findAndCall("postEngChangeYaw", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ent (edict_t*)
+      v8_args[0] = structures::wrapEntity(isolate, ent); // ent (edict_t*)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2106,7 +2108,7 @@ v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(iMoveType));; // iM
     event::findAndCall("postEngChangePitch", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ent (edict_t*)
+      v8_args[0] = structures::wrapEntity(isolate, ent); // ent (edict_t*)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2117,7 +2119,7 @@ v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(iMoveType));; // iM
     event::findAndCall("postEngFindEntityByString", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEdictStartSearchAfter (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pEdictStartSearchAfter); // pEdictStartSearchAfter (edict_t *)
 v8_args[1] = v8::String::NewFromUtf8(isolate, pszField).ToLocalChecked(); // pszField (const char *)
 v8_args[2] = v8::String::NewFromUtf8(isolate, pszValue).ToLocalChecked(); // pszValue (const char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
@@ -2130,7 +2132,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, pszValue).ToLocalChecked(); // psz
     event::findAndCall("postEngGetEntityIllum", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEnt (edict_t*)
+      v8_args[0] = structures::wrapEntity(isolate, pEnt); // pEnt (edict_t*)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2141,9 +2143,9 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, pszValue).ToLocalChecked(); // psz
     event::findAndCall("postEngFindEntityInSphere", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEdictStartSearchAfter (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // org (const float *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // rad (float)
+      v8_args[0] = structures::wrapEntity(isolate, pEdictStartSearchAfter); // pEdictStartSearchAfter (edict_t *)
+v8_args[1] = v8::External::New(isolate, org /* float  */); // org (const float *)
+v8_args[2] = v8::Number::New(isolate, rad); // rad (float)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2154,7 +2156,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngFindClientInPvs", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEdict (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pEdict); // pEdict (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2165,7 +2167,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngEntitiesInPvs", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pplayer (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pplayer); // pplayer (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2176,7 +2178,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngMakeVectors", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // rgflVector (const float *)
+      v8_args[0] = v8::External::New(isolate, rgflVector /* float  */); // rgflVector (const float *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2187,10 +2189,10 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngAngleVectors", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // rgflVector (const float *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // forward (float *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // right (float *)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // up (float *)
+      v8_args[0] = v8::External::New(isolate, rgflVector /* float  */); // rgflVector (const float *)
+v8_args[1] = v8::External::New(isolate, forward /* float  */); // forward (float *)
+v8_args[2] = v8::External::New(isolate, right /* float  */); // right (float *)
+v8_args[3] = v8::External::New(isolate, up /* float  */); // up (float *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2206,7 +2208,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngRemoveEntity", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // e (edict_t*)
+      v8_args[0] = structures::wrapEntity(isolate, e); // e (edict_t*)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2217,7 +2219,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngCreateNamedEntity", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(className));; // className (int)
+      v8_args[0] = v8::Number::New(isolate, className); // className (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2228,7 +2230,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngMakeStatic", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ent (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, ent); // ent (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2239,7 +2241,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngEntIsOnFloor", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // e (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, e); // e (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2250,7 +2252,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngDropToFloor", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // e (edict_t*)
+      v8_args[0] = structures::wrapEntity(isolate, e); // e (edict_t*)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2261,10 +2263,10 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngWalkMove", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ent (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // yaw (float)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // dist (float)
-v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(iMode));; // iMode (int)
+      v8_args[0] = structures::wrapEntity(isolate, ent); // ent (edict_t *)
+v8_args[1] = v8::Number::New(isolate, yaw); // yaw (float)
+v8_args[2] = v8::Number::New(isolate, dist); // dist (float)
+v8_args[3] = v8::Number::New(isolate, iMode); // iMode (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2275,8 +2277,8 @@ v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(iMode));; // iMode 
     event::findAndCall("postEngSetOrigin", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // e (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // rgflOrigin (const float *)
+      v8_args[0] = structures::wrapEntity(isolate, e); // e (edict_t *)
+v8_args[1] = v8::External::New(isolate, rgflOrigin /* float  */); // rgflOrigin (const float *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2287,13 +2289,13 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngEmitSound", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 7;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[7];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // entity (edict_t *)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(channel));; // channel (int)
+      v8_args[0] = structures::wrapEntity(isolate, entity); // entity (edict_t *)
+v8_args[1] = v8::Number::New(isolate, channel); // channel (int)
 v8_args[2] = v8::String::NewFromUtf8(isolate, sample).ToLocalChecked(); // sample (const char *)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // volume (float)
-v8_args[4] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // attenuation (float)
-v8_args[5] = v8::Integer::New(isolate, static_cast<uint32_t>(fFlags));; // fFlags (int)
-v8_args[6] = v8::Integer::New(isolate, static_cast<uint32_t>(pitch));; // pitch (int)
+v8_args[3] = v8::Number::New(isolate, volume); // volume (float)
+v8_args[4] = v8::Number::New(isolate, attenuation); // attenuation (float)
+v8_args[5] = v8::Number::New(isolate, fFlags); // fFlags (int)
+v8_args[6] = v8::Number::New(isolate, pitch); // pitch (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2304,13 +2306,13 @@ v8_args[6] = v8::Integer::New(isolate, static_cast<uint32_t>(pitch));; // pitch 
     event::findAndCall("postEngEmitAmbientSound", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 7;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[7];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // entity (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pos (const float *)
+      v8_args[0] = structures::wrapEntity(isolate, entity); // entity (edict_t *)
+v8_args[1] = v8::External::New(isolate, pos /* float  */); // pos (const float *)
 v8_args[2] = v8::String::NewFromUtf8(isolate, samp).ToLocalChecked(); // samp (const char *)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // vol (float)
-v8_args[4] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // attenuation (float)
-v8_args[5] = v8::Integer::New(isolate, static_cast<uint32_t>(fFlags));; // fFlags (int)
-v8_args[6] = v8::Integer::New(isolate, static_cast<uint32_t>(pitch));; // pitch (int)
+v8_args[3] = v8::Number::New(isolate, vol); // vol (float)
+v8_args[4] = v8::Number::New(isolate, attenuation); // attenuation (float)
+v8_args[5] = v8::Number::New(isolate, fFlags); // fFlags (int)
+v8_args[6] = v8::Number::New(isolate, pitch); // pitch (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2321,11 +2323,11 @@ v8_args[6] = v8::Integer::New(isolate, static_cast<uint32_t>(pitch));; // pitch 
     event::findAndCall("postEngTraceLine", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 5;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[5];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // v1 (const float *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // v2 (const float *)
-v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(fNoMonsters));; // fNoMonsters (int)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pentToSkip (edict_t *)
-v8_args[4] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ptr (TraceResult *)
+      v8_args[0] = v8::External::New(isolate, v1 /* float  */); // v1 (const float *)
+v8_args[1] = v8::External::New(isolate, v2 /* float  */); // v2 (const float *)
+v8_args[2] = v8::Number::New(isolate, fNoMonsters); // fNoMonsters (int)
+v8_args[3] = structures::wrapEntity(isolate, pentToSkip); // pentToSkip (edict_t *)
+v8_args[4] = v8::External::New(isolate, ptr /* TraceResult  */); // ptr (TraceResult *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2336,9 +2338,9 @@ v8_args[4] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngTraceToss", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pent (edict_t*)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pentToIgnore (edict_t*)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ptr (TraceResult *)
+      v8_args[0] = structures::wrapEntity(isolate, pent); // pent (edict_t*)
+v8_args[1] = structures::wrapEntity(isolate, pentToIgnore); // pentToIgnore (edict_t*)
+v8_args[2] = v8::External::New(isolate, ptr /* TraceResult  */); // ptr (TraceResult *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2349,12 +2351,12 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngTraceMonsterHull", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 6;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[6];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEdict (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // v1 (const float *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // v2 (const float *)
-v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(fNoMonsters));; // fNoMonsters (int)
-v8_args[4] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pentToSkip (edict_t *)
-v8_args[5] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ptr (TraceResult *)
+      v8_args[0] = structures::wrapEntity(isolate, pEdict); // pEdict (edict_t *)
+v8_args[1] = v8::External::New(isolate, v1 /* float  */); // v1 (const float *)
+v8_args[2] = v8::External::New(isolate, v2 /* float  */); // v2 (const float *)
+v8_args[3] = v8::Number::New(isolate, fNoMonsters); // fNoMonsters (int)
+v8_args[4] = structures::wrapEntity(isolate, pentToSkip); // pentToSkip (edict_t *)
+v8_args[5] = v8::External::New(isolate, ptr /* TraceResult  */); // ptr (TraceResult *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2365,12 +2367,12 @@ v8_args[5] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngTraceHull", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 6;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[6];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // v1 (const float *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // v2 (const float *)
-v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(fNoMonsters));; // fNoMonsters (int)
-v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(hullNumber));; // hullNumber (int)
-v8_args[4] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pentToSkip (edict_t *)
-v8_args[5] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ptr (TraceResult *)
+      v8_args[0] = v8::External::New(isolate, v1 /* float  */); // v1 (const float *)
+v8_args[1] = v8::External::New(isolate, v2 /* float  */); // v2 (const float *)
+v8_args[2] = v8::Number::New(isolate, fNoMonsters); // fNoMonsters (int)
+v8_args[3] = v8::Number::New(isolate, hullNumber); // hullNumber (int)
+v8_args[4] = structures::wrapEntity(isolate, pentToSkip); // pentToSkip (edict_t *)
+v8_args[5] = v8::External::New(isolate, ptr /* TraceResult  */); // ptr (TraceResult *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2381,11 +2383,11 @@ v8_args[5] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngTraceModel", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 5;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[5];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // v1 (const float *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // v2 (const float *)
-v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(hullNumber));; // hullNumber (int)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pent (edict_t *)
-v8_args[4] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ptr (TraceResult *)
+      v8_args[0] = v8::External::New(isolate, v1 /* float  */); // v1 (const float *)
+v8_args[1] = v8::External::New(isolate, v2 /* float  */); // v2 (const float *)
+v8_args[2] = v8::Number::New(isolate, hullNumber); // hullNumber (int)
+v8_args[3] = structures::wrapEntity(isolate, pent); // pent (edict_t *)
+v8_args[4] = v8::External::New(isolate, ptr /* TraceResult  */); // ptr (TraceResult *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2396,9 +2398,9 @@ v8_args[4] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngTraceTexture", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pTextureEntity (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // v1 (const float *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // v2 (const float *)
+      v8_args[0] = structures::wrapEntity(isolate, pTextureEntity); // pTextureEntity (edict_t *)
+v8_args[1] = v8::External::New(isolate, v1 /* float  */); // v1 (const float *)
+v8_args[2] = v8::External::New(isolate, v2 /* float  */); // v2 (const float *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2409,12 +2411,12 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngTraceSphere", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 6;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[6];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // v1 (const float *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // v2 (const float *)
-v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(fNoMonsters));; // fNoMonsters (int)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // radius (float)
-v8_args[4] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pentToSkip (edict_t *)
-v8_args[5] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ptr (TraceResult *)
+      v8_args[0] = v8::External::New(isolate, v1 /* float  */); // v1 (const float *)
+v8_args[1] = v8::External::New(isolate, v2 /* float  */); // v2 (const float *)
+v8_args[2] = v8::Number::New(isolate, fNoMonsters); // fNoMonsters (int)
+v8_args[3] = v8::Number::New(isolate, radius); // radius (float)
+v8_args[4] = structures::wrapEntity(isolate, pentToSkip); // pentToSkip (edict_t *)
+v8_args[5] = v8::External::New(isolate, ptr /* TraceResult  */); // ptr (TraceResult *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2425,9 +2427,9 @@ v8_args[5] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngGetAimVector", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ent (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // speed (float)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // rgflReturn (float *)
+      v8_args[0] = structures::wrapEntity(isolate, ent); // ent (edict_t *)
+v8_args[1] = v8::Number::New(isolate, speed); // speed (float)
+v8_args[2] = v8::External::New(isolate, rgflReturn /* float  */); // rgflReturn (float *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2456,10 +2458,10 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngParticleEffect", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // org (const float *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // dir (const float *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // color (float)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // count (float)
+      v8_args[0] = v8::External::New(isolate, org /* float  */); // org (const float *)
+v8_args[1] = v8::External::New(isolate, dir /* float  */); // dir (const float *)
+v8_args[2] = v8::Number::New(isolate, color); // color (float)
+v8_args[3] = v8::Number::New(isolate, count); // count (float)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2470,7 +2472,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngLightStyle", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(style));; // style (int)
+      v8_args[0] = v8::Number::New(isolate, style); // style (int)
 v8_args[1] = v8::String::NewFromUtf8(isolate, val).ToLocalChecked(); // val (const char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
@@ -2493,7 +2495,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, val).ToLocalChecked(); // val (con
     event::findAndCall("postEngPointContents", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // rgflVector (const float *)
+      v8_args[0] = v8::External::New(isolate, rgflVector /* float  */); // rgflVector (const float *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2504,10 +2506,10 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, val).ToLocalChecked(); // val (con
     event::findAndCall("postEngMessageBegin", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(msg_dest));; // msg_dest (int)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(msg_type));; // msg_type (int)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pOrigin (const float *)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ed (edict_t *)
+      v8_args[0] = v8::Number::New(isolate, msg_dest); // msg_dest (int)
+v8_args[1] = v8::Number::New(isolate, msg_type); // msg_type (int)
+v8_args[2] = v8::External::New(isolate, pOrigin /* float  */); // pOrigin (const float *)
+v8_args[3] = structures::wrapEntity(isolate, ed); // ed (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2523,7 +2525,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngWriteByte", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(iValue));; // iValue (int)
+      v8_args[0] = v8::Number::New(isolate, iValue); // iValue (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2534,7 +2536,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngWriteChar", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(iValue));; // iValue (int)
+      v8_args[0] = v8::Number::New(isolate, iValue); // iValue (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2545,7 +2547,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngWriteShort", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(iValue));; // iValue (int)
+      v8_args[0] = v8::Number::New(isolate, iValue); // iValue (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2556,7 +2558,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngWriteLong", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(iValue));; // iValue (int)
+      v8_args[0] = v8::Number::New(isolate, iValue); // iValue (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2567,7 +2569,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngWriteAngle", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // flValue (float)
+      v8_args[0] = v8::Number::New(isolate, flValue); // flValue (float)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2578,7 +2580,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngWriteCoord", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // flValue (float)
+      v8_args[0] = v8::Number::New(isolate, flValue); // flValue (float)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2600,7 +2602,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngWriteEntity", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(iValue));; // iValue (int)
+      v8_args[0] = v8::Number::New(isolate, iValue); // iValue (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2611,7 +2613,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngCVarRegister", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pCvar (cvar_t *)
+      v8_args[0] = v8::External::New(isolate, pCvar /* cvar_t  */); // pCvar (cvar_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2645,7 +2647,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
       v8_args[0] = v8::String::NewFromUtf8(isolate, szVarName).ToLocalChecked(); // szVarName (const char *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // flValue (float)
+v8_args[1] = v8::Number::New(isolate, flValue); // flValue (float)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2672,8 +2674,8 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, szValue).ToLocalChecked(); // szVa
     event::findAndCall("postEngPvAllocEntPrivateData", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEdict (edict_t *)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
+      v8_args[0] = structures::wrapEntity(isolate, pEdict); // pEdict (edict_t *)
+v8_args[1] = v8::Number::New(isolate, cb); // cb (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2684,7 +2686,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
     event::findAndCall("postEngPvEntPrivateData", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEdict (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pEdict); // pEdict (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2695,7 +2697,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
     event::findAndCall("postEngFreeEntPrivateData", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEdict (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pEdict); // pEdict (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2706,7 +2708,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
     event::findAndCall("postEngSzFromIndex", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(iString));; // iString (int)
+      v8_args[0] = v8::Number::New(isolate, iString); // iString (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2728,7 +2730,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
     event::findAndCall("postEngGetVarsOfEnt", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEdict (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pEdict); // pEdict (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2739,7 +2741,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
     event::findAndCall("postEngPEntityOfEntOffset", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(iEntOffset));; // iEntOffset (int)
+      v8_args[0] = v8::Number::New(isolate, iEntOffset); // iEntOffset (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2750,7 +2752,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
     event::findAndCall("postEngEntOffsetOfPEntity", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEdict (const edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pEdict); // pEdict (const edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2761,7 +2763,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
     event::findAndCall("postEngIndexOfEdict", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEdict (const edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pEdict); // pEdict (const edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2772,7 +2774,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
     event::findAndCall("postEngPEntityOfEntIndex", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(iEntIndex));; // iEntIndex (int)
+      v8_args[0] = v8::Number::New(isolate, iEntIndex); // iEntIndex (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2783,7 +2785,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
     event::findAndCall("postEngFindEntityByVars", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pvars (struct entvars_s*)
+      v8_args[0] = v8::External::New(isolate, pvars /* entvars_s */); // pvars (struct entvars_s*)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2794,7 +2796,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
     event::findAndCall("postEngGetModelPtr", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEdict (edict_t*)
+      v8_args[0] = structures::wrapEntity(isolate, pEdict); // pEdict (edict_t*)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2806,7 +2808,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(cb));; // cb (int)
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
       v8_args[0] = v8::String::NewFromUtf8(isolate, pszName).ToLocalChecked(); // pszName (const char *)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(iSize));; // iSize (int)
+v8_args[1] = v8::Number::New(isolate, iSize); // iSize (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2817,8 +2819,8 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(iSize));; // iSize 
     event::findAndCall("postEngAnimationAutomove", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEdict (const edict_t*)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // flTime (float)
+      v8_args[0] = structures::wrapEntity(isolate, pEdict); // pEdict (const edict_t*)
+v8_args[1] = v8::Number::New(isolate, flTime); // flTime (float)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2829,10 +2831,10 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngGetBonePosition", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEdict (const edict_t*)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(iBone));; // iBone (int)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // rgflOrigin (float *)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // rgflAngles (float *)
+      v8_args[0] = structures::wrapEntity(isolate, pEdict); // pEdict (const edict_t*)
+v8_args[1] = v8::Number::New(isolate, iBone); // iBone (int)
+v8_args[2] = v8::External::New(isolate, rgflOrigin /* float  */); // rgflOrigin (float *)
+v8_args[3] = v8::External::New(isolate, rgflAngles /* float  */); // rgflAngles (float *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2854,7 +2856,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngNameForFunction", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // function (void *)
+      v8_args[0] = v8::External::New(isolate, function /* void  */); // function (void *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2865,8 +2867,8 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngClientPrintf", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEdict (edict_t*)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ptype (PRINT_TYPE)
+      v8_args[0] = structures::wrapEntity(isolate, pEdict); // pEdict (edict_t*)
+v8_args[1] = v8::Boolean::New(isolate, false); // ptype (PRINT_TYPE)
 v8_args[2] = v8::String::NewFromUtf8(isolate, szMsg).ToLocalChecked(); // szMsg (const char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
@@ -2894,7 +2896,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, szMsg).ToLocalChecked(); // szMsg 
     event::findAndCall("postEngCmdArgv", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(argc));; // argc (int)
+      v8_args[0] = v8::Number::New(isolate, argc); // argc (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2910,10 +2912,10 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, szMsg).ToLocalChecked(); // szMsg 
     event::findAndCall("postEngGetAttachment", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEdict (const edict_t *)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(iAttachment));; // iAttachment (int)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // rgflOrigin (float *)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // rgflAngles (float *)
+      v8_args[0] = structures::wrapEntity(isolate, pEdict); // pEdict (const edict_t *)
+v8_args[1] = v8::Number::New(isolate, iAttachment); // iAttachment (int)
+v8_args[2] = v8::External::New(isolate, rgflOrigin /* float  */); // rgflOrigin (float *)
+v8_args[3] = v8::External::New(isolate, rgflAngles /* float  */); // rgflAngles (float *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2924,7 +2926,7 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngCrc32Init", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pulCRC (CRC32_t *)
+      v8_args[0] = v8::External::New(isolate, pulCRC /* CRC32_t  */); // pulCRC (CRC32_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2935,9 +2937,9 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngCrc32ProcessBuffer", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pulCRC (CRC32_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // p (void *)
-v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(len));; // len (int)
+      v8_args[0] = v8::External::New(isolate, pulCRC /* CRC32_t  */); // pulCRC (CRC32_t *)
+v8_args[1] = v8::External::New(isolate, p /* void  */); // p (void *)
+v8_args[2] = v8::Number::New(isolate, len); // len (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2948,8 +2950,8 @@ v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(len));; // len (int
     event::findAndCall("postEngCrc32ProcessByte", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pulCRC (CRC32_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ch (unsigned char)
+      v8_args[0] = v8::External::New(isolate, pulCRC /* CRC32_t  */); // pulCRC (CRC32_t *)
+v8_args[1] = v8::Boolean::New(isolate, false); // ch (unsigned char)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2962,8 +2964,8 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngRandomLong", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(lLow));; // lLow (int)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(lHigh));; // lHigh (int)
+      v8_args[0] = v8::Number::New(isolate, lLow); // lLow (int)
+v8_args[1] = v8::Number::New(isolate, lHigh); // lHigh (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2974,8 +2976,8 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(lHigh));; // lHigh 
     event::findAndCall("postEngRandomFloat", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // flLow (float)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // flHigh (float)
+      v8_args[0] = v8::Number::New(isolate, flLow); // flLow (float)
+v8_args[1] = v8::Number::New(isolate, flHigh); // flHigh (float)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -2986,8 +2988,8 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngSetView", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pClient (const edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pViewent (const edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pClient); // pClient (const edict_t *)
+v8_args[1] = structures::wrapEntity(isolate, pViewent); // pViewent (const edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -3003,9 +3005,9 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngCrosshairAngle", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pClient (const edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pitch (float)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // yaw (float)
+      v8_args[0] = structures::wrapEntity(isolate, pClient); // pClient (const edict_t *)
+v8_args[1] = v8::Number::New(isolate, pitch); // pitch (float)
+v8_args[2] = v8::Number::New(isolate, yaw); // yaw (float)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -3017,7 +3019,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
       v8_args[0] = v8::String::NewFromUtf8(isolate, filename).ToLocalChecked(); // filename (const char *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pLength (int *)
+v8_args[1] = v8::External::New(isolate, pLength /* int  */); // pLength (int *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -3028,7 +3030,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngFreeFile", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // buffer (void *)
+      v8_args[0] = v8::External::New(isolate, buffer /* void  */); // buffer (void *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -3050,9 +3052,9 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngCompareFileTime", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // filename1 (char *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // filename2 (char *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // iCompare (int *)
+      v8_args[0] = v8::String::NewFromUtf8(isolate, filename1).ToLocalChecked(); // filename1 (char *)
+v8_args[1] = v8::String::NewFromUtf8(isolate, filename2).ToLocalChecked(); // filename2 (char *)
+v8_args[2] = v8::External::New(isolate, iCompare /* int  */); // iCompare (int *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -3063,7 +3065,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngGetGameDir", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // szGetGameDir (char *)
+      v8_args[0] = v8::String::NewFromUtf8(isolate, szGetGameDir).ToLocalChecked(); // szGetGameDir (char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -3074,7 +3076,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngCvarRegisterVariable", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // variable (cvar_t *)
+      v8_args[0] = v8::External::New(isolate, variable /* cvar_t  */); // variable (cvar_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -3085,11 +3087,11 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngFadeClientVolume", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 5;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[5];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEdict (const edict_t *)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(fadePercent));; // fadePercent (int)
-v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(fadeOutSeconds));; // fadeOutSeconds (int)
-v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(holdTime));; // holdTime (int)
-v8_args[4] = v8::Integer::New(isolate, static_cast<uint32_t>(fadeInSeconds));; // fadeInSeconds (int)
+      v8_args[0] = structures::wrapEntity(isolate, pEdict); // pEdict (const edict_t *)
+v8_args[1] = v8::Number::New(isolate, fadePercent); // fadePercent (int)
+v8_args[2] = v8::Number::New(isolate, fadeOutSeconds); // fadeOutSeconds (int)
+v8_args[3] = v8::Number::New(isolate, holdTime); // holdTime (int)
+v8_args[4] = v8::Number::New(isolate, fadeInSeconds); // fadeInSeconds (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -3100,8 +3102,8 @@ v8_args[4] = v8::Integer::New(isolate, static_cast<uint32_t>(fadeInSeconds));; /
     event::findAndCall("postEngSetClientMaxspeed", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pEdict (const edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // fNewMaxspeed (float)
+      v8_args[0] = structures::wrapEntity(isolate, pEdict); // pEdict (const edict_t *)
+v8_args[1] = v8::Number::New(isolate, fNewMaxspeed); // fNewMaxspeed (float)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -3123,14 +3125,14 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngRunPlayerMove", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 8;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[8];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // fakeclient (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // viewangles (const float *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // forwardmove (float)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // sidemove (float)
-v8_args[4] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // upmove (float)
-v8_args[5] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // buttons (unsigned short)
-v8_args[6] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // impulse (byte)
-v8_args[7] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // msec (byte)
+      v8_args[0] = structures::wrapEntity(isolate, fakeclient); // fakeclient (edict_t *)
+v8_args[1] = v8::External::New(isolate, viewangles /* float  */); // viewangles (const float *)
+v8_args[2] = v8::Number::New(isolate, forwardmove); // forwardmove (float)
+v8_args[3] = v8::Number::New(isolate, sidemove); // sidemove (float)
+v8_args[4] = v8::Number::New(isolate, upmove); // upmove (float)
+v8_args[5] = v8::Boolean::New(isolate, false); // buttons (unsigned short)
+v8_args[6] = v8::Boolean::New(isolate, false); // impulse (byte)
+v8_args[7] = v8::Boolean::New(isolate, false); // msec (byte)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -3146,7 +3148,7 @@ v8_args[7] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngGetInfoKeyBuffer", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // e (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, e); // e (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -3157,7 +3159,7 @@ v8_args[7] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngInfoKeyValue", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // infobuffer (char *)
+      v8_args[0] = v8::String::NewFromUtf8(isolate, infobuffer).ToLocalChecked(); // infobuffer (char *)
 v8_args[1] = v8::String::NewFromUtf8(isolate, key).ToLocalChecked(); // key (const char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
@@ -3169,7 +3171,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, key).ToLocalChecked(); // key (con
     event::findAndCall("postEngSetKeyValue", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // infobuffer (char *)
+      v8_args[0] = v8::String::NewFromUtf8(isolate, infobuffer).ToLocalChecked(); // infobuffer (char *)
 v8_args[1] = v8::String::NewFromUtf8(isolate, key).ToLocalChecked(); // key (const char *)
 v8_args[2] = v8::String::NewFromUtf8(isolate, value).ToLocalChecked(); // value (const char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
@@ -3182,8 +3184,8 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, value).ToLocalChecked(); // value 
     event::findAndCall("postEngSetClientKeyValue", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(clientIndex));; // clientIndex (int)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // infobuffer (char *)
+      v8_args[0] = v8::Number::New(isolate, clientIndex); // clientIndex (int)
+v8_args[1] = v8::String::NewFromUtf8(isolate, infobuffer).ToLocalChecked(); // infobuffer (char *)
 v8_args[2] = v8::String::NewFromUtf8(isolate, key).ToLocalChecked(); // key (const char *)
 v8_args[3] = v8::String::NewFromUtf8(isolate, value).ToLocalChecked(); // value (const char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
@@ -3207,10 +3209,10 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, value).ToLocalChecked(); // value 
     event::findAndCall("postEngStaticDecal", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // origin (const float *)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(decalIndex));; // decalIndex (int)
-v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(entityIndex));; // entityIndex (int)
-v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(modelIndex));; // modelIndex (int)
+      v8_args[0] = v8::External::New(isolate, origin /* float  */); // origin (const float *)
+v8_args[1] = v8::Number::New(isolate, decalIndex); // decalIndex (int)
+v8_args[2] = v8::Number::New(isolate, entityIndex); // entityIndex (int)
+v8_args[3] = v8::Number::New(isolate, modelIndex); // modelIndex (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -3232,7 +3234,7 @@ v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(modelIndex));; // m
     event::findAndCall("postEngGetPlayerUserId", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // e (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, e); // e (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -3243,17 +3245,17 @@ v8_args[3] = v8::Integer::New(isolate, static_cast<uint32_t>(modelIndex));; // m
     event::findAndCall("postEngBuildSoundMsg", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 11;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[11];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // entity (edict_t *)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(channel));; // channel (int)
+      v8_args[0] = structures::wrapEntity(isolate, entity); // entity (edict_t *)
+v8_args[1] = v8::Number::New(isolate, channel); // channel (int)
 v8_args[2] = v8::String::NewFromUtf8(isolate, sample).ToLocalChecked(); // sample (const char *)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // volume (float)
-v8_args[4] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // attenuation (float)
-v8_args[5] = v8::Integer::New(isolate, static_cast<uint32_t>(fFlags));; // fFlags (int)
-v8_args[6] = v8::Integer::New(isolate, static_cast<uint32_t>(pitch));; // pitch (int)
-v8_args[7] = v8::Integer::New(isolate, static_cast<uint32_t>(msg_dest));; // msg_dest (int)
-v8_args[8] = v8::Integer::New(isolate, static_cast<uint32_t>(msg_type));; // msg_type (int)
-v8_args[9] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pOrigin (const float *)
-v8_args[10] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ed (edict_t *)
+v8_args[3] = v8::Number::New(isolate, volume); // volume (float)
+v8_args[4] = v8::Number::New(isolate, attenuation); // attenuation (float)
+v8_args[5] = v8::Number::New(isolate, fFlags); // fFlags (int)
+v8_args[6] = v8::Number::New(isolate, pitch); // pitch (int)
+v8_args[7] = v8::Number::New(isolate, msg_dest); // msg_dest (int)
+v8_args[8] = v8::Number::New(isolate, msg_type); // msg_type (int)
+v8_args[9] = v8::External::New(isolate, pOrigin /* float  */); // pOrigin (const float *)
+v8_args[10] = structures::wrapEntity(isolate, ed); // ed (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -3280,7 +3282,7 @@ v8_args[10] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked()
     event::findAndCall("postEngGetPlayerWonId", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // e (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, e); // e (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -3291,7 +3293,7 @@ v8_args[10] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked()
     event::findAndCall("postEngInfoRemoveKey", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // s (char *)
+      v8_args[0] = v8::String::NewFromUtf8(isolate, s).ToLocalChecked(); // s (char *)
 v8_args[1] = v8::String::NewFromUtf8(isolate, key).ToLocalChecked(); // key (const char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
@@ -3303,7 +3305,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, key).ToLocalChecked(); // key (con
     event::findAndCall("postEngGetPhysicsKeyValue", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pClient (const edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pClient); // pClient (const edict_t *)
 v8_args[1] = v8::String::NewFromUtf8(isolate, key).ToLocalChecked(); // key (const char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
@@ -3315,7 +3317,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, key).ToLocalChecked(); // key (con
     event::findAndCall("postEngSetPhysicsKeyValue", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pClient (const edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pClient); // pClient (const edict_t *)
 v8_args[1] = v8::String::NewFromUtf8(isolate, key).ToLocalChecked(); // key (const char *)
 v8_args[2] = v8::String::NewFromUtf8(isolate, value).ToLocalChecked(); // value (const char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
@@ -3328,7 +3330,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, value).ToLocalChecked(); // value 
     event::findAndCall("postEngGetPhysicsInfoString", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pClient (const edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, pClient); // pClient (const edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -3339,8 +3341,8 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, value).ToLocalChecked(); // value 
     event::findAndCall("postEngPrecacheEvent", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(type));; // type (int)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // psz (const char*)
+      v8_args[0] = v8::Number::New(isolate, type); // type (int)
+v8_args[1] = v8::String::NewFromUtf8(isolate, psz).ToLocalChecked(); // psz (const char*)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -3351,18 +3353,18 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngPlaybackEvent", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 12;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[12];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(flags));; // flags (int)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pInvoker (const edict_t *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // eventindex (unsigned short)
-v8_args[3] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // delay (float)
-v8_args[4] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // origin (const float *)
-v8_args[5] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // angles (const float *)
-v8_args[6] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // fparam1 (float)
-v8_args[7] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // fparam2 (float)
-v8_args[8] = v8::Integer::New(isolate, static_cast<uint32_t>(iparam1));; // iparam1 (int)
-v8_args[9] = v8::Integer::New(isolate, static_cast<uint32_t>(iparam2));; // iparam2 (int)
-v8_args[10] = v8::Integer::New(isolate, static_cast<uint32_t>(bparam1));; // bparam1 (int)
-v8_args[11] = v8::Integer::New(isolate, static_cast<uint32_t>(bparam2));; // bparam2 (int)
+      v8_args[0] = v8::Number::New(isolate, flags); // flags (int)
+v8_args[1] = structures::wrapEntity(isolate, pInvoker); // pInvoker (const edict_t *)
+v8_args[2] = v8::Boolean::New(isolate, false); // eventindex (unsigned short)
+v8_args[3] = v8::Number::New(isolate, delay); // delay (float)
+v8_args[4] = v8::External::New(isolate, origin /* float  */); // origin (const float *)
+v8_args[5] = v8::External::New(isolate, angles /* float  */); // angles (const float *)
+v8_args[6] = v8::Number::New(isolate, fparam1); // fparam1 (float)
+v8_args[7] = v8::Number::New(isolate, fparam2); // fparam2 (float)
+v8_args[8] = v8::Number::New(isolate, iparam1); // iparam1 (int)
+v8_args[9] = v8::Number::New(isolate, iparam2); // iparam2 (int)
+v8_args[10] = v8::Number::New(isolate, bparam1); // bparam1 (int)
+v8_args[11] = v8::Number::New(isolate, bparam2); // bparam2 (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -3373,7 +3375,7 @@ v8_args[11] = v8::Integer::New(isolate, static_cast<uint32_t>(bparam2));; // bpa
     event::findAndCall("postEngSetFatPvs", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // org (const float *)
+      v8_args[0] = v8::External::New(isolate, org /* float  */); // org (const float *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -3384,7 +3386,7 @@ v8_args[11] = v8::Integer::New(isolate, static_cast<uint32_t>(bparam2));; // bpa
     event::findAndCall("postEngSetFatPas", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // org (const float *)
+      v8_args[0] = v8::External::New(isolate, org /* float  */); // org (const float *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -3395,8 +3397,8 @@ v8_args[11] = v8::Integer::New(isolate, static_cast<uint32_t>(bparam2));; // bpa
     event::findAndCall("postEngCheckVisibility", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // entity (const edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pset (unsigned char *)
+      v8_args[0] = structures::wrapEntity(isolate, entity); // entity (const edict_t *)
+v8_args[1] = v8::External::New(isolate, pset /* unsigned char  */); // pset (unsigned char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -3407,7 +3409,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngDeltaSetField", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pFields (struct delta_s *)
+      v8_args[0] = v8::External::New(isolate, pFields /* delta_s  */); // pFields (struct delta_s *)
 v8_args[1] = v8::String::NewFromUtf8(isolate, fieldname).ToLocalChecked(); // fieldname (const char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
@@ -3419,7 +3421,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, fieldname).ToLocalChecked(); // fi
     event::findAndCall("postEngDeltaUnsetField", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pFields (struct delta_s *)
+      v8_args[0] = v8::External::New(isolate, pFields /* delta_s  */); // pFields (struct delta_s *)
 v8_args[1] = v8::String::NewFromUtf8(isolate, fieldname).ToLocalChecked(); // fieldname (const char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
@@ -3438,7 +3440,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, fieldname).ToLocalChecked(); // fi
     event::findAndCall("postEngCanSkipPlayer", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // player (const edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, player); // player (const edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -3449,7 +3451,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, fieldname).ToLocalChecked(); // fi
     event::findAndCall("postEngDeltaFindField", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pFields (struct delta_s *)
+      v8_args[0] = v8::External::New(isolate, pFields /* delta_s  */); // pFields (struct delta_s *)
 v8_args[1] = v8::String::NewFromUtf8(isolate, fieldname).ToLocalChecked(); // fieldname (const char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
@@ -3461,8 +3463,8 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, fieldname).ToLocalChecked(); // fi
     event::findAndCall("postEngDeltaSetFieldByIndex", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pFields (struct delta_s *)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(fieldNumber));; // fieldNumber (int)
+      v8_args[0] = v8::External::New(isolate, pFields /* delta_s  */); // pFields (struct delta_s *)
+v8_args[1] = v8::Number::New(isolate, fieldNumber); // fieldNumber (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -3473,8 +3475,8 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(fieldNumber));; // 
     event::findAndCall("postEngDeltaUnsetFieldByIndex", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pFields (struct delta_s *)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(fieldNumber));; // fieldNumber (int)
+      v8_args[0] = v8::External::New(isolate, pFields /* delta_s  */); // pFields (struct delta_s *)
+v8_args[1] = v8::Number::New(isolate, fieldNumber); // fieldNumber (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -3485,8 +3487,8 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(fieldNumber));; // 
     event::findAndCall("postEngSetGroupMask", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(mask));; // mask (int)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(op));; // op (int)
+      v8_args[0] = v8::Number::New(isolate, mask); // mask (int)
+v8_args[1] = v8::Number::New(isolate, op); // op (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -3497,8 +3499,8 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(op));; // op (int)
     event::findAndCall("postEngCreateInstancedBaseline", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(classname));; // classname (int)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // baseline (struct entity_state_s *)
+      v8_args[0] = v8::Number::New(isolate, classname); // classname (int)
+v8_args[1] = v8::External::New(isolate, baseline /* entity_state_s  */); // baseline (struct entity_state_s *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -3509,7 +3511,7 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngCvarDirectSet", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // var (struct cvar_s *)
+      v8_args[0] = v8::External::New(isolate, var /* cvar_s  */); // var (struct cvar_s *)
 v8_args[1] = v8::String::NewFromUtf8(isolate, value).ToLocalChecked(); // value (const char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
@@ -3521,9 +3523,9 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, value).ToLocalChecked(); // value 
     event::findAndCall("postEngForceUnmodified", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 4;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // type (FORCE_TYPE)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // mins (const float *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // maxs (const float *)
+      v8_args[0] = v8::Boolean::New(isolate, false); // type (FORCE_TYPE)
+v8_args[1] = v8::External::New(isolate, mins /* float  */); // mins (const float *)
+v8_args[2] = v8::External::New(isolate, maxs /* float  */); // maxs (const float *)
 v8_args[3] = v8::String::NewFromUtf8(isolate, filename).ToLocalChecked(); // filename (const char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
@@ -3535,9 +3537,9 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, filename).ToLocalChecked(); // fil
     event::findAndCall("postEngGetPlayerStats", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // pClient (const edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ping (int *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // packet_loss (int *)
+      v8_args[0] = structures::wrapEntity(isolate, pClient); // pClient (const edict_t *)
+v8_args[1] = v8::External::New(isolate, ping /* int  */); // ping (int *)
+v8_args[2] = v8::External::New(isolate, packet_loss /* int  */); // packet_loss (int *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -3550,8 +3552,8 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngVoiceGetClientListening", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(iReceiver));; // iReceiver (int)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(iSender));; // iSender (int)
+      v8_args[0] = v8::Number::New(isolate, iReceiver); // iReceiver (int)
+v8_args[1] = v8::Number::New(isolate, iSender); // iSender (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -3562,9 +3564,9 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(iSender));; // iSen
     event::findAndCall("postEngVoiceSetClientListening", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(iReceiver));; // iReceiver (int)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(iSender));; // iSender (int)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // bListen (qboolean)
+      v8_args[0] = v8::Number::New(isolate, iReceiver); // iReceiver (int)
+v8_args[1] = v8::Number::New(isolate, iSender); // iSender (int)
+v8_args[2] = v8::Boolean::New(isolate, bListen); // bListen (qboolean)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -3575,7 +3577,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngGetPlayerAuthId", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // e (edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, e); // e (edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -3599,8 +3601,8 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, entryName).ToLocalChecked(); // en
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
       v8_args[0] = v8::String::NewFromUtf8(isolate, groupName).ToLocalChecked(); // groupName (const char *)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(pickMethod));; // pickMethod (int)
-v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // picked (int *)
+v8_args[1] = v8::Number::New(isolate, pickMethod); // pickMethod (int)
+v8_args[2] = v8::External::New(isolate, picked /* int  */); // picked (int *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -3649,7 +3651,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngRegisterTutorMessageShown", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(mid));; // mid (int)
+      v8_args[0] = v8::Number::New(isolate, mid); // mid (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -3660,7 +3662,7 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngGetTimesTutorMessageShown", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::Integer::New(isolate, static_cast<uint32_t>(mid));; // mid (int)
+      v8_args[0] = v8::Number::New(isolate, mid); // mid (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -3671,8 +3673,8 @@ v8_args[2] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked();
     event::findAndCall("postEngProcessTutorMessageDecayBuffer", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // buffer (int *)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(bufferLength));; // bufferLength (int)
+      v8_args[0] = v8::External::New(isolate, buffer /* int  */); // buffer (int *)
+v8_args[1] = v8::Number::New(isolate, bufferLength); // bufferLength (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -3683,8 +3685,8 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(bufferLength));; //
     event::findAndCall("postEngConstructTutorMessageDecayBuffer", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // buffer (int *)
-v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(bufferLength));; // bufferLength (int)
+      v8_args[0] = v8::External::New(isolate, buffer /* int  */); // buffer (int *)
+v8_args[1] = v8::Number::New(isolate, bufferLength); // bufferLength (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -3700,7 +3702,7 @@ v8_args[1] = v8::Integer::New(isolate, static_cast<uint32_t>(bufferLength));; //
     event::findAndCall("postEngQueryClientCvarValue", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // player (const edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, player); // player (const edict_t *)
 v8_args[1] = v8::String::NewFromUtf8(isolate, cvarName).ToLocalChecked(); // cvarName (const char *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
@@ -3712,9 +3714,9 @@ v8_args[1] = v8::String::NewFromUtf8(isolate, cvarName).ToLocalChecked(); // cva
     event::findAndCall("postEngQueryClientCvarValue2", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // player (const edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, player); // player (const edict_t *)
 v8_args[1] = v8::String::NewFromUtf8(isolate, cvarName).ToLocalChecked(); // cvarName (const char *)
-v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(requestID));; // requestID (int)
+v8_args[2] = v8::Number::New(isolate, requestID); // requestID (int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -3725,8 +3727,8 @@ v8_args[2] = v8::Integer::New(isolate, static_cast<uint32_t>(requestID));; // re
     event::findAndCall("postEngCheckParm", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // parm (char *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked(); // ppnext (char **)
+      v8_args[0] = v8::String::NewFromUtf8(isolate, parm).ToLocalChecked(); // parm (char *)
+v8_args[1] = v8::External::New(isolate, ppnext /* char * */); // ppnext (char **)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }

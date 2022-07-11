@@ -462,9 +462,9 @@ void sf_eng_pfnTraceTexture(const v8::FunctionCallbackInfo<v8::Value>& info)
 	v8::HandleScope scope(isolate);
 	auto context = isolate->GetCurrentContext();
 
-  info.GetReturnValue().Set(v8::External::New(isolate, (*g_engfuncs.pfnTraceTexture)(structures::unwrapEntity(isolate, info[0]),
+  info.GetReturnValue().Set(v8::String::NewFromUtf8(isolate, (*g_engfuncs.pfnTraceTexture)(structures::unwrapEntity(isolate, info[0]),
 nullptr /* const float * */,
-nullptr /* const float * */) /* const char  */));
+nullptr /* const float * */)).ToLocalChecked());
 }
 
 // nodemod.eng.traceSphere();
@@ -516,6 +516,17 @@ void sf_eng_pfnServerExecute(const v8::FunctionCallbackInfo<v8::Value>& info)
 	auto context = isolate->GetCurrentContext();
 
   (*g_engfuncs.pfnServerExecute)();
+}
+
+// nodemod.eng.clientCommand();
+void sf_eng_pfnClientCommand(const v8::FunctionCallbackInfo<v8::Value>& info)
+{
+	auto isolate = info.GetIsolate();
+  v8::Locker locker(isolate);
+	v8::HandleScope scope(isolate);
+	auto context = isolate->GetCurrentContext();
+
+  (*g_engfuncs.pfnClientCommand)(structures::unwrapEntity(isolate, info[0]), utils::js2string(isolate, info[1]));;
 }
 
 // nodemod.eng.particleEffect();
@@ -709,7 +720,7 @@ void sf_eng_pfnCVarGetString(const v8::FunctionCallbackInfo<v8::Value>& info)
 	v8::HandleScope scope(isolate);
 	auto context = isolate->GetCurrentContext();
 
-  info.GetReturnValue().Set(v8::External::New(isolate, (*g_engfuncs.pfnCVarGetString)(utils::js2string(isolate, info[0])) /* const char */));
+  info.GetReturnValue().Set(v8::String::NewFromUtf8(isolate, (*g_engfuncs.pfnCVarGetString)(utils::js2string(isolate, info[0]))).ToLocalChecked());
 }
 
 // nodemod.eng.cVarSetFloat();
@@ -778,7 +789,7 @@ void sf_eng_pfnSzFromIndex(const v8::FunctionCallbackInfo<v8::Value>& info)
 	v8::HandleScope scope(isolate);
 	auto context = isolate->GetCurrentContext();
 
-  info.GetReturnValue().Set(v8::External::New(isolate, (*g_engfuncs.pfnSzFromIndex)(info[0]->Int32Value(context).ToChecked()) /* const char  */));
+  info.GetReturnValue().Set(v8::String::NewFromUtf8(isolate, (*g_engfuncs.pfnSzFromIndex)(info[0]->Int32Value(context).ToChecked())).ToLocalChecked());
 }
 
 // nodemod.eng.allocString();
@@ -800,7 +811,7 @@ void sf_eng_pfnGetVarsOfEnt(const v8::FunctionCallbackInfo<v8::Value>& info)
 	v8::HandleScope scope(isolate);
 	auto context = isolate->GetCurrentContext();
 
-  info.GetReturnValue().Set(v8::External::New(isolate, (*g_engfuncs.pfnGetVarsOfEnt)(structures::unwrapEntity(isolate, info[0])) /* struct entvars_s  */));
+  info.GetReturnValue().Set(v8::External::New(isolate, (*g_engfuncs.pfnGetVarsOfEnt)(structures::unwrapEntity(isolate, info[0])) /* entvars_s  */));
 }
 
 // nodemod.eng.pEntityOfEntOffset();
@@ -822,7 +833,7 @@ void sf_eng_pfnEntOffsetOfPEntity(const v8::FunctionCallbackInfo<v8::Value>& inf
 	v8::HandleScope scope(isolate);
 	auto context = isolate->GetCurrentContext();
 
-  info.GetReturnValue().Set(v8::Number::New(isolate, (*g_engfuncs.pfnEntOffsetOfPEntity)(nullptr /* const edict_t * */)));
+  info.GetReturnValue().Set(v8::Number::New(isolate, (*g_engfuncs.pfnEntOffsetOfPEntity)(structures::unwrapEntity(isolate, info[0]))));
 }
 
 // nodemod.eng.indexOfEdict();
@@ -833,7 +844,7 @@ void sf_eng_pfnIndexOfEdict(const v8::FunctionCallbackInfo<v8::Value>& info)
 	v8::HandleScope scope(isolate);
 	auto context = isolate->GetCurrentContext();
 
-  info.GetReturnValue().Set(v8::Number::New(isolate, (*g_engfuncs.pfnIndexOfEdict)(nullptr /* const edict_t * */)));
+  info.GetReturnValue().Set(v8::Number::New(isolate, (*g_engfuncs.pfnIndexOfEdict)(structures::unwrapEntity(isolate, info[0]))));
 }
 
 // nodemod.eng.pEntityOfEntIndex();
@@ -889,7 +900,7 @@ void sf_eng_pfnAnimationAutomove(const v8::FunctionCallbackInfo<v8::Value>& info
 	v8::HandleScope scope(isolate);
 	auto context = isolate->GetCurrentContext();
 
-  (*g_engfuncs.pfnAnimationAutomove)(nullptr /* const edict_t* */,
+  (*g_engfuncs.pfnAnimationAutomove)(structures::unwrapEntity(isolate, info[0]),
 info[1]->NumberValue(context).ToChecked());
 }
 
@@ -901,7 +912,7 @@ void sf_eng_pfnGetBonePosition(const v8::FunctionCallbackInfo<v8::Value>& info)
 	v8::HandleScope scope(isolate);
 	auto context = isolate->GetCurrentContext();
 
-  (*g_engfuncs.pfnGetBonePosition)(nullptr /* const edict_t* */,
+  (*g_engfuncs.pfnGetBonePosition)(structures::unwrapEntity(isolate, info[0]),
 info[1]->Int32Value(context).ToChecked(),
 nullptr /* float * */,
 nullptr /* float * */);
@@ -926,7 +937,7 @@ void sf_eng_pfnNameForFunction(const v8::FunctionCallbackInfo<v8::Value>& info)
 	v8::HandleScope scope(isolate);
 	auto context = isolate->GetCurrentContext();
 
-  info.GetReturnValue().Set(v8::External::New(isolate, (*g_engfuncs.pfnNameForFunction)(nullptr /* void * */) /* const char  */));
+  info.GetReturnValue().Set(v8::String::NewFromUtf8(isolate, (*g_engfuncs.pfnNameForFunction)(nullptr /* void * */)).ToLocalChecked());
 }
 
 // nodemod.eng.clientPrintf();
@@ -961,7 +972,7 @@ void sf_eng_pfnCmd_Args(const v8::FunctionCallbackInfo<v8::Value>& info)
 	v8::HandleScope scope(isolate);
 	auto context = isolate->GetCurrentContext();
 
-  info.GetReturnValue().Set(v8::External::New(isolate, (*g_engfuncs.pfnCmd_Args)() /* const char  */));
+  info.GetReturnValue().Set(v8::String::NewFromUtf8(isolate, (*g_engfuncs.pfnCmd_Args)()).ToLocalChecked());
 }
 
 // nodemod.eng.cmdArgv();
@@ -972,7 +983,7 @@ void sf_eng_pfnCmd_Argv(const v8::FunctionCallbackInfo<v8::Value>& info)
 	v8::HandleScope scope(isolate);
 	auto context = isolate->GetCurrentContext();
 
-  info.GetReturnValue().Set(v8::External::New(isolate, (*g_engfuncs.pfnCmd_Argv)(info[0]->Int32Value(context).ToChecked()) /* const char  */));
+  info.GetReturnValue().Set(v8::String::NewFromUtf8(isolate, (*g_engfuncs.pfnCmd_Argv)(info[0]->Int32Value(context).ToChecked())).ToLocalChecked());
 }
 
 // nodemod.eng.cmdArgc();
@@ -994,7 +1005,7 @@ void sf_eng_pfnGetAttachment(const v8::FunctionCallbackInfo<v8::Value>& info)
 	v8::HandleScope scope(isolate);
 	auto context = isolate->GetCurrentContext();
 
-  (*g_engfuncs.pfnGetAttachment)(nullptr /* const edict_t * */,
+  (*g_engfuncs.pfnGetAttachment)(structures::unwrapEntity(isolate, info[0]),
 info[1]->Int32Value(context).ToChecked(),
 nullptr /* float * */,
 nullptr /* float * */);
@@ -1032,8 +1043,8 @@ void sf_eng_pfnSetView(const v8::FunctionCallbackInfo<v8::Value>& info)
 	v8::HandleScope scope(isolate);
 	auto context = isolate->GetCurrentContext();
 
-  (*g_engfuncs.pfnSetView)(nullptr /* const edict_t * */,
-nullptr /* const edict_t * */);
+  (*g_engfuncs.pfnSetView)(structures::unwrapEntity(isolate, info[0]),
+structures::unwrapEntity(isolate, info[1]));
 }
 
 // nodemod.eng.time();
@@ -1055,7 +1066,7 @@ void sf_eng_pfnCrosshairAngle(const v8::FunctionCallbackInfo<v8::Value>& info)
 	v8::HandleScope scope(isolate);
 	auto context = isolate->GetCurrentContext();
 
-  (*g_engfuncs.pfnCrosshairAngle)(nullptr /* const edict_t * */,
+  (*g_engfuncs.pfnCrosshairAngle)(structures::unwrapEntity(isolate, info[0]),
 info[1]->NumberValue(context).ToChecked(),
 info[2]->NumberValue(context).ToChecked());
 }
@@ -1102,8 +1113,8 @@ void sf_eng_pfnCompareFileTime(const v8::FunctionCallbackInfo<v8::Value>& info)
 	v8::HandleScope scope(isolate);
 	auto context = isolate->GetCurrentContext();
 
-  info.GetReturnValue().Set(v8::Number::New(isolate, (*g_engfuncs.pfnCompareFileTime)(nullptr /* char * */,
-nullptr /* char * */,
+  info.GetReturnValue().Set(v8::Number::New(isolate, (*g_engfuncs.pfnCompareFileTime)(utils::js2string(isolate, info[0]),
+utils::js2string(isolate, info[1]),
 nullptr /* int * */)));
 }
 
@@ -1115,7 +1126,7 @@ void sf_eng_pfnGetGameDir(const v8::FunctionCallbackInfo<v8::Value>& info)
 	v8::HandleScope scope(isolate);
 	auto context = isolate->GetCurrentContext();
 
-  (*g_engfuncs.pfnGetGameDir)(nullptr /* char * */);
+  (*g_engfuncs.pfnGetGameDir)(utils::js2string(isolate, info[0]));
 }
 
 // nodemod.eng.cvarRegisterVariable();
@@ -1137,7 +1148,7 @@ void sf_eng_pfnFadeClientVolume(const v8::FunctionCallbackInfo<v8::Value>& info)
 	v8::HandleScope scope(isolate);
 	auto context = isolate->GetCurrentContext();
 
-  (*g_engfuncs.pfnFadeClientVolume)(nullptr /* const edict_t * */,
+  (*g_engfuncs.pfnFadeClientVolume)(structures::unwrapEntity(isolate, info[0]),
 info[1]->Int32Value(context).ToChecked(),
 info[2]->Int32Value(context).ToChecked(),
 info[3]->Int32Value(context).ToChecked(),
@@ -1152,7 +1163,7 @@ void sf_eng_pfnSetClientMaxspeed(const v8::FunctionCallbackInfo<v8::Value>& info
 	v8::HandleScope scope(isolate);
 	auto context = isolate->GetCurrentContext();
 
-  (*g_engfuncs.pfnSetClientMaxspeed)(nullptr /* const edict_t * */,
+  (*g_engfuncs.pfnSetClientMaxspeed)(structures::unwrapEntity(isolate, info[0]),
 info[1]->NumberValue(context).ToChecked());
 }
 
@@ -1204,7 +1215,7 @@ void sf_eng_pfnGetInfoKeyBuffer(const v8::FunctionCallbackInfo<v8::Value>& info)
 	v8::HandleScope scope(isolate);
 	auto context = isolate->GetCurrentContext();
 
-  info.GetReturnValue().Set(v8::External::New(isolate, (*g_engfuncs.pfnGetInfoKeyBuffer)(structures::unwrapEntity(isolate, info[0])) /* char */));
+  info.GetReturnValue().Set(v8::String::NewFromUtf8(isolate, (*g_engfuncs.pfnGetInfoKeyBuffer)(structures::unwrapEntity(isolate, info[0]))).ToLocalChecked());
 }
 
 // nodemod.eng.infoKeyValue();
@@ -1215,8 +1226,8 @@ void sf_eng_pfnInfoKeyValue(const v8::FunctionCallbackInfo<v8::Value>& info)
 	v8::HandleScope scope(isolate);
 	auto context = isolate->GetCurrentContext();
 
-  info.GetReturnValue().Set(v8::External::New(isolate, (*g_engfuncs.pfnInfoKeyValue)(nullptr /* char * */,
-utils::js2string(isolate, info[1])) /* char */));
+  info.GetReturnValue().Set(v8::String::NewFromUtf8(isolate, (*g_engfuncs.pfnInfoKeyValue)(utils::js2string(isolate, info[0]),
+utils::js2string(isolate, info[1]))).ToLocalChecked());
 }
 
 // nodemod.eng.setKeyValue();
@@ -1227,7 +1238,7 @@ void sf_eng_pfnSetKeyValue(const v8::FunctionCallbackInfo<v8::Value>& info)
 	v8::HandleScope scope(isolate);
 	auto context = isolate->GetCurrentContext();
 
-  (*g_engfuncs.pfnSetKeyValue)(nullptr /* char * */,
+  (*g_engfuncs.pfnSetKeyValue)(utils::js2string(isolate, info[0]),
 utils::js2string(isolate, info[1]),
 utils::js2string(isolate, info[2]));
 }
@@ -1241,7 +1252,7 @@ void sf_eng_pfnSetClientKeyValue(const v8::FunctionCallbackInfo<v8::Value>& info
 	auto context = isolate->GetCurrentContext();
 
   (*g_engfuncs.pfnSetClientKeyValue)(info[0]->Int32Value(context).ToChecked(),
-nullptr /* char * */,
+utils::js2string(isolate, info[1]),
 utils::js2string(isolate, info[2]),
 utils::js2string(isolate, info[3]));
 }
@@ -1344,7 +1355,7 @@ void sf_eng_pfnGetPlayerWONId(const v8::FunctionCallbackInfo<v8::Value>& info)
 	v8::HandleScope scope(isolate);
 	auto context = isolate->GetCurrentContext();
 
-  (*g_engfuncs.pfnGetPlayerWONId)(structures::unwrapEntity(isolate, info[0])) /* TODO: type unsigned int */;
+  info.GetReturnValue().Set(v8::Number::New(isolate, (*g_engfuncs.pfnGetPlayerWONId)(structures::unwrapEntity(isolate, info[0]))));
 }
 
 // nodemod.eng.infoRemoveKey();
@@ -1355,7 +1366,7 @@ void sf_eng_pfnInfo_RemoveKey(const v8::FunctionCallbackInfo<v8::Value>& info)
 	v8::HandleScope scope(isolate);
 	auto context = isolate->GetCurrentContext();
 
-  (*g_engfuncs.pfnInfo_RemoveKey)(nullptr /* char * */,
+  (*g_engfuncs.pfnInfo_RemoveKey)(utils::js2string(isolate, info[0]),
 utils::js2string(isolate, info[1]));
 }
 
@@ -1367,8 +1378,8 @@ void sf_eng_pfnGetPhysicsKeyValue(const v8::FunctionCallbackInfo<v8::Value>& inf
 	v8::HandleScope scope(isolate);
 	auto context = isolate->GetCurrentContext();
 
-  info.GetReturnValue().Set(v8::External::New(isolate, (*g_engfuncs.pfnGetPhysicsKeyValue)(nullptr /* const edict_t * */,
-utils::js2string(isolate, info[1])) /* const char  */));
+  info.GetReturnValue().Set(v8::String::NewFromUtf8(isolate, (*g_engfuncs.pfnGetPhysicsKeyValue)(structures::unwrapEntity(isolate, info[0]),
+utils::js2string(isolate, info[1]))).ToLocalChecked());
 }
 
 // nodemod.eng.setPhysicsKeyValue();
@@ -1379,7 +1390,7 @@ void sf_eng_pfnSetPhysicsKeyValue(const v8::FunctionCallbackInfo<v8::Value>& inf
 	v8::HandleScope scope(isolate);
 	auto context = isolate->GetCurrentContext();
 
-  (*g_engfuncs.pfnSetPhysicsKeyValue)(nullptr /* const edict_t * */,
+  (*g_engfuncs.pfnSetPhysicsKeyValue)(structures::unwrapEntity(isolate, info[0]),
 utils::js2string(isolate, info[1]),
 utils::js2string(isolate, info[2]));
 }
@@ -1392,7 +1403,7 @@ void sf_eng_pfnGetPhysicsInfoString(const v8::FunctionCallbackInfo<v8::Value>& i
 	v8::HandleScope scope(isolate);
 	auto context = isolate->GetCurrentContext();
 
-  info.GetReturnValue().Set(v8::External::New(isolate, (*g_engfuncs.pfnGetPhysicsInfoString)(nullptr /* const edict_t * */) /* const char  */));
+  info.GetReturnValue().Set(v8::String::NewFromUtf8(isolate, (*g_engfuncs.pfnGetPhysicsInfoString)(structures::unwrapEntity(isolate, info[0]))).ToLocalChecked());
 }
 
 // nodemod.eng.precacheEvent();
@@ -1416,7 +1427,7 @@ void sf_eng_pfnPlaybackEvent(const v8::FunctionCallbackInfo<v8::Value>& info)
 	auto context = isolate->GetCurrentContext();
 
   (*g_engfuncs.pfnPlaybackEvent)(info[0]->Int32Value(context).ToChecked(),
-nullptr /* const edict_t * */,
+structures::unwrapEntity(isolate, info[1]),
 info[2]->Int32Value(context).ToChecked(),
 info[3]->NumberValue(context).ToChecked(),
 nullptr /* const float * */,
@@ -1459,7 +1470,7 @@ void sf_eng_pfnCheckVisibility(const v8::FunctionCallbackInfo<v8::Value>& info)
 	v8::HandleScope scope(isolate);
 	auto context = isolate->GetCurrentContext();
 
-  info.GetReturnValue().Set(v8::Number::New(isolate, (*g_engfuncs.pfnCheckVisibility)(nullptr /* const edict_t * */,
+  info.GetReturnValue().Set(v8::Number::New(isolate, (*g_engfuncs.pfnCheckVisibility)(structures::unwrapEntity(isolate, info[0]),
 nullptr /* unsigned char * */)));
 }
 
@@ -1506,7 +1517,7 @@ void sf_eng_pfnCanSkipPlayer(const v8::FunctionCallbackInfo<v8::Value>& info)
 	v8::HandleScope scope(isolate);
 	auto context = isolate->GetCurrentContext();
 
-  info.GetReturnValue().Set(v8::Number::New(isolate, (*g_engfuncs.pfnCanSkipPlayer)(nullptr /* const edict_t * */)));
+  info.GetReturnValue().Set(v8::Number::New(isolate, (*g_engfuncs.pfnCanSkipPlayer)(structures::unwrapEntity(isolate, info[0]))));
 }
 
 // nodemod.eng.deltaFindField();
@@ -1603,7 +1614,7 @@ void sf_eng_pfnGetPlayerStats(const v8::FunctionCallbackInfo<v8::Value>& info)
 	v8::HandleScope scope(isolate);
 	auto context = isolate->GetCurrentContext();
 
-  (*g_engfuncs.pfnGetPlayerStats)(nullptr /* const edict_t * */,
+  (*g_engfuncs.pfnGetPlayerStats)(structures::unwrapEntity(isolate, info[0]),
 nullptr /* int * */,
 nullptr /* int * */);
 }
@@ -1641,7 +1652,7 @@ void sf_eng_pfnGetPlayerAuthId(const v8::FunctionCallbackInfo<v8::Value>& info)
 	v8::HandleScope scope(isolate);
 	auto context = isolate->GetCurrentContext();
 
-  info.GetReturnValue().Set(v8::External::New(isolate, (*g_engfuncs.pfnGetPlayerAuthId)(structures::unwrapEntity(isolate, info[0])) /* const char  */));
+  info.GetReturnValue().Set(v8::String::NewFromUtf8(isolate, (*g_engfuncs.pfnGetPlayerAuthId)(structures::unwrapEntity(isolate, info[0]))).ToLocalChecked());
 }
 
 // nodemod.eng.sequenceGet();
@@ -1688,7 +1699,7 @@ void sf_eng_pfnGetApproxWavePlayLen(const v8::FunctionCallbackInfo<v8::Value>& i
 	v8::HandleScope scope(isolate);
 	auto context = isolate->GetCurrentContext();
 
-  (*g_engfuncs.pfnGetApproxWavePlayLen)(utils::js2string(isolate, info[0])) /* TODO: type unsigned int */;
+  info.GetReturnValue().Set(v8::Number::New(isolate, (*g_engfuncs.pfnGetApproxWavePlayLen)(utils::js2string(isolate, info[0]))));
 }
 
 // nodemod.eng.isCareerMatch();
@@ -1778,7 +1789,7 @@ void sf_eng_pfnQueryClientCvarValue(const v8::FunctionCallbackInfo<v8::Value>& i
 	v8::HandleScope scope(isolate);
 	auto context = isolate->GetCurrentContext();
 
-  (*g_engfuncs.pfnQueryClientCvarValue)(nullptr /* const edict_t * */,
+  (*g_engfuncs.pfnQueryClientCvarValue)(structures::unwrapEntity(isolate, info[0]),
 utils::js2string(isolate, info[1]));
 }
 
@@ -1790,7 +1801,7 @@ void sf_eng_pfnQueryClientCvarValue2(const v8::FunctionCallbackInfo<v8::Value>& 
 	v8::HandleScope scope(isolate);
 	auto context = isolate->GetCurrentContext();
 
-  (*g_engfuncs.pfnQueryClientCvarValue2)(nullptr /* const edict_t * */,
+  (*g_engfuncs.pfnQueryClientCvarValue2)(structures::unwrapEntity(isolate, info[0]),
 utils::js2string(isolate, info[1]),
 info[2]->Int32Value(context).ToChecked());
 }
@@ -1803,7 +1814,7 @@ void sf_eng_CheckParm(const v8::FunctionCallbackInfo<v8::Value>& info)
 	v8::HandleScope scope(isolate);
 	auto context = isolate->GetCurrentContext();
 
-  info.GetReturnValue().Set(v8::Number::New(isolate, (*g_engfuncs.CheckParm)(nullptr /* char * */,
+  info.GetReturnValue().Set(v8::Number::New(isolate, (*g_engfuncs.CheckParm)(utils::js2string(isolate, info[0]),
 nullptr /* char ** */)));
 }
 
@@ -1849,6 +1860,7 @@ static std::pair<std::string, v8::FunctionCallback> engineSpecificFunctions[] = 
   { "getAimVector", sf_eng_pfnGetAimVector },
   { "serverCommand", sf_eng_pfnServerCommand },
   { "serverExecute", sf_eng_pfnServerExecute },
+  { "clientCommand", sf_eng_pfnClientCommand },
   { "particleEffect", sf_eng_pfnParticleEffect },
   { "lightStyle", sf_eng_pfnLightStyle },
   { "decalIndex", sf_eng_pfnDecalIndex },
@@ -1967,7 +1979,6 @@ v8::Local<v8::ObjectTemplate> registerEngineFunctions(v8::Isolate* isolate) {
   return object;
 };
 
-// FAILED (Cannot read properties of undefined (reading 'map')): void	(*pfnClientCommand)( edict_t* pEdict, const char *szFmt, ... );
 // FAILED (Cannot read properties of undefined (reading 'map')): void	(*pfnAlertMessage)( ALERT_TYPE atype, const char *szFmt, ... );
 // FAILED (Cannot read properties of undefined (reading 'map')): void	(*pfnEngineFprintf)( FILE *pfile, const char *szFmt, ... );
 // FAILED (Cannot read properties of undefined (reading 'map')): void	(*pfnDeltaAddEncoder)( const char *name, void (*conditionalencode)( struct delta_s *pFields, const unsigned char *from, const unsigned char *to ) );

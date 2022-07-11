@@ -6,19 +6,10 @@ import { promises as fs } from 'fs';
 import fileMaker from './fileMaker.js';
 import generator from './generator.js';
 
-const generators = {
-  'const char *': v => `v8::String::NewFromUtf8(isolate, ${v}).ToLocalChecked()`,
-  'int': v => `v8::Integer::New(isolate, static_cast<uint32_t>(${v}));`
-};
 
 function argToValue(arg) {
-  const generator = generators[arg.type];
-  if (!generator) {
-    console.log('no generator', arg);
-    return 'v8::String::NewFromUtf8(isolate, "INVALID VALUE").ToLocalChecked()';
-  }
-
-  return generator(arg.name);
+  return generator.cpp2js(arg.type, arg.name) || 'v8::Boolean::New(isolate, false)';
+  //return generator(arg.name);
 }
 
 function getEventName(func, prefix) {
@@ -105,7 +96,16 @@ function parseFunction(line) {
         throw Error(`Invalid arg: ${v}`);
       }
 
-      return { name: name || `value${i}`, type: type.trim() };
+      const response = { name: name || `value${i}`, type: type.trim() };
+      const [, size] = response.name.match(/\[(\d+)\]$/) || [];
+      response.name.includes('[') && console.log(response.name, size)
+      if (size) {
+        response.type = `${response.type}*`;
+        response.size = size;
+        response.name = response.name.replace(/\[\d+\]$/, '');
+      }
+
+      return response;
     });
 
     return {
@@ -127,7 +127,7 @@ function parseFunction(line) {
 }
 
 (async () => {
-  const eifaceContent = await fs.readFile('../../../../hlsdk-xash3d/engine/eiface.h').then(v => v.toString());
+  const eifaceContent = await fs.readFile('../hlsdk-xash3d/engine/eiface.h').then(v => v.toString());
   const [_, dllFunctionsPart] = eifaceContent.match(/#endif\n\ntypedef struct \n{\n([\s\S]+)\n} DLL_FUNCTIONS;/m);
   const dllFunctionsLines = dllFunctionsPart.split('\n').map(v => v.trim().replace(/\/\*.+\*\//g, '')).filter(v => v && !v.startsWith('//'));
   const dllFunctions = dllFunctionsLines.map(parseFunction);
@@ -135,7 +135,7 @@ function parseFunction(line) {
   const [, engineFunctionsPart] = eifaceContent.match(/typedef struct enginefuncs_s\n{\n([\s\S]+)\n} enginefuncs_t;/m);
   const engineFunctionsLines = clearByDefines(engineFunctionsPart.split('\n').map(v => v.trim().replace(/\/\*.+\*\//g, '')).filter(v => v && !v.startsWith('//')));
   const engineFunctions = engineFunctionsLines.map(parseFunction);
-
+  // return;
   const baseDllFunctions = getFunctions(dllFunctions, 'dll');
   const postDllFunctions = getFunctions(dllFunctions, 'postDll');
 
@@ -153,6 +153,8 @@ function parseFunction(line) {
   #include "node/nodeimpl.hpp"
   #include "node/events.hpp"
   #include "meta_api.h"
+  #include "node/utils.hpp"
+  #include "structures/structures.hpp"
 
   /* BASE EVENTS */
     ${baseDllFunctions.functions.join('\n\n')}
@@ -186,6 +188,8 @@ function parseFunction(line) {
   #include "node/nodeimpl.hpp"
   #include "node/events.hpp"
   #include "meta_api.h"
+  #include "node/utils.hpp"
+  #include "structures/structures.hpp"
 
   /* BASE EVENTS */
     ${baseEngineFunctions.functions.join('\n\n')}
@@ -221,7 +225,7 @@ function computeFunctionApi(func, source) {
     original: func.original,
     definition: `{ "${camelCase(func.name.replace(/^pfn/, ''))}", sf_${source}_${func.name} }`,
     body: `// nodemod.eng.${jsName}();\n${generator.generateCppFunction(func, 'g_engfuncs', 'sf_eng')}`,
-    typing: `${jsName}: (${func.args.map(v => v.name).join(', ')}) => unknown`
+    typing: `${jsName}: (${(func.args || []).map(v => v.name).join(', ')}) => unknown`
   };
 }
 

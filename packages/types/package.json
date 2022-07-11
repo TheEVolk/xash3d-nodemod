@@ -1,4 +1,4 @@
 {
-  "name": "@hnodemod/types",
+  "name": "@nodemod/types",
   "types": "./@types/index.d.ts"
 }

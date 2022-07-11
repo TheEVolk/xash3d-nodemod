@@ -16,6 +16,7 @@ static std::pair<std::string, v8::FunctionCallback> sampnodeSpecificFunctions[] 
 	{ "on", event::on },
 	{ "addEventListener", event::on },
 	{ "addListener", event::on },
+	{ "clearListeners", event::clearListeners },
 	{ "removeListener", event::remove_listener },
 	{ "removeEventListener", event::remove_listener },
 	{ "getUserMsgId", getUserMsgId },

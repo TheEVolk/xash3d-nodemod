@@ -71,6 +71,7 @@ NodeImpl::NodeImpl()
 		v8Isolate = node::NewIsolate(arrayBufferAllocator.get(), nodeLoop->GetLoop(), v8Platform.get());
 		v8Isolate->SetFatalErrorHandler([](const char* location, const char* message)
 			{
+				printf("V8 FATAL [%s]: %s\n", location, message);
 				exit(0);
 			});
 
@@ -80,7 +81,7 @@ NodeImpl::NodeImpl()
 		v8::Locker locker(v8Isolate);
 		v8::Isolate::Scope isolateScope(v8Isolate);
 
-		std::vector<std::string> args{"--expose-internals", "--trace-uncaught", "--inspect"};
+		std::vector<std::string> args{"--trace-uncaught", "--inspect"};
 		std::vector<std::string> exec_args;
 		std::vector<std::string> errors;
 
@@ -93,14 +94,18 @@ NodeImpl::NodeImpl()
 
 	bool NodeImpl::loadScript()
 	{
-		resource = new Resource("main", "./valve/addons/nodemod/package/index.js");
+		resource = new Resource("main", "./valve/addons/nodemod/src/index.js");
 		resource->Init();
 		return true;
 	}
 
 	void NodeImpl::Stop()
 	{
+		 resource->Stop();
 		node::FreeIsolateData(nodeData.get());
+		printf("dispose\n");
 		v8::V8::Dispose();
+		printf("shut\n");
 		v8::V8::ShutdownPlatform();
+		printf("done\n");
 	}

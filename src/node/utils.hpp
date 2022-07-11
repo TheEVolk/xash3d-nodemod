@@ -9,7 +9,7 @@
 
 namespace utils {
 
-inline v8::Local<v8::Array> vect2js(v8::Isolate *isolate, vec3_t &_array) {
+inline v8::Local<v8::Array> vect2js(v8::Isolate *isolate, const vec3_t &_array) {
   v8::Local<v8::Array> array = v8::Array::New(isolate, 3);
 
   array->Set(isolate->GetCurrentContext(), 0, v8::Number::New(isolate, _array.x));

@@ -84,7 +84,7 @@ declare class nodemod {
     /** void	(*pfnServerExecute)( void ); */
     serverExecute: () => unknown,
     /** void	(*pfnClientCommand)( edict_t* pEdict, const char *szFmt, ... ); */
-    undefined,
+    clientCommand: () => unknown,
     /** void	(*pfnParticleEffect)( const float *org, const float *dir, float color, float count ); */
     particleEffect: (org, dir, color, count) => unknown,
     /** void	(*pfnLightStyle)( int style, const char *val ); */

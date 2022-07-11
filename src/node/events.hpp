@@ -66,6 +66,7 @@ using argument_collector_t = std::function<
 		static bool register_event(const std::string& eventName, const std::string& param_types);
 		static void findAndCall(const std::string& eventName, v8::Local<v8::Value>* args, int argCount);
 		static void findAndCall(const std::string& eventName, argument_collector_t collectArguments);
+		static void clearListeners(const v8::FunctionCallbackInfo<v8::Value>& info);
 
 		event(const std::string& eventName, const std::string& param_types);
 		event();
