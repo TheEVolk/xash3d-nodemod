@@ -39,9 +39,9 @@ add_definitions(-DBUILDING_NODE_EXTENSION=1 -DEXTERNAL_NAPI=1)
 
 set(NODEJS_PATH "${PROJECT_SOURCE_DIR}/deps/node/lib/Release/${SYS_PATH}")
 include_directories(
-${PROJECT_SOURCE_DIR}/deps/node/include
+    ${PROJECT_SOURCE_DIR}/deps/node/include
 	${PROJECT_SOURCE_DIR}/deps/v8
-${PROJECT_SOURCE_DIR}/deps/uv
+    ${PROJECT_SOURCE_DIR}/deps/uv
 )
 
 link_directories(${NODEJS_PATH})
@@ -74,6 +74,11 @@ set( S_SOURCES
 )
 
 add_library(nodemod SHARED ${S_SOURCES})
-target_link_libraries(nodemod dl pthread uv ${NODEJS_PATH}/libnode.so.93)
+target_link_libraries(nodemod 
+    dl 
+    pthread 
+    uv 
+    ${NODEJS_PATH}/libnode.so.93
+)
 #add_executable(nodemod2 ${S_SOURCES})
 #target_link_libraries(nodemod2 dl pthread uv ${NODEJS_PATH}/libnode.so.93)

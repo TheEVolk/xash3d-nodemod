@@ -21,7 +21,8 @@ sudo apt-get install gcc-multilib g++-multilib cmake nodejs libuv1-dev
 git clone --recursive https://github.com/TheEVolk/xash3d-nodemod.git
 cd xash3d-nodemod
 node scripts/buildEvents.js
-mkdir build && cd build
+cmake -E make_directory build
+cd build
 cmake ..
 cmake --build . --config Debug
 ```
