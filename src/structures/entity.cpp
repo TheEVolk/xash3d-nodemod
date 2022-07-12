@@ -27,9 +27,14 @@ namespace structures {
 v8::Eternal<v8::ObjectTemplate> entity;
 
 edict_t* unwrapEntity(v8::Isolate* isolate, const v8::Local<v8::Value> &obj) {
+  auto object = obj->ToObject(isolate->GetCurrentContext());
+  if (object.IsEmpty()) {
+    return nullptr;
+  }
+  
  v8::Handle<v8::External> field = v8::Handle<v8::External>::Cast(
-   obj->ToObject(isolate->GetCurrentContext()).ToLocalChecked()->GetInternalField(0)
-   );
+   object.ToLocalChecked()->GetInternalField(0)
+  );
 
  return static_cast<edict_t *>(field->Value());
 }

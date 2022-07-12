@@ -33,6 +33,7 @@ cmake --build . --config Debug
 2. rampageSounds - звуки типа "monster kill"/"multi kill" и подобное. (требуется установить sounds/rampage из директории content)
 3. ads - сообщения в чат с интервалом в 5 минут
 4. fastdl - запускает веб-сервер с файлами из папки custom
+5. welcome - приветственное сообщение
 
 ## RoadMap
 1. Реализовать CBase (по оффсетам) для доступа к полям из gamedll (например, чтобы узнать контролера tank)
