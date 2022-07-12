@@ -9,6 +9,13 @@
 * высокая поддержка (под nodejs есть почти все, базы данных, пакеты, API интеграции и так далее)
 
 ## Компиляция
+Предварительная установка зависимостей
+```
+sudo dpkg --add-architecture i386
+sudo apt-get update
+sudo apt-get install gcc-multilib g++-multilib cmake nodejs libuv1-dev
+```
+  
 Для компиляции требуется установленный nodejs.
 ```
 git clone --recursive https://github.com/TheEVolk/xash3d-nodemod.git
