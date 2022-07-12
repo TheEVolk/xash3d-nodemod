@@ -41,6 +41,7 @@ set(NODEJS_PATH "${PROJECT_SOURCE_DIR}/deps/node/lib/Release/${SYS_PATH}")
 include_directories(
 ${PROJECT_SOURCE_DIR}/deps/node/include
 	${PROJECT_SOURCE_DIR}/deps/v8
+${PROJECT_SOURCE_DIR}/deps/uv
 )
 
 link_directories(${NODEJS_PATH})
