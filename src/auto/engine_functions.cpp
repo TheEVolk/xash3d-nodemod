@@ -1818,6 +1818,17 @@ void sf_eng_CheckParm(const v8::FunctionCallbackInfo<v8::Value>& info)
 nullptr /* char ** */)));
 }
 
+// nodemod.eng.pEntityOfEntIndexAllEntities();
+void sf_eng_pfnPEntityOfEntIndexAllEntities(const v8::FunctionCallbackInfo<v8::Value>& info)
+{
+	auto isolate = info.GetIsolate();
+  v8::Locker locker(isolate);
+	v8::HandleScope scope(isolate);
+	auto context = isolate->GetCurrentContext();
+
+  info.GetReturnValue().Set(structures::wrapEntity(isolate, (*g_engfuncs.pfnPEntityOfEntIndexAllEntities)(info[0]->Int32Value(context).ToChecked())));
+}
+
 static std::pair<std::string, v8::FunctionCallback> engineSpecificFunctions[] = {
   { "precacheModel", sf_eng_pfnPrecacheModel },
   { "precacheSound", sf_eng_pfnPrecacheSound },
@@ -1968,7 +1979,8 @@ static std::pair<std::string, v8::FunctionCallback> engineSpecificFunctions[] = 
   { "resetTutorMessageDecayData", sf_eng_pfnResetTutorMessageDecayData },
   { "queryClientCvarValue", sf_eng_pfnQueryClientCvarValue },
   { "queryClientCvarValue2", sf_eng_pfnQueryClientCvarValue2 },
-  { "checkParm", sf_eng_CheckParm }
+  { "checkParm", sf_eng_CheckParm },
+  { "pEntityOfEntIndexAllEntities", sf_eng_pfnPEntityOfEntIndexAllEntities }
 };
 v8::Local<v8::ObjectTemplate> registerEngineFunctions(v8::Isolate* isolate) {
   v8::Local <v8::ObjectTemplate> object = v8::ObjectTemplate::New(isolate);

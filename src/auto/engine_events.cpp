@@ -1799,6 +1799,17 @@ v8_args[1] = v8::External::New(isolate, ppnext /* char * */); // ppnext (char **
     });
   }
 
+// nodemod.on('engPEntityOfEntIndexAllEntities', (iEntIndex) => console.log('engPEntityOfEntIndexAllEntities fired!'));
+  edict_t* eng_pfnPEntityOfEntIndexAllEntities (int iEntIndex) {
+  SET_META_RESULT(MRES_IGNORED);
+    event::findAndCall("engPEntityOfEntIndexAllEntities", [=](v8::Isolate* isolate) {
+      unsigned int v8_argCount = 1;
+       v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
+      v8_args[0] = v8::Number::New(isolate, iEntIndex); // iEntIndex (int)
+      return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
+    });
+  }
+
     enginefuncs_t g_EngineFunctionsTable = {
       eng_pfnPrecacheModel,
 eng_pfnPrecacheSound,
@@ -1957,7 +1968,8 @@ eng_pfnConstructTutorMessageDecayBuffer,
 eng_pfnResetTutorMessageDecayData,
 eng_pfnQueryClientCvarValue,
 eng_pfnQueryClientCvarValue2,
-eng_CheckParm
+eng_CheckParm,
+eng_pfnPEntityOfEntIndexAllEntities
     };
 
   /* POST EVENTS */
@@ -3753,6 +3765,17 @@ v8_args[1] = v8::External::New(isolate, ppnext /* char * */); // ppnext (char **
     });
   }
 
+// nodemod.on('postEngPEntityOfEntIndexAllEntities', (iEntIndex) => console.log('postEngPEntityOfEntIndexAllEntities fired!'));
+  edict_t* postEng_pfnPEntityOfEntIndexAllEntities (int iEntIndex) {
+  SET_META_RESULT(MRES_IGNORED);
+    event::findAndCall("postEngPEntityOfEntIndexAllEntities", [=](v8::Isolate* isolate) {
+      unsigned int v8_argCount = 1;
+       v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
+      v8_args[0] = v8::Number::New(isolate, iEntIndex); // iEntIndex (int)
+      return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
+    });
+  }
+
     enginefuncs_t g_EngineFunctionsTable_Post = {
       postEng_pfnPrecacheModel,
 postEng_pfnPrecacheSound,
@@ -3911,7 +3934,8 @@ postEng_pfnConstructTutorMessageDecayBuffer,
 postEng_pfnResetTutorMessageDecayData,
 postEng_pfnQueryClientCvarValue,
 postEng_pfnQueryClientCvarValue2,
-postEng_CheckParm
+postEng_CheckParm,
+postEng_pfnPEntityOfEntIndexAllEntities
     };
 
     void registerEngineEvents()
@@ -4075,6 +4099,7 @@ event::register_event("engResetTutorMessageDecayData", "");
 event::register_event("engQueryClientCvarValue", "");
 event::register_event("engQueryClientCvarValue2", "");
 event::register_event("engCheckParm", "");
+event::register_event("engPEntityOfEntIndexAllEntities", "");
       // post
       event::register_event("postEngPrecacheModel", "");
 event::register_event("postEngPrecacheSound", "");
@@ -4234,5 +4259,6 @@ event::register_event("postEngResetTutorMessageDecayData", "");
 event::register_event("postEngQueryClientCvarValue", "");
 event::register_event("postEngQueryClientCvarValue2", "");
 event::register_event("postEngCheckParm", "");
+event::register_event("postEngPEntityOfEntIndexAllEntities", "");
     }
   

@@ -308,6 +308,8 @@ declare class nodemod {
     /** void	(*pfnQueryClientCvarValue2)( const edict_t *player, const char *cvarName, int requestID ); */
     queryClientCvarValue2: (player, cvarName, requestID) => unknown,
     /** int	(*CheckParm)( char *parm, char **ppnext ); */
-    checkParm: (parm, ppnext) => unknown
+    checkParm: (parm, ppnext) => unknown,
+    /** edict_t* (*pfnPEntityOfEntIndexAllEntities)( int iEntIndex ); */
+    pEntityOfEntIndexAllEntities: (iEntIndex) => unknown
   };
 };

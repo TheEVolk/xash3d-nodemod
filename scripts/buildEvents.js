@@ -140,7 +140,7 @@ function parseFunction(line) {
 }
 
 (async () => {
-  const eifaceContent = await fs.readFile('../hlsdk-xash3d/engine/eiface.h').then(v => v.toString());
+  const eifaceContent = await fs.readFile('./deps/hlsdk/engine/eiface.h').then(v => v.toString());
   const [_, dllFunctionsPart] = eifaceContent.match(/#endif\n\ntypedef struct \n{\n([\s\S]+)\n} DLL_FUNCTIONS;/m);
   const dllFunctionsLines = dllFunctionsPart.split('\n').map(v => v.trim().replace(/\/\*.+\*\//g, '')).filter(v => v && !v.startsWith('//'));
   const dllFunctions = dllFunctionsLines.map(parseFunction);
