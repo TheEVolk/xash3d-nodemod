@@ -17,21 +17,30 @@ extern enginefuncs_t g_engfuncs;
 
 #define GETTER(field, TYPE) ([](v8::Local<v8::String> property, const v8::PropertyCallbackInfo<v8::Value> &info) { \
         edict_t *edict = (edict_t *)structures::unwrapEntity(info.GetIsolate(), info.Holder()); \
+        if (edict == NULL) return;\
         info.GetReturnValue().Set(TYPE(edict->field)); \
       }) \
 
-#define SETTER(field, TYPE) ([](v8::Local<v8::String> property, v8::Local<v8::Value> value, const v8::PropertyCallbackInfo<v8::Value> &info) { edict_t *edict = E_GET edict->field = TYPE(value); })
-#define SETTERL(field, TYPE) ([](v8::Local<v8::String> property, v8::Local<v8::Value> value, const v8::PropertyCallbackInfo<v8::Value> &info) { edict_t *edict = E_GET TYPE(value, edict->field); })
+#define SETTER(field, TYPE) ([](v8::Local<v8::String> property, v8::Local<v8::Value> value, const v8::PropertyCallbackInfo<v8::Value> &info) { edict_t *edict = E_GET if (edict == NULL) return; edict->field = TYPE(value); })
+#define SETTERL(field, TYPE) ([](v8::Local<v8::String> property, v8::Local<v8::Value> value, const v8::PropertyCallbackInfo<v8::Value> &info) { edict_t *edict = E_GET if (edict == NULL) return; TYPE(value, edict->field); })
 
 namespace structures {
 v8::Eternal<v8::ObjectTemplate> entity;
 
 edict_t* unwrapEntity(v8::Isolate* isolate, const v8::Local<v8::Value> &obj) {
-  auto object = obj->ToObject(isolate->GetCurrentContext());
-  if (object.IsEmpty()) {
+		v8::Locker locker(isolate);
+  if (obj.IsEmpty() || !obj->IsObject()) {
+    // printf("NOUNWRAP\n");
     return nullptr;
   }
-  
+
+     //printf("UNWRAP\n");
+  auto object = obj->ToObject(isolate->GetCurrentContext());
+  if (object.IsEmpty()) {
+     printf("NOUNWRAP maybe\n"); // It crash server
+    return nullptr;
+  }
+
  v8::Handle<v8::External> field = v8::Handle<v8::External>::Cast(
    object.ToLocalChecked()->GetInternalField(0)
   );
@@ -40,6 +49,13 @@ edict_t* unwrapEntity(v8::Isolate* isolate, const v8::Local<v8::Value> &obj) {
 }
 
  v8::Local<v8::Value> wrapEntity(v8::Isolate* isolate, edict_t* entity) {
+		v8::Locker locker(isolate);
+   if (entity == NULL) {
+     // printf("NOWRAP\n");
+     return v8::Null(isolate);
+   }
+
+    // printf("WRAP\n");
   auto obj = structures::entity.Get(isolate)->NewInstance(isolate->GetCurrentContext()).ToLocalChecked();
   obj->SetInternalField(0, v8::External::New(isolate, entity));
   return obj;

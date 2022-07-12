@@ -206,10 +206,10 @@ v8_args[2] = v8::Number::New(isolate, rad); // rad (float)
     });
   }
 
-// nodemod.on('engFindClientInPvs', (pEdict) => console.log('engFindClientInPvs fired!'));
+// nodemod.on('engFindClientInPVS', (pEdict) => console.log('engFindClientInPVS fired!'));
   edict_t* eng_pfnFindClientInPVS (edict_t * pEdict) {
   SET_META_RESULT(MRES_IGNORED);
-    event::findAndCall("engFindClientInPvs", [=](v8::Isolate* isolate) {
+    event::findAndCall("engFindClientInPVS", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
       v8_args[0] = structures::wrapEntity(isolate, pEdict); // pEdict (edict_t *)
@@ -217,10 +217,10 @@ v8_args[2] = v8::Number::New(isolate, rad); // rad (float)
     });
   }
 
-// nodemod.on('engEntitiesInPvs', (pplayer) => console.log('engEntitiesInPvs fired!'));
+// nodemod.on('engEntitiesInPVS', (pplayer) => console.log('engEntitiesInPVS fired!'));
   edict_t* eng_pfnEntitiesInPVS (edict_t * pplayer) {
   SET_META_RESULT(MRES_IGNORED);
-    event::findAndCall("engEntitiesInPvs", [=](v8::Isolate* isolate) {
+    event::findAndCall("engEntitiesInPVS", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
       v8_args[0] = structures::wrapEntity(isolate, pplayer); // pplayer (edict_t *)
@@ -506,7 +506,17 @@ v8_args[2] = v8::External::New(isolate, rgflReturn /* float  */); // rgflReturn 
     event::findAndCall("engServerExecute", nullptr, 0);
   }
 
-// NULL eng_pfnClientCommand
+// nodemod.on('engClientCommand', (undefined) => console.log('engClientCommand fired!'));
+  void eng_pfnClientCommand (edict_t* ed, const char *szFmt, ...) {
+  SET_META_RESULT(MRES_IGNORED);
+    event::findAndCall("engClientCommand", [=](v8::Isolate* isolate) {
+      unsigned int v8_argCount = 2;
+  v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
+  v8_args[0] = structures::wrapEntity(isolate, ed);
+  v8_args[1] = v8::String::NewFromUtf8(isolate, CMD_ARGS()).ToLocalChecked();
+      return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
+    });
+  }
 
 // nodemod.on('engParticleEffect', (org, dir, color, count) => console.log('engParticleEffect fired!'));
   void eng_pfnParticleEffect (const float * org, const float * dir, float color, float count) {
@@ -976,10 +986,10 @@ v8_args[3] = v8::External::New(isolate, rgflAngles /* float  */); // rgflAngles 
     });
   }
 
-// nodemod.on('engCrc32Init', (pulCRC) => console.log('engCrc32Init fired!'));
+// nodemod.on('engCRC32Init', (pulCRC) => console.log('engCRC32Init fired!'));
   void eng_pfnCRC32_Init (CRC32_t * pulCRC) {
   SET_META_RESULT(MRES_IGNORED);
-    event::findAndCall("engCrc32Init", [=](v8::Isolate* isolate) {
+    event::findAndCall("engCRC32Init", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
       v8_args[0] = v8::External::New(isolate, pulCRC /* CRC32_t  */); // pulCRC (CRC32_t *)
@@ -987,10 +997,10 @@ v8_args[3] = v8::External::New(isolate, rgflAngles /* float  */); // rgflAngles 
     });
   }
 
-// nodemod.on('engCrc32ProcessBuffer', (pulCRC, p, len) => console.log('engCrc32ProcessBuffer fired!'));
+// nodemod.on('engCRC32ProcessBuffer', (pulCRC, p, len) => console.log('engCRC32ProcessBuffer fired!'));
   void eng_pfnCRC32_ProcessBuffer (CRC32_t * pulCRC, void * p, int len) {
   SET_META_RESULT(MRES_IGNORED);
-    event::findAndCall("engCrc32ProcessBuffer", [=](v8::Isolate* isolate) {
+    event::findAndCall("engCRC32ProcessBuffer", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
       v8_args[0] = v8::External::New(isolate, pulCRC /* CRC32_t  */); // pulCRC (CRC32_t *)
@@ -1000,10 +1010,10 @@ v8_args[2] = v8::Number::New(isolate, len); // len (int)
     });
   }
 
-// nodemod.on('engCrc32ProcessByte', (pulCRC, ch) => console.log('engCrc32ProcessByte fired!'));
+// nodemod.on('engCRC32ProcessByte', (pulCRC, ch) => console.log('engCRC32ProcessByte fired!'));
   void eng_pfnCRC32_ProcessByte (CRC32_t * pulCRC, unsigned char ch) {
   SET_META_RESULT(MRES_IGNORED);
-    event::findAndCall("engCrc32ProcessByte", [=](v8::Isolate* isolate) {
+    event::findAndCall("engCRC32ProcessByte", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
       v8_args[0] = v8::External::New(isolate, pulCRC /* CRC32_t  */); // pulCRC (CRC32_t *)
@@ -1332,10 +1342,10 @@ v8_args[10] = structures::wrapEntity(isolate, ed); // ed (edict_t *)
     });
   }
 
-// nodemod.on('engGetPlayerWonId', (e) => console.log('engGetPlayerWonId fired!'));
+// nodemod.on('engGetPlayerWONId', (e) => console.log('engGetPlayerWONId fired!'));
   unsigned int eng_pfnGetPlayerWONId (edict_t * e) {
   SET_META_RESULT(MRES_IGNORED);
-    event::findAndCall("engGetPlayerWonId", [=](v8::Isolate* isolate) {
+    event::findAndCall("engGetPlayerWONId", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
       v8_args[0] = structures::wrapEntity(isolate, e); // e (edict_t *)
@@ -1425,10 +1435,10 @@ v8_args[11] = v8::Number::New(isolate, bparam2); // bparam2 (int)
     });
   }
 
-// nodemod.on('engSetFatPvs', (org) => console.log('engSetFatPvs fired!'));
+// nodemod.on('engSetFatPVS', (org) => console.log('engSetFatPVS fired!'));
   unsigned char * eng_pfnSetFatPVS (const float * org) {
   SET_META_RESULT(MRES_IGNORED);
-    event::findAndCall("engSetFatPvs", [=](v8::Isolate* isolate) {
+    event::findAndCall("engSetFatPVS", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
       v8_args[0] = v8::External::New(isolate, org /* float  */); // org (const float *)
@@ -1436,10 +1446,10 @@ v8_args[11] = v8::Number::New(isolate, bparam2); // bparam2 (int)
     });
   }
 
-// nodemod.on('engSetFatPas', (org) => console.log('engSetFatPas fired!'));
+// nodemod.on('engSetFatPAS', (org) => console.log('engSetFatPAS fired!'));
   unsigned char * eng_pfnSetFatPAS (const float * org) {
   SET_META_RESULT(MRES_IGNORED);
-    event::findAndCall("engSetFatPas", [=](v8::Isolate* isolate) {
+    event::findAndCall("engSetFatPAS", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
       v8_args[0] = v8::External::New(isolate, org /* float  */); // org (const float *)
@@ -1831,7 +1841,7 @@ eng_pfnTraceSphere,
 eng_pfnGetAimVector,
 eng_pfnServerCommand,
 eng_pfnServerExecute,
-NULL,
+eng_pfnClientCommand,
 eng_pfnParticleEffect,
 eng_pfnLightStyle,
 eng_pfnDecalIndex,
@@ -2150,10 +2160,10 @@ v8_args[2] = v8::Number::New(isolate, rad); // rad (float)
     });
   }
 
-// nodemod.on('postEngFindClientInPvs', (pEdict) => console.log('postEngFindClientInPvs fired!'));
+// nodemod.on('postEngFindClientInPVS', (pEdict) => console.log('postEngFindClientInPVS fired!'));
   edict_t* postEng_pfnFindClientInPVS (edict_t * pEdict) {
   SET_META_RESULT(MRES_IGNORED);
-    event::findAndCall("postEngFindClientInPvs", [=](v8::Isolate* isolate) {
+    event::findAndCall("postEngFindClientInPVS", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
       v8_args[0] = structures::wrapEntity(isolate, pEdict); // pEdict (edict_t *)
@@ -2161,10 +2171,10 @@ v8_args[2] = v8::Number::New(isolate, rad); // rad (float)
     });
   }
 
-// nodemod.on('postEngEntitiesInPvs', (pplayer) => console.log('postEngEntitiesInPvs fired!'));
+// nodemod.on('postEngEntitiesInPVS', (pplayer) => console.log('postEngEntitiesInPVS fired!'));
   edict_t* postEng_pfnEntitiesInPVS (edict_t * pplayer) {
   SET_META_RESULT(MRES_IGNORED);
-    event::findAndCall("postEngEntitiesInPvs", [=](v8::Isolate* isolate) {
+    event::findAndCall("postEngEntitiesInPVS", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
       v8_args[0] = structures::wrapEntity(isolate, pplayer); // pplayer (edict_t *)
@@ -2450,7 +2460,17 @@ v8_args[2] = v8::External::New(isolate, rgflReturn /* float  */); // rgflReturn 
     event::findAndCall("postEngServerExecute", nullptr, 0);
   }
 
-// NULL postEng_pfnClientCommand
+// nodemod.on('postEngClientCommand', (undefined) => console.log('postEngClientCommand fired!'));
+  void postEng_pfnClientCommand (edict_t* ed, const char *szFmt, ...) {
+  SET_META_RESULT(MRES_IGNORED);
+    event::findAndCall("postEngClientCommand", [=](v8::Isolate* isolate) {
+      unsigned int v8_argCount = 2;
+  v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
+  v8_args[0] = structures::wrapEntity(isolate, ed);
+  v8_args[1] = v8::String::NewFromUtf8(isolate, CMD_ARGS()).ToLocalChecked();
+      return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
+    });
+  }
 
 // nodemod.on('postEngParticleEffect', (org, dir, color, count) => console.log('postEngParticleEffect fired!'));
   void postEng_pfnParticleEffect (const float * org, const float * dir, float color, float count) {
@@ -2920,10 +2940,10 @@ v8_args[3] = v8::External::New(isolate, rgflAngles /* float  */); // rgflAngles 
     });
   }
 
-// nodemod.on('postEngCrc32Init', (pulCRC) => console.log('postEngCrc32Init fired!'));
+// nodemod.on('postEngCRC32Init', (pulCRC) => console.log('postEngCRC32Init fired!'));
   void postEng_pfnCRC32_Init (CRC32_t * pulCRC) {
   SET_META_RESULT(MRES_IGNORED);
-    event::findAndCall("postEngCrc32Init", [=](v8::Isolate* isolate) {
+    event::findAndCall("postEngCRC32Init", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
       v8_args[0] = v8::External::New(isolate, pulCRC /* CRC32_t  */); // pulCRC (CRC32_t *)
@@ -2931,10 +2951,10 @@ v8_args[3] = v8::External::New(isolate, rgflAngles /* float  */); // rgflAngles 
     });
   }
 
-// nodemod.on('postEngCrc32ProcessBuffer', (pulCRC, p, len) => console.log('postEngCrc32ProcessBuffer fired!'));
+// nodemod.on('postEngCRC32ProcessBuffer', (pulCRC, p, len) => console.log('postEngCRC32ProcessBuffer fired!'));
   void postEng_pfnCRC32_ProcessBuffer (CRC32_t * pulCRC, void * p, int len) {
   SET_META_RESULT(MRES_IGNORED);
-    event::findAndCall("postEngCrc32ProcessBuffer", [=](v8::Isolate* isolate) {
+    event::findAndCall("postEngCRC32ProcessBuffer", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
       v8_args[0] = v8::External::New(isolate, pulCRC /* CRC32_t  */); // pulCRC (CRC32_t *)
@@ -2944,10 +2964,10 @@ v8_args[2] = v8::Number::New(isolate, len); // len (int)
     });
   }
 
-// nodemod.on('postEngCrc32ProcessByte', (pulCRC, ch) => console.log('postEngCrc32ProcessByte fired!'));
+// nodemod.on('postEngCRC32ProcessByte', (pulCRC, ch) => console.log('postEngCRC32ProcessByte fired!'));
   void postEng_pfnCRC32_ProcessByte (CRC32_t * pulCRC, unsigned char ch) {
   SET_META_RESULT(MRES_IGNORED);
-    event::findAndCall("postEngCrc32ProcessByte", [=](v8::Isolate* isolate) {
+    event::findAndCall("postEngCRC32ProcessByte", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
       v8_args[0] = v8::External::New(isolate, pulCRC /* CRC32_t  */); // pulCRC (CRC32_t *)
@@ -3276,10 +3296,10 @@ v8_args[10] = structures::wrapEntity(isolate, ed); // ed (edict_t *)
     });
   }
 
-// nodemod.on('postEngGetPlayerWonId', (e) => console.log('postEngGetPlayerWonId fired!'));
+// nodemod.on('postEngGetPlayerWONId', (e) => console.log('postEngGetPlayerWONId fired!'));
   unsigned int postEng_pfnGetPlayerWONId (edict_t * e) {
   SET_META_RESULT(MRES_IGNORED);
-    event::findAndCall("postEngGetPlayerWonId", [=](v8::Isolate* isolate) {
+    event::findAndCall("postEngGetPlayerWONId", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
       v8_args[0] = structures::wrapEntity(isolate, e); // e (edict_t *)
@@ -3369,10 +3389,10 @@ v8_args[11] = v8::Number::New(isolate, bparam2); // bparam2 (int)
     });
   }
 
-// nodemod.on('postEngSetFatPvs', (org) => console.log('postEngSetFatPvs fired!'));
+// nodemod.on('postEngSetFatPVS', (org) => console.log('postEngSetFatPVS fired!'));
   unsigned char * postEng_pfnSetFatPVS (const float * org) {
   SET_META_RESULT(MRES_IGNORED);
-    event::findAndCall("postEngSetFatPvs", [=](v8::Isolate* isolate) {
+    event::findAndCall("postEngSetFatPVS", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
       v8_args[0] = v8::External::New(isolate, org /* float  */); // org (const float *)
@@ -3380,10 +3400,10 @@ v8_args[11] = v8::Number::New(isolate, bparam2); // bparam2 (int)
     });
   }
 
-// nodemod.on('postEngSetFatPas', (org) => console.log('postEngSetFatPas fired!'));
+// nodemod.on('postEngSetFatPAS', (org) => console.log('postEngSetFatPAS fired!'));
   unsigned char * postEng_pfnSetFatPAS (const float * org) {
   SET_META_RESULT(MRES_IGNORED);
-    event::findAndCall("postEngSetFatPas", [=](v8::Isolate* isolate) {
+    event::findAndCall("postEngSetFatPAS", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
       v8_args[0] = v8::External::New(isolate, org /* float  */); // org (const float *)
@@ -3775,7 +3795,7 @@ postEng_pfnTraceSphere,
 postEng_pfnGetAimVector,
 postEng_pfnServerCommand,
 postEng_pfnServerExecute,
-NULL,
+postEng_pfnClientCommand,
 postEng_pfnParticleEffect,
 postEng_pfnLightStyle,
 postEng_pfnDecalIndex,
@@ -3914,8 +3934,8 @@ event::register_event("engChangePitch", "");
 event::register_event("engFindEntityByString", "");
 event::register_event("engGetEntityIllum", "");
 event::register_event("engFindEntityInSphere", "");
-event::register_event("engFindClientInPvs", "");
-event::register_event("engEntitiesInPvs", "");
+event::register_event("engFindClientInPVS", "");
+event::register_event("engEntitiesInPVS", "");
 event::register_event("engMakeVectors", "");
 event::register_event("engAngleVectors", "");
 event::register_event("engCreateEntity", "");
@@ -3983,10 +4003,10 @@ event::register_event("engCmdArgs", "");
 event::register_event("engCmdArgv", "");
 event::register_event("engCmdArgc", "");
 event::register_event("engGetAttachment", "");
-event::register_event("engCrc32Init", "");
-event::register_event("engCrc32ProcessBuffer", "");
-event::register_event("engCrc32ProcessByte", "");
-event::register_event("engCrc32Final", "");
+event::register_event("engCRC32Init", "");
+event::register_event("engCRC32ProcessBuffer", "");
+event::register_event("engCRC32ProcessByte", "");
+event::register_event("engCRC32Final", "");
 event::register_event("engRandomLong", "");
 event::register_event("engRandomFloat", "");
 event::register_event("engSetView", "");
@@ -4014,15 +4034,15 @@ event::register_event("engGetPlayerUserId", "");
 event::register_event("engBuildSoundMsg", "");
 event::register_event("engIsDedicatedServer", "");
 event::register_event("engCVarGetPointer", "");
-event::register_event("engGetPlayerWonId", "");
+event::register_event("engGetPlayerWONId", "");
 event::register_event("engInfoRemoveKey", "");
 event::register_event("engGetPhysicsKeyValue", "");
 event::register_event("engSetPhysicsKeyValue", "");
 event::register_event("engGetPhysicsInfoString", "");
 event::register_event("engPrecacheEvent", "");
 event::register_event("engPlaybackEvent", "");
-event::register_event("engSetFatPvs", "");
-event::register_event("engSetFatPas", "");
+event::register_event("engSetFatPVS", "");
+event::register_event("engSetFatPAS", "");
 event::register_event("engCheckVisibility", "");
 event::register_event("engDeltaSetField", "");
 event::register_event("engDeltaUnsetField", "");
@@ -4073,8 +4093,8 @@ event::register_event("postEngChangePitch", "");
 event::register_event("postEngFindEntityByString", "");
 event::register_event("postEngGetEntityIllum", "");
 event::register_event("postEngFindEntityInSphere", "");
-event::register_event("postEngFindClientInPvs", "");
-event::register_event("postEngEntitiesInPvs", "");
+event::register_event("postEngFindClientInPVS", "");
+event::register_event("postEngEntitiesInPVS", "");
 event::register_event("postEngMakeVectors", "");
 event::register_event("postEngAngleVectors", "");
 event::register_event("postEngCreateEntity", "");
@@ -4142,10 +4162,10 @@ event::register_event("postEngCmdArgs", "");
 event::register_event("postEngCmdArgv", "");
 event::register_event("postEngCmdArgc", "");
 event::register_event("postEngGetAttachment", "");
-event::register_event("postEngCrc32Init", "");
-event::register_event("postEngCrc32ProcessBuffer", "");
-event::register_event("postEngCrc32ProcessByte", "");
-event::register_event("postEngCrc32Final", "");
+event::register_event("postEngCRC32Init", "");
+event::register_event("postEngCRC32ProcessBuffer", "");
+event::register_event("postEngCRC32ProcessByte", "");
+event::register_event("postEngCRC32Final", "");
 event::register_event("postEngRandomLong", "");
 event::register_event("postEngRandomFloat", "");
 event::register_event("postEngSetView", "");
@@ -4173,15 +4193,15 @@ event::register_event("postEngGetPlayerUserId", "");
 event::register_event("postEngBuildSoundMsg", "");
 event::register_event("postEngIsDedicatedServer", "");
 event::register_event("postEngCVarGetPointer", "");
-event::register_event("postEngGetPlayerWonId", "");
+event::register_event("postEngGetPlayerWONId", "");
 event::register_event("postEngInfoRemoveKey", "");
 event::register_event("postEngGetPhysicsKeyValue", "");
 event::register_event("postEngSetPhysicsKeyValue", "");
 event::register_event("postEngGetPhysicsInfoString", "");
 event::register_event("postEngPrecacheEvent", "");
 event::register_event("postEngPlaybackEvent", "");
-event::register_event("postEngSetFatPvs", "");
-event::register_event("postEngSetFatPas", "");
+event::register_event("postEngSetFatPVS", "");
+event::register_event("postEngSetFatPAS", "");
 event::register_event("postEngCheckVisibility", "");
 event::register_event("postEngDeltaSetField", "");
 event::register_event("postEngDeltaUnsetField", "");

@@ -206,7 +206,7 @@ nullptr /* const float * */,
 info[2]->NumberValue(context).ToChecked())));
 }
 
-// nodemod.eng.findClientInPvs();
+// nodemod.eng.findClientInPVS();
 void sf_eng_pfnFindClientInPVS(const v8::FunctionCallbackInfo<v8::Value>& info)
 {
 	auto isolate = info.GetIsolate();
@@ -217,7 +217,7 @@ void sf_eng_pfnFindClientInPVS(const v8::FunctionCallbackInfo<v8::Value>& info)
   info.GetReturnValue().Set(structures::wrapEntity(isolate, (*g_engfuncs.pfnFindClientInPVS)(structures::unwrapEntity(isolate, info[0]))));
 }
 
-// nodemod.eng.entitiesInPvs();
+// nodemod.eng.entitiesInPVS();
 void sf_eng_pfnEntitiesInPVS(const v8::FunctionCallbackInfo<v8::Value>& info)
 {
 	auto isolate = info.GetIsolate();
@@ -1347,7 +1347,7 @@ void sf_eng_pfnCVarGetPointer(const v8::FunctionCallbackInfo<v8::Value>& info)
   info.GetReturnValue().Set(v8::External::New(isolate, (*g_engfuncs.pfnCVarGetPointer)(utils::js2string(isolate, info[0])) /* cvar_t  */));
 }
 
-// nodemod.eng.getPlayerWonId();
+// nodemod.eng.getPlayerWONId();
 void sf_eng_pfnGetPlayerWONId(const v8::FunctionCallbackInfo<v8::Value>& info)
 {
 	auto isolate = info.GetIsolate();
@@ -1440,7 +1440,7 @@ info[10]->Int32Value(context).ToChecked(),
 info[11]->Int32Value(context).ToChecked());
 }
 
-// nodemod.eng.setFatPvs();
+// nodemod.eng.setFatPVS();
 void sf_eng_pfnSetFatPVS(const v8::FunctionCallbackInfo<v8::Value>& info)
 {
 	auto isolate = info.GetIsolate();
@@ -1451,7 +1451,7 @@ void sf_eng_pfnSetFatPVS(const v8::FunctionCallbackInfo<v8::Value>& info)
   info.GetReturnValue().Set(v8::External::New(isolate, (*g_engfuncs.pfnSetFatPVS)(nullptr /* const float * */) /* unsigned char  */));
 }
 
-// nodemod.eng.setFatPas();
+// nodemod.eng.setFatPAS();
 void sf_eng_pfnSetFatPAS(const v8::FunctionCallbackInfo<v8::Value>& info)
 {
 	auto isolate = info.GetIsolate();
@@ -1836,8 +1836,8 @@ static std::pair<std::string, v8::FunctionCallback> engineSpecificFunctions[] = 
   { "findEntityByString", sf_eng_pfnFindEntityByString },
   { "getEntityIllum", sf_eng_pfnGetEntityIllum },
   { "findEntityInSphere", sf_eng_pfnFindEntityInSphere },
-  { "findClientInPvs", sf_eng_pfnFindClientInPVS },
-  { "entitiesInPvs", sf_eng_pfnEntitiesInPVS },
+  { "findClientInPVS", sf_eng_pfnFindClientInPVS },
+  { "entitiesInPVS", sf_eng_pfnEntitiesInPVS },
   { "makeVectors", sf_eng_pfnMakeVectors },
   { "angleVectors", sf_eng_pfnAngleVectors },
   { "createEntity", sf_eng_pfnCreateEntity },
@@ -1930,15 +1930,15 @@ static std::pair<std::string, v8::FunctionCallback> engineSpecificFunctions[] = 
   { "buildSoundMsg", sf_eng_pfnBuildSoundMsg },
   { "isDedicatedServer", sf_eng_pfnIsDedicatedServer },
   { "cVarGetPointer", sf_eng_pfnCVarGetPointer },
-  { "getPlayerWonId", sf_eng_pfnGetPlayerWONId },
+  { "getPlayerWONId", sf_eng_pfnGetPlayerWONId },
   { "infoRemoveKey", sf_eng_pfnInfo_RemoveKey },
   { "getPhysicsKeyValue", sf_eng_pfnGetPhysicsKeyValue },
   { "setPhysicsKeyValue", sf_eng_pfnSetPhysicsKeyValue },
   { "getPhysicsInfoString", sf_eng_pfnGetPhysicsInfoString },
   { "precacheEvent", sf_eng_pfnPrecacheEvent },
   { "playbackEvent", sf_eng_pfnPlaybackEvent },
-  { "setFatPvs", sf_eng_pfnSetFatPVS },
-  { "setFatPas", sf_eng_pfnSetFatPAS },
+  { "setFatPVS", sf_eng_pfnSetFatPVS },
+  { "setFatPAS", sf_eng_pfnSetFatPAS },
   { "checkVisibility", sf_eng_pfnCheckVisibility },
   { "deltaSetField", sf_eng_pfnDeltaSetField },
   { "deltaUnsetField", sf_eng_pfnDeltaUnsetField },

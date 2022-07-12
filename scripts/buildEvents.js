@@ -1,11 +1,9 @@
 // Создаем events.cpp и events.hpp, в которых все евенты автоматически транслируются в nodejs
-import {
-  camelCase
-} from 'change-case';
 import { promises as fs } from 'fs';
+import customs from './customs.js';
 import fileMaker from './fileMaker.js';
 import generator from './generator.js';
-
+import { camelize } from './util.js';
 
 function argToValue(arg) {
   return generator.cpp2js(arg.type, arg.name) || 'v8::Boolean::New(isolate, false)';
@@ -13,15 +11,31 @@ function argToValue(arg) {
 }
 
 function getEventName(func, prefix) {
-  return camelCase(`${prefix}${func.name.replace(/^pfn/, '')}`);
+  return camelize(`${prefix}${func.name.replace(/^pfn/, '')}`);
 }
 
-function getFunction(func, prefix) {
+function getFunction(func, prefix, type) {
+  const customBody = customs[type]?.[func.name]?.event?.body;
+  customBody && console.log(func.name, 'YES')
+  const eventName = getEventName(func, prefix);
+  const description = `// nodemod.on('${eventName}', (${func.args && func.args.map(v => v.name).join(', ')}) => console.log('${eventName} fired!'));`;
+  if (customBody) {
+    func._eventName = `${prefix}_${func.name}`;
+    return `${description}
+  ${func.type === 'NULL' ? 'void' : func.type} ${prefix}_${func.name} (${customs[type]?.[func.name]?.event?.argsString || func.args.map(v => `${v.type} ${v.name}`).join(', ')}) {
+  SET_META_RESULT(MRES_IGNORED);
+    event::findAndCall("${eventName}", [=](v8::Isolate* isolate) {
+      ${customBody}
+      return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
+    });
+  }`;
+  }
+
   if (func.type === 'NULL') {
     return `// NULL ${prefix}_${func.name}`;
   }
 
-  const eventName = getEventName(func, prefix);
+  func._eventName = `${prefix}_${func.name}`;
   if (func.name === 'pfnStartFrame' && prefix !== 'post') {
     return `// ${func.name}
   ${func.type} ${prefix}_${func.name} () {
@@ -29,7 +43,6 @@ function getFunction(func, prefix) {
   }`;
   }
 
-  const description = `// nodemod.on('${eventName}', (${func.args.map(v => v.name).join(', ')}) => console.log('${eventName} fired!'));`;
   if (func.args.length === 0) {
     return `${description}
   ${func.type} ${prefix}_${func.name} () {
@@ -49,10 +62,10 @@ function getFunction(func, prefix) {
   }`;
 }
 
-function getFunctions(dllFunctions, prefix) {
+function getFunctions(dllFunctions, prefix, type) {
   return {
-    functions: dllFunctions.map(v => getFunction(v, prefix)),
-    definitions: dllFunctions.map(v => v.type === 'NULL' ? 'NULL' : `${prefix}_${v.name}`)
+    functions: dllFunctions.map(v => getFunction(v, prefix, type)),
+    definitions: dllFunctions.map(v => v._eventName || 'NULL')
   };
 }
 
@@ -136,8 +149,8 @@ function parseFunction(line) {
   const engineFunctionsLines = clearByDefines(engineFunctionsPart.split('\n').map(v => v.trim().replace(/\/\*.+\*\//g, '')).filter(v => v && !v.startsWith('//')));
   const engineFunctions = engineFunctionsLines.map(parseFunction);
   // return;
-  const baseDllFunctions = getFunctions(dllFunctions, 'dll');
-  const postDllFunctions = getFunctions(dllFunctions, 'postDll');
+  const baseDllFunctions = getFunctions(dllFunctions, 'dll', 'dll');
+  const postDllFunctions = getFunctions(dllFunctions, 'postDll', 'dll');
 
   const computed = {
     dll: dllFunctions.map(v => computeFunction(v, 'dll')),
@@ -181,8 +194,8 @@ function parseFunction(line) {
 
   await fs.writeFile('./src/auto/dll_events.cpp', file);
 
-  const baseEngineFunctions = getFunctions(engineFunctions, 'eng');
-  const postEngineFunctions = getFunctions(engineFunctions, 'postEng');
+  const baseEngineFunctions = getFunctions(engineFunctions, 'eng', 'eng');
+  const postEngineFunctions = getFunctions(engineFunctions, 'postEng', 'eng');
   const engineFile = `// This file builded by: node scripts/buildEvents.js
   #include <extdll.h>
   #include "node/nodeimpl.hpp"
@@ -220,10 +233,10 @@ function parseFunction(line) {
 })();
 
 function computeFunctionApi(func, source) {
-  const jsName = camelCase(func.name.replace(/^pfn/, ''));
+  const jsName = camelize(func.name.replace(/^pfn/, ''));
   return {
     original: func.original,
-    definition: `{ "${camelCase(func.name.replace(/^pfn/, ''))}", sf_${source}_${func.name} }`,
+    definition: `{ "${camelize(func.name.replace(/^pfn/, ''))}", sf_${source}_${func.name} }`,
     body: `// nodemod.eng.${jsName}();\n${generator.generateCppFunction(func, 'g_engfuncs', 'sf_eng')}`,
     typing: `${jsName}: (${(func.args || []).map(v => v.name).join(', ')}) => unknown`
   };

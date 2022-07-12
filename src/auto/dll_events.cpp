@@ -223,12 +223,25 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, szRejectReason).ToLocalChecked(); 
   }
 
 // nodemod.on('dllClientCommand', (pEntity) => console.log('dllClientCommand fired!'));
-  void dll_pfnClientCommand (edict_t * pEntity) {
+  void dll_pfnClientCommand (edict_t* ed) {
   SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllClientCommand", [=](v8::Isolate* isolate) {
-      unsigned int v8_argCount = 1;
-       v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = structures::wrapEntity(isolate, pEntity); // pEntity (edict_t *)
+      unsigned int v8_argCount = 2;
+  v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
+  v8_args[0] = structures::wrapEntity(isolate, ed);
+
+  // refactor it str hell
+  if (CMD_ARGC() > 1) {
+  char buf[100];
+  printf("use args\n");
+  std::string args = std::string(CMD_ARGS()).substr(1);
+  args.pop_back();
+  sprintf(buf, "%s %s", CMD_ARGV(0), args.c_str());
+  v8_args[1] = v8::String::NewFromUtf8(isolate, buf).ToLocalChecked();
+  } else {
+  printf("not use args\n");
+    v8_args[1] = v8::String::NewFromUtf8(isolate, CMD_ARGV(0)).ToLocalChecked();
+  }
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -361,10 +374,10 @@ v8_args[1] = v8::External::New(isolate, pCustom /* customization_t  */); // pCus
     });
   }
 
-// nodemod.on('dllPmMove', (ppmove, server) => console.log('dllPmMove fired!'));
+// nodemod.on('dllPMMove', (ppmove, server) => console.log('dllPMMove fired!'));
   void dll_pfnPM_Move (struct playermove_s * ppmove, qboolean server) {
   SET_META_RESULT(MRES_IGNORED);
-    event::findAndCall("dllPmMove", [=](v8::Isolate* isolate) {
+    event::findAndCall("dllPMMove", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
       v8_args[0] = v8::External::New(isolate, ppmove /* playermove_s  */); // ppmove (struct playermove_s *)
@@ -373,10 +386,10 @@ v8_args[1] = v8::Boolean::New(isolate, server); // server (qboolean)
     });
   }
 
-// nodemod.on('dllPmInit', (ppmove) => console.log('dllPmInit fired!'));
+// nodemod.on('dllPMInit', (ppmove) => console.log('dllPMInit fired!'));
   void dll_pfnPM_Init (struct playermove_s * ppmove) {
   SET_META_RESULT(MRES_IGNORED);
-    event::findAndCall("dllPmInit", [=](v8::Isolate* isolate) {
+    event::findAndCall("dllPMInit", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
       v8_args[0] = v8::External::New(isolate, ppmove /* playermove_s  */); // ppmove (struct playermove_s *)
@@ -384,10 +397,10 @@ v8_args[1] = v8::Boolean::New(isolate, server); // server (qboolean)
     });
   }
 
-// nodemod.on('dllPmFindTextureType', (name) => console.log('dllPmFindTextureType fired!'));
+// nodemod.on('dllPMFindTextureType', (name) => console.log('dllPMFindTextureType fired!'));
   char dll_pfnPM_FindTextureType (const char * name) {
   SET_META_RESULT(MRES_IGNORED);
-    event::findAndCall("dllPmFindTextureType", [=](v8::Isolate* isolate) {
+    event::findAndCall("dllPMFindTextureType", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
       v8_args[0] = v8::String::NewFromUtf8(isolate, name).ToLocalChecked(); // name (const char *)
@@ -817,12 +830,25 @@ v8_args[3] = v8::String::NewFromUtf8(isolate, szRejectReason).ToLocalChecked(); 
   }
 
 // nodemod.on('postDllClientCommand', (pEntity) => console.log('postDllClientCommand fired!'));
-  void postDll_pfnClientCommand (edict_t * pEntity) {
+  void postDll_pfnClientCommand (edict_t* ed) {
   SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("postDllClientCommand", [=](v8::Isolate* isolate) {
-      unsigned int v8_argCount = 1;
-       v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = structures::wrapEntity(isolate, pEntity); // pEntity (edict_t *)
+      unsigned int v8_argCount = 2;
+  v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
+  v8_args[0] = structures::wrapEntity(isolate, ed);
+
+  // refactor it str hell
+  if (CMD_ARGC() > 1) {
+  char buf[100];
+  printf("use args\n");
+  std::string args = std::string(CMD_ARGS()).substr(1);
+  args.pop_back();
+  sprintf(buf, "%s %s", CMD_ARGV(0), args.c_str());
+  v8_args[1] = v8::String::NewFromUtf8(isolate, buf).ToLocalChecked();
+  } else {
+  printf("not use args\n");
+    v8_args[1] = v8::String::NewFromUtf8(isolate, CMD_ARGV(0)).ToLocalChecked();
+  }
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
@@ -955,10 +981,10 @@ v8_args[1] = v8::External::New(isolate, pCustom /* customization_t  */); // pCus
     });
   }
 
-// nodemod.on('postDllPmMove', (ppmove, server) => console.log('postDllPmMove fired!'));
+// nodemod.on('postDllPMMove', (ppmove, server) => console.log('postDllPMMove fired!'));
   void postDll_pfnPM_Move (struct playermove_s * ppmove, qboolean server) {
   SET_META_RESULT(MRES_IGNORED);
-    event::findAndCall("postDllPmMove", [=](v8::Isolate* isolate) {
+    event::findAndCall("postDllPMMove", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
       v8_args[0] = v8::External::New(isolate, ppmove /* playermove_s  */); // ppmove (struct playermove_s *)
@@ -967,10 +993,10 @@ v8_args[1] = v8::Boolean::New(isolate, server); // server (qboolean)
     });
   }
 
-// nodemod.on('postDllPmInit', (ppmove) => console.log('postDllPmInit fired!'));
+// nodemod.on('postDllPMInit', (ppmove) => console.log('postDllPMInit fired!'));
   void postDll_pfnPM_Init (struct playermove_s * ppmove) {
   SET_META_RESULT(MRES_IGNORED);
-    event::findAndCall("postDllPmInit", [=](v8::Isolate* isolate) {
+    event::findAndCall("postDllPMInit", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
       v8_args[0] = v8::External::New(isolate, ppmove /* playermove_s  */); // ppmove (struct playermove_s *)
@@ -978,10 +1004,10 @@ v8_args[1] = v8::Boolean::New(isolate, server); // server (qboolean)
     });
   }
 
-// nodemod.on('postDllPmFindTextureType', (name) => console.log('postDllPmFindTextureType fired!'));
+// nodemod.on('postDllPMFindTextureType', (name) => console.log('postDllPMFindTextureType fired!'));
   char postDll_pfnPM_FindTextureType (const char * name) {
   SET_META_RESULT(MRES_IGNORED);
-    event::findAndCall("postDllPmFindTextureType", [=](v8::Isolate* isolate) {
+    event::findAndCall("postDllPMFindTextureType", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
       v8_args[0] = v8::String::NewFromUtf8(isolate, name).ToLocalChecked(); // name (const char *)
@@ -1231,9 +1257,9 @@ event::register_event("dllSpectatorConnect", "");
 event::register_event("dllSpectatorDisconnect", "");
 event::register_event("dllSpectatorThink", "");
 event::register_event("dllSysError", "");
-event::register_event("dllPmMove", "");
-event::register_event("dllPmInit", "");
-event::register_event("dllPmFindTextureType", "");
+event::register_event("dllPMMove", "");
+event::register_event("dllPMInit", "");
+event::register_event("dllPMFindTextureType", "");
 event::register_event("dllSetupVisibility", "");
 event::register_event("dllUpdateClientData", "");
 event::register_event("dllAddToFullPack", "");
@@ -1282,9 +1308,9 @@ event::register_event("postDllSpectatorConnect", "");
 event::register_event("postDllSpectatorDisconnect", "");
 event::register_event("postDllSpectatorThink", "");
 event::register_event("postDllSysError", "");
-event::register_event("postDllPmMove", "");
-event::register_event("postDllPmInit", "");
-event::register_event("postDllPmFindTextureType", "");
+event::register_event("postDllPMMove", "");
+event::register_event("postDllPMInit", "");
+event::register_event("postDllPMFindTextureType", "");
 event::register_event("postDllSetupVisibility", "");
 event::register_event("postDllUpdateClientData", "");
 event::register_event("postDllAddToFullPack", "");

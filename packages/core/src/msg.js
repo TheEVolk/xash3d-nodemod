@@ -1,4 +1,5 @@
 import EventEmmiter from 'node:events';
+import nodemodCore from './index.js';
 
 export const MsgDest = {
   broadcast: 0, // Сообщение всем игрокам без гарантии доставки
@@ -11,6 +12,68 @@ export const MsgDest = {
   pas_r: 7, // Всем игрокам в зоне слышимости с гарант.доставки
   one_unreliable: 8, // Сообщение одному игроку, без гарантии доставки
   spec: 9 // Сообщение всем HLTV proxy
+}
+
+export const MsgTypes = {
+  bad: 0,
+  nop: 1,
+  disconnect: 2,
+  event: 3,
+  version: 4,
+  setview: 5,
+  sound: 6,
+  time: 7,
+  print: 8,
+  stufftext: 9,
+  setangle: 10,
+  serverinfo: 11,
+  lightstyle: 12,
+  updateuserinfo: 13,
+  deltadescription: 14,
+  clientdata: 15,
+  stopsound: 16,
+  pings: 17,
+  particle: 18,
+  damage: 19,
+  spawnstatic: 20,
+  event_reliable: 21,
+  spawnbaseline: 22,
+  tempentity: 23,
+  setpause: 24,
+  signonnum: 25,
+  centerprint: 26,
+  killedmonster: 27,
+  foundsecret: 28,
+  spawnstaticsound: 29,
+  intermission: 30,
+  finale: 31,
+  cdtrack: 32,
+  restore: 33,
+  cutscene: 34,
+  weaponanim: 35,
+  decalname: 36,
+  roomtype: 37,
+  addangle: 38,
+  newusermsg: 39,
+  packetentities: 40,
+  deltapacketentities: 41,
+  choke: 42,
+  resourcelist: 43,
+  newmovevars: 44,
+  resourcerequest: 45,
+  customization: 46,
+  crosshairangle: 47,
+  soundfade: 48,
+  filetxferfailed: 49,
+  hltv: 50,
+  director: 51,
+  voiceinit: 52,
+  voicedata: 53,
+  sendextrainfo: 54,
+  timescale: 55,
+  resourcelocation: 56,
+  sendcvarvalue: 57,
+  sendcvarvalue2: 58
 }
 
 export default class NodemodMsg extends EventEmmiter {
@@ -103,9 +166,7 @@ export default class NodemodMsg extends EventEmmiter {
       options.dest || (options.entity ? MsgDest.one : MsgDest.all),
       typeof options.type === 'string' ? this.getUserMsgId(options.type) : options.type,
       options.origin || [0, 0, 0],
-      options.entity ? (
-        typeof options.entity === 'number' ? nodemod.eng.pEntityOfEntIndex(options.entity) : options.entity
-      ) : 0
+      nodemodCore.util.forceEntityObject(options.entity)
     );
 
     options.data.map(v => this.writers[v.type](v.value));

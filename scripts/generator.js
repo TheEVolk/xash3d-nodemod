@@ -86,7 +86,7 @@ const generator = {
   },
 
   generateCppFunction(func, source, prefix) {
-    const customBody = customs[func.name]?.api?.body;
+    const customBody = customs[prefix.split('_')[1]]?.[func.name]?.api?.body;
     return `void ${prefix}_${func.name}(const v8::FunctionCallbackInfo<v8::Value>& info)
 {
 	auto isolate = info.GetIsolate();

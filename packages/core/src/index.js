@@ -1,3 +1,4 @@
+import NodemodCmd from './cmd.js';
 import NodemodMsg from './msg.js';
 import NodemodSound from './sound.js';
 import NodemodUtil from './util.js';
@@ -6,6 +7,7 @@ class NodemodCore {
   msg = new NodemodMsg();
   util = new NodemodUtil();
   sound = new NodemodSound();
+  cmd = new NodemodCmd();
 }
 
 const nodemodCore = new NodemodCore();

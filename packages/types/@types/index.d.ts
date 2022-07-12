@@ -36,9 +36,9 @@ declare class nodemod {
     /** edict_t*	(*pfnFindEntityInSphere)( edict_t *pEdictStartSearchAfter, const float *org, float rad ); */
     findEntityInSphere: (pEdictStartSearchAfter, org, rad) => unknown,
     /** edict_t*	(*pfnFindClientInPVS)( edict_t *pEdict ); */
-    findClientInPvs: (pEdict) => unknown,
+    findClientInPVS: (pEdict) => unknown,
     /** edict_t*	(*pfnEntitiesInPVS)( edict_t *pplayer ); */
-    entitiesInPvs: (pplayer) => unknown,
+    entitiesInPVS: (pplayer) => unknown,
     /** void	(*pfnMakeVectors)( const float *rgflVector ); */
     makeVectors: (rgflVector) => unknown,
     /** void	(*pfnAngleVectors)( const float *rgflVector, float *forward, float *right, float *up ); */
@@ -228,7 +228,7 @@ declare class nodemod {
     /** cvar_t	*(*pfnCVarGetPointer)( const char *szVarName ); */
     cVarGetPointer: (szVarName) => unknown,
     /** unsigned int (*pfnGetPlayerWONId)( edict_t *e ); // returns the server assigned WONid for this player.  useful for logging frags, etc.  returns -1 if the edict couldn't be found in the list of clients */
-    getPlayerWonId: (e) => unknown,
+    getPlayerWONId: (e) => unknown,
     /** void	(*pfnInfo_RemoveKey)( char *s, const char *key ); */
     infoRemoveKey: (s, key) => unknown,
     /** const char *(*pfnGetPhysicsKeyValue)( const edict_t *pClient, const char *key ); */
@@ -242,9 +242,9 @@ declare class nodemod {
     /** void	(*pfnPlaybackEvent)( int flags, const edict_t *pInvoker, unsigned short eventindex, float delay, const float *origin, const float *angles, float fparam1, float fparam2, int iparam1, int iparam2, int bparam1, int bparam2 ); */
     playbackEvent: (flags, pInvoker, eventindex, delay, origin, angles, fparam1, fparam2, iparam1, iparam2, bparam1, bparam2) => unknown,
     /** unsigned char *(*pfnSetFatPVS)( const float *org ); */
-    setFatPvs: (org) => unknown,
+    setFatPVS: (org) => unknown,
     /** unsigned char *(*pfnSetFatPAS)( const float *org ); */
-    setFatPas: (org) => unknown,
+    setFatPAS: (org) => unknown,
     /** int	(*pfnCheckVisibility )( const edict_t *entity, unsigned char *pset ); */
     checkVisibility: (entity, pset) => unknown,
     /** void	(*pfnDeltaSetField)	( struct delta_s *pFields, const char *fieldname ); */
