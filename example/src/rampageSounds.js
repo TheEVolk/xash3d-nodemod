@@ -68,7 +68,7 @@ class RampageSounds {
 
   constructor() {
     nodemodCore.msg.on('post:DeathMsg', state => this.processDeath(...state.data));
-    this.levels.forEach(v => (v.soundId = nodemod.eng.precacheSound(`rampage/${v.sound}.wav`)));
+    this.levels.forEach(v => (v.soundId = nodemodCore.resource.precacheSound(`rampage/${v.sound}.wav`)));
   }
 
   processDeath(killerId, victimId) {
