@@ -24,13 +24,9 @@ export default {
   // refactor it str hell
   if (CMD_ARGC() > 1) {
   char buf[100];
-  printf("use args\\n");
-  std::string args = std::string(CMD_ARGS()).substr(1);
-  args.pop_back();
-  sprintf(buf, "%s %s", CMD_ARGV(0), args.c_str());
+  sprintf(buf, "%s %s", CMD_ARGV(0), CMD_ARGS());
   v8_args[1] = v8::String::NewFromUtf8(isolate, buf).ToLocalChecked();
   } else {
-  printf("not use args\\n");
     v8_args[1] = v8::String::NewFromUtf8(isolate, CMD_ARGV(0)).ToLocalChecked();
   }`
       }

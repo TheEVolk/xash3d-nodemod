@@ -1,15 +1,19 @@
 import express from 'express';
 import serve from 'express-static';
 
-const app = express();
+class Fastdl {
+  constructor() {
+    this.app = express();
+    this.app.get(/maps\/*/, serve('./valve'));
+    this.app.get(/sound\/*/, serve('./valve'));
+    this.app.get(/gfx\/*/, serve('./valve'));
+    this.app.get(/models\/*/, serve('./valve'));
+    this.app.get(/overviews\/*/, serve('./valve'));
+    this.app.get(/sprites\/*/, serve('./valve'));
+    this.app.get(/.+\.wad/, serve('./valve'));
+    this.app.get(serve('./valve/custom'));
+  }
+}
 
-app.use(serve('./valve/custom'));
-app.get(/maps\/*/, serve('./valve'));
-app.get(/sound\/*/, serve('./valve'));
-app.get(/gfx\/*/, serve('./valve'));
-app.get(/models\/*/, serve('./valve'));
-app.get(/overviews\/*/, serve('./valve'));
-app.get(/sprites\/*/, serve('./valve'));
-app.get(/.+\.wad/, serve('./valve'));
-
-app.listen(8081);
+const fastdl = new Fastdl();
+export default fastdl;

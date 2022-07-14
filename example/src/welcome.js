@@ -6,7 +6,7 @@ class Welcome {
   constructor() {
     nodemodCore.resource.precacheSound('welcome.wav');
     nodemod.on('postDllClientPutInServer', entity => setTimeout(
-      () => nodemodCore.sound.emitClientSound(entity, 'welcome.wav'),
+      () => nodemodCore.sound.emitClientSound(entity, 'welcome'),
       3e3
     ));
   }

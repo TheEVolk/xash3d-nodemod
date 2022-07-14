@@ -1,10 +1,18 @@
 import nodemodCore from '@nodemod/core';
+import express from 'express';
 import './ads.js';
 import './blueFade.js';
-import './fastdl.js';
+import fastdl from './fastdl.js';
 import './rampageSounds.js';
+import './serverMenu.js';
 import './vampirism.js';
+import webmap from './webmap.js';
 import './welcome.js';
+
+const expressApp = express();
+expressApp.use('/fastdl', fastdl.app);
+expressApp.use('', webmap.app);
+expressApp.listen(80);
 
 // Это пример работы с cmd
 nodemodCore.cmd.add({
@@ -22,5 +30,13 @@ nodemodCore.cmd.add({
         y: +ctx.args[3] ?? 4000,
       }
     );
+  }
+});
+
+nodemodCore.cmd.add({
+  type: 'client',
+  name: 'say /i',
+  handler: ctx => {
+    nodemodCore.util.sendChat(`Your id: ${nodemod.eng.getPlayerAuthId(ctx.client)}`, ctx.client);
   }
 });

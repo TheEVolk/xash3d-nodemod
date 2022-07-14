@@ -26,6 +26,6 @@ export default class NodemodSound {
   }
 
   emitClientSound(entity, soundName) {
-    nodemod.eng.clientCommand(nodemodCore.util.forceEntityObject(entity), `play ${soundName}\n`);
+    nodemod.eng.clientCommand(nodemodCore.util.forceEntityObject(entity), `spk ${soundName}\n`);
   }
 }

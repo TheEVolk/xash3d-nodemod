@@ -3,7 +3,8 @@ export default class NodemodCmd {
   commands = [];
 
   constructor() {
-    nodemod.on('dllClientCommand', (client, text) => {
+    nodemod.on('dllClientCommand', (client, rtext) => {
+      const text = rtext.replace(/say "/, 'say ').replace(/"$/g, '');
       const args = text.split(' ');
       const ctx = { text, args, client };
 
