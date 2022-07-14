@@ -94,7 +94,7 @@ class RampageSounds {
   processKill(killerId, victimId) {
     const state = this.getOrCreatePlayerState(killerId);
     state.lifeKills++;
-    if (Date.now() - state.lastKill > this.getNeededTime(state.kills) * 1e3) {
+    if (this.getNeededTime(state.kills) && Date.now() - state.lastKill > this.getNeededTime(state.kills) * 1e3) {
       state.lastKill = Date.now();
       state.kills = 1;
       return;
