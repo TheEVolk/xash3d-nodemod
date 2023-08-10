@@ -20,5 +20,5 @@ std::vector<std::pair<std::string, v8::FunctionCallback>> nodemodFunctions =
 	{ "getUserMsgId", getUserMsgId },
 	{ "getUserMsgName", getUserMsgName },
 	{ "setMetaResult", setMetaResult },
-	{ "continue", continueHandler }
+	{ "continueServer", continueHandler }
 };

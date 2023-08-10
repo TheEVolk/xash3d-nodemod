@@ -7,7 +7,8 @@
 
 bool isRun = false;
 
-void continueHandler(const v8::FunctionCallbackInfo<v8::Value>& info) {
+void continueHandler(const v8::FunctionCallbackInfo<v8::Value> &info)
+{
 	v8::Locker locker(info.GetIsolate());
 	v8::HandleScope scope(info.GetIsolate());
 	auto context = info.GetIsolate()->GetCurrentContext();
@@ -40,84 +41,85 @@ void OnMessage(v8::Local<v8::Message> message, v8::Local<v8::Value> error)
 	printf("%s\n%s\n%s\n", *messageStr, stack.str().c_str(), *errorStr);
 }
 
-	NodeImpl nodeImpl;
-	Resource* resource;
+NodeImpl nodeImpl;
+Resource *resource;
 
 NodeImpl::NodeImpl()
-	{}
-
-	NodeImpl::~NodeImpl()
-	{}
-
-	void NodeImpl::Tick()
-	{
-		v8::Locker locker(v8Isolate);
-		v8::Isolate::Scope isolateScope(v8Isolate);
-		v8::HandleScope hs(v8Isolate);
-
 {
-			v8::Local<v8::Context> _context = resource->GetContext().Get(v8Isolate);
-			v8::Context::Scope contextScope(_context);
-
-			uv_run(nodeLoop->GetLoop(), UV_RUN_NOWAIT);
 }
-	}
 
+NodeImpl::~NodeImpl()
+{
+}
 
-	void NodeImpl::Initialize()
+void NodeImpl::Tick()
+{
+	v8::Locker locker(v8Isolate);
+	v8::Isolate::Scope isolateScope(v8Isolate);
+	v8::HandleScope hs(v8Isolate);
+
 	{
-		v8Platform = node::MultiIsolatePlatform::Create(4);
-		v8::V8::InitializePlatform(v8Platform.get());
+		v8::Local<v8::Context> _context = resource->GetContext().Get(v8Isolate);
+		v8::Context::Scope contextScope(_context);
 
-		const char* flags = "";
-		v8::V8::SetFlagsFromString(flags, strlen(flags));
+		uv_run(nodeLoop->GetLoop(), UV_RUN_NOWAIT);
+	}
+}
 
-		v8::V8::Initialize();
+void NodeImpl::Initialize()
+{
+	v8Platform = node::MultiIsolatePlatform::Create(4);
+	v8::V8::InitializePlatform(v8Platform.get());
 
-		arrayBufferAllocator = node::ArrayBufferAllocator::Create();
+	const char *flags = "";
+	v8::V8::SetFlagsFromString(flags, strlen(flags));
 
-		nodeLoop = std::make_unique<UvLoop>("mainNode");
+	v8::V8::Initialize();
 
-		v8Isolate = node::NewIsolate(arrayBufferAllocator.get(), nodeLoop->GetLoop(), v8Platform.get());
-		v8Isolate->SetFatalErrorHandler([](const char* location, const char* message)
-			{
+	arrayBufferAllocator = node::ArrayBufferAllocator::Create();
+
+	nodeLoop = std::make_unique<UvLoop>("mainNode");
+
+	v8Isolate = node::NewIsolate(arrayBufferAllocator.get(), nodeLoop->GetLoop(), v8Platform.get());
+	v8Isolate->SetFatalErrorHandler([](const char *location, const char *message)
+																	{
 				printf("V8 FATAL [%s]: %s\n", location, message);
-				exit(0);
-			});
+				exit(0); });
 
-		v8Isolate->SetCaptureStackTraceForUncaughtExceptions(true);
-		v8Isolate->AddMessageListener(OnMessage);
+	v8Isolate->SetCaptureStackTraceForUncaughtExceptions(true);
+	v8Isolate->AddMessageListener(OnMessage);
 
-		v8::Locker locker(v8Isolate);
-		v8::Isolate::Scope isolateScope(v8Isolate);
+	v8::Locker locker(v8Isolate);
+	v8::Isolate::Scope isolateScope(v8Isolate);
 
-		std::vector<std::string> args{"--trace-uncaught", "--inspect"};
-		std::vector<std::string> exec_args;
-		std::vector<std::string> errors;
+	std::vector<std::string> args{"--trace-uncaught", "--inspect"};
+	std::vector<std::string> exec_args;
+	std::vector<std::string> errors;
 
-		node::InitializeNodeWithArgs(&args, &exec_args, &errors);
+	node::InitializeNodeWithArgs(&args, &exec_args, &errors);
 
-		auto isolateData = node::CreateIsolateData(v8Isolate, nodeLoop->GetLoop(), v8Platform.get(), arrayBufferAllocator.get());
+	auto isolateData = node::CreateIsolateData(v8Isolate, nodeLoop->GetLoop(), v8Platform.get(), arrayBufferAllocator.get());
 
-		nodeData.reset(isolateData);
-	}
+	nodeData.reset(isolateData);
+}
 
-	bool NodeImpl::loadScript()
+bool NodeImpl::loadScript()
+{
+	resource = new Resource("main", ".");
+	resource->Init();
+
+	while (!isRun)
 	{
-		resource = new Resource("main", ".");
-		resource->Init();
-
-		while (!isRun) {
-    	nodeImpl.Tick();
-		}
-
-		return true;
+		nodeImpl.Tick();
 	}
 
-	void NodeImpl::Stop()
-	{
-		 resource->Stop();
-		node::FreeIsolateData(nodeData.get());
-		v8::V8::Dispose();
-		v8::V8::ShutdownPlatform();
-	}
+	return true;
+}
+
+void NodeImpl::Stop()
+{
+	resource->Stop();
+	node::FreeIsolateData(nodeData.get());
+	v8::V8::Dispose();
+	v8::V8::ShutdownPlatform();
+}

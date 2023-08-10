@@ -88,6 +88,8 @@ namespace structures
     ACCESSOR(_entity, "netname", v.netname, GETSTR, SETSTR);
     ACCESSOR(_entity, "health", v.health, GETN, SETINT);
     ACCESSORL(_entity, "origin", v.origin, GETVEC3, SETVEC3);
+    ACCESSOR(_entity, "spawnflags", v.spawnflags, GETN, SETINT);
+    ACCESSOR(_entity, "flags", v.spawnflags, GETN, SETINT);
 
     structures::entity.Set(isolate, _entity);
   }

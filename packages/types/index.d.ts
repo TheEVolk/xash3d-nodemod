@@ -1,11 +1,13 @@
-import EngineFunctions from "./eng";
-import Entity from "./entity";
-import vec3 from './vec3';
+import type EngineFunctions from "./eng";
+import type Entity from "./entity";
+import type vec3 from './vec3';
 
-export { EngineFunctions, Entity, vec3 };
+export type { EngineFunctions, Entity, vec3 };
 
-declare class nodemod {
-  static eng: EngineFunctions;
-  static continue: () => void;
-  static players: Entity[];
+declare global {
+  declare namespace nodemod {
+    const eng: EngineFunctions;
+    const continueServer: () => void;
+    const players: Entity[];
+  }
 }

@@ -8,4 +8,6 @@ export default class Entity {
   public globalname: string;
   public classname: string;
   public origin: vec3;
+  public spawnflags: number;
+  public flags: number;
 }

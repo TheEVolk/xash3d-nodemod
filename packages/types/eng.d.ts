@@ -1,3 +1,5 @@
+import Entity from "./entity";
+
 type EngineFunctions = {
   /** int	(*pfnPrecacheModel)( const char *s ); */
   precacheModel: (s) => unknown,
@@ -28,7 +30,7 @@ type EngineFunctions = {
   /** void	(*pfnChangePitch)( edict_t* ent ); */
   changePitch: (ent) => unknown,
   /** edict_t*	(*pfnFindEntityByString)( edict_t *pEdictStartSearchAfter, const char *pszField, const char *pszValue ); */
-  findEntityByString: (pEdictStartSearchAfter, pszField, pszValue) => unknown,
+  findEntityByString: (searchAfter: Entity | null, field: string, value: string) => Entity,
   /** int	(*pfnGetEntityIllum)( edict_t* pEnt ); */
   getEntityIllum: (pEnt) => unknown,
   /** edict_t*	(*pfnFindEntityInSphere)( edict_t *pEdictStartSearchAfter, const float *org, float rad ); */
@@ -42,11 +44,11 @@ type EngineFunctions = {
   /** void	(*pfnAngleVectors)( const float *rgflVector, float *forward, float *right, float *up ); */
   angleVectors: (rgflVector, forward, right, up) => unknown,
   /** edict_t*	(*pfnCreateEntity)( void ); */
-  createEntity: () => unknown,
+  createEntity: () => Entity,
   /** void	(*pfnRemoveEntity)( edict_t* e ); */
-  removeEntity: (e) => unknown,
+  removeEntity: (e: Entity) => void,
   /** edict_t*	(*pfnCreateNamedEntity)( int className ); */
-  createNamedEntity: (className) => unknown,
+  createNamedEntity: (className: string) => Entity,
   /** void	(*pfnMakeStatic)( edict_t *ent ); */
   makeStatic: (ent) => unknown,
   /** int	(*pfnEntIsOnFloor)( edict_t *e ); */
