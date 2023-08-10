@@ -1,22 +1,38 @@
-# NODEMOD
+# GS-NODEMOD
+This is an integration of Node JS directly into GoldSource, something like amxmod (and my old luamod)
+> compatible with xash3d
 
-Это интеграция NodeJS прямо в GoldSource, нечто вроде amxmod (и моего старого luamod)
+## Features
+* high performance (with V8 engine)
+* asynchronous
+* lightness (JS is very light)
+* high support (npm modules and more JS code)
 
-*из плюсов:*
-* высокая производительность (потому что V8)
-* асинхронность
-* легкость (JS очень легкий, а я сделаю кучу пакетов вспомогательных)
-* высокая поддержка (под nodejs есть почти все, базы данных, пакеты, API интеграции и так далее)
+## Directory structure
+```
+|-- /
+|-- deps                       # 3rdparty dependencies
+|-- scripts                    # auxiliary scripts (generating the autocode)
+|-- src                        # nodemod source files
+|  |-- auto                    # auto-generated code
+|  |  |-- dll_events.cpp       # events from gamedll
+|  |  |-- engine_events.cpp    # events from engine
+|  |  |-- engine_functions.cpp # bindings to engine methods
+|  |-- lib                     # nodemod library external api to metamod
+|  |-- node                    # v8 and nodejs internal code and api
+|  |-- structures              # structures between engine and jscode
+|  |-- bindings                # util methods and core functional, passed to JS
+```
 
-## Компиляция
-Предварительная установка зависимостей
+## Compilation
+Pre-installing dependencies
 ```
 sudo dpkg --add-architecture i386
 sudo apt-get update
 sudo apt-get install gcc-multilib g++-multilib cmake nodejs libuv1-dev
 ```
   
-Для компиляции требуется установленный nodejs.
+Compilation requires node js installed.
 ```
 git clone --recursive https://github.com/TheEVolk/xash3d-nodemod.git
 cd xash3d-nodemod
@@ -27,29 +43,29 @@ cmake ..
 cmake --build . --config Debug
 ```
 
-## Установка и запуск
-1. Установите metamod в Ваш игровой сервер
-2. Создайте в addons директорию nodemod
-3. Переместите все файлы из example в addons/nodemod
-4. Создайте директорию addons/nodemod/dlls
-5. Переместите скомпилированный libnodemod.so в директорию addons/nodemod/dlls
-6. В plugins.ini от metamod добавьте строку `linux addons/nodemod/dlls/libnodemod.so`
-7. Установите npm или yarn и выполните в директории addons/nodemod команду `npm i` для npm или `yarn` для yarn
-8. Вы можете писать свои скрипты в директории `addons/nodemod/src`.
+## Installation and launch
+> ⚠️ we are planning to move examples to another repository
 
-## Реализованные плагины
-1. blueFade - синяя подсветка экрана при убийстве
-2. rampageSounds - звуки типа "monster kill"/"multi kill" и подобное. (требуется установить sounds/rampage из директории content)
-3. ads - сообщения в чат с интервалом в 5 минут
-4. fastdl - запускает веб-сервер с файлами из папки custom
-5. welcome - приветственное сообщение
+1. Install metamod in your game server
+2. Create a nodemod directory in addons
+3. Move all files from example to `addons/nodemod`
+4. Create the `addons/nodemod/dlls` directory
+5. Move the compiled libnodemod.so to the `addons/nodemod/dlls` directory
+6. In plugins.ini from metamod, add the line `linux addons/nodemod/dlls/libnodemod.so`
+7. Install npm or yarn and run the command `npm i` for npm or `yarn` for yarn in the addons/nodemod directory
+8. You can write your scripts in the 'addons/nodemod/src` directory.
+
+## TypeScript
+you can run your typescript code using the [ts-node](https://www.npmjs.com/package/ts-node) library
+
+1. Install ts-node: `npm i ts-node`
+2. Pass there env variable to your start script: `export NODE_OPTIONS="--loader ts-node/esm"`
+3. Make sure that the main field is in your package.json leads to a TS file
 
 ## RoadMap
-1. Реализовать CBase (по оффсетам) для доступа к полям из gamedll (например, чтобы узнать контролера tank)
-2. Плагин webmap с миникартой в реальном времени
-3. Авторизация через базу данных
-4. Создание своих энтити в ООП стиле
-5. Рефакторинг
-6. CI
+- Fix all existing crashes.
+- Write a `@types/gs-nodemod` library, for easy coding on typescript.
 
-*Большое спасибо разработчику samp-node за открытый исходный код и прекрасный пример реализации интеграции nodejs в C++ приложение*
+## Credits
+- [iAmir (Amyr Aahmady)](https://github.com/AmyrAhmady) for his [samp-node project](https://github.com/AmyrAhmady/samp-node).
+- [TheEVolk (Maksim Nikiforov)](https://github.com/theevolk) that's me.
