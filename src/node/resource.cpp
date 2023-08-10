@@ -1,12 +1,11 @@
 #include "resource.hpp"
 #include "nodeimpl.hpp"
 #include "common/logger.hpp"
-#include "functions.hpp"
+#include "bindings/bindings.hpp"
 #include "structures/structures.hpp"
 
 extern void registerDllEvents();
 extern void registerEngineEvents();
-extern void registerHamHooks();
 
 v8::Isolate* GetV8Isolate()
 {
@@ -71,10 +70,9 @@ static node::IsolateData* GetNodeIsolate()
 
 
 		v8::Local<v8::ObjectTemplate> global = v8::ObjectTemplate::New(GetV8Isolate());
-		functions::init(GetV8Isolate(), global);
+		bindings::init(GetV8Isolate(), global);
 		registerDllEvents();
 		registerEngineEvents();
-		registerHamHooks();
 		//sampnode::callback::add_event_definitions(GetV8Isolate(), global);
 
 		v8::Local<v8::Context> _context = node::NewContext(GetV8Isolate(), global);

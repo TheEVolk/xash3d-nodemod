@@ -62,14 +62,15 @@ set( S_SOURCES
     ${SRC_PATH}/node/uvloop.cpp
     ${SRC_PATH}/node/resource.cpp
     ${SRC_PATH}/node/events.cpp
-    ${SRC_PATH}/node/functions.cpp
+
+    ${SRC_PATH}/bindings/functions.cpp
+    ${SRC_PATH}/bindings/bindings.cpp
 
     ${SRC_PATH}/common/logger.cpp
 
     ${SRC_PATH}/auto/dll_events.cpp
     ${SRC_PATH}/auto/engine_events.cpp
     ${SRC_PATH}/auto/engine_functions.cpp
-    ${SRC_PATH}/auto/hooks.cpp
 
     ${SRC_PATH}/structures/entity.cpp
 )

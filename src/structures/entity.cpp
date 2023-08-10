@@ -36,20 +36,16 @@ namespace structures
     v8::Locker locker(isolate);
     if (obj.IsEmpty() || !obj->IsObject())
     {
-      printf("NOUNWRAP\n");
-      return 0;
+      return NULL;
     }
 
-    // printf("UNWRAP\n");
     auto object = obj->ToObject(isolate->GetCurrentContext());
     if (object.IsEmpty())
     {
-      printf("NOUNWRAP maybe\n"); // It crash server
-      return nullptr;
+      return NULL;
     }
 
     auto field = object.ToLocalChecked()->GetAlignedPointerFromInternalField(0);
-
     return static_cast<edict_t *>(field);
   }
 
@@ -71,10 +67,8 @@ namespace structures
     // Create a new instance if an object doesn't exist for this ID
     v8::Local<v8::Object> obj = structures::entity.Get(isolate)->NewInstance(isolate->GetCurrentContext()).ToLocalChecked();
     obj->SetAlignedPointerInInternalField(0, entity);
-    // obj->SetInternalField(0, v8::External::New(isolate, entity));
     obj->Set(isolate->GetCurrentContext(), v8::String::NewFromUtf8(isolate, "id").ToLocalChecked(), v8::Number::New(isolate, entityId));
 
-    // Store the newly created object in the map
     wrappedEntities[entityId].Reset(isolate, obj);
     return obj;
   }
