@@ -1,4 +1,5 @@
 {
-  "name": "@nodemod/types",
-  "types": "./@types/index.d.ts"
+  "name": "@gs-nodemod/types",
+  "types": "index",
+  "typings": "index.d.ts"
 }

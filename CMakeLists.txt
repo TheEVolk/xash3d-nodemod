@@ -65,6 +65,7 @@ set( S_SOURCES
 
     ${SRC_PATH}/bindings/functions.cpp
     ${SRC_PATH}/bindings/bindings.cpp
+    ${SRC_PATH}/bindings/players.cpp
 
     ${SRC_PATH}/common/logger.cpp
 

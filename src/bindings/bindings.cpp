@@ -9,6 +9,9 @@
 
 extern std::vector<std::pair<std::string, v8::FunctionCallback>> nodemodFunctions;
 extern v8::Local<v8::ObjectTemplate> registerEngineFunctions(v8::Isolate *isolate);
+namespace players {
+  extern void getPlayers(v8::Local<v8::String> property, const v8::PropertyCallbackInfo<v8::Value> &info);
+}
 
 namespace bindings
 {
@@ -21,9 +24,8 @@ namespace bindings
     for (auto &routine : nodemodFunctions)
     {
       nodemodObject->Set(
-        convert::str2js(isolate, routine.first.c_str()),
-        v8::FunctionTemplate::New(isolate, routine.second)
-      );
+          convert::str2js(isolate, routine.first.c_str()),
+          v8::FunctionTemplate::New(isolate, routine.second));
     }
 
     // add engine functions
@@ -36,8 +38,12 @@ namespace bindings
 
     nodemodObject->Set(
         convert::str2js(isolate, "cwd"),
-        convert::str2js(isolate, cwd)
-    );
+        convert::str2js(isolate, cwd));
+
+    // add getters
+    nodemodObject->SetAccessor(
+        convert::str2js(isolate, "players"),
+         players::getPlayers);
 
     global->Set(convert::str2js(isolate, "nodemod"), nodemodObject);
   }
