@@ -15,7 +15,7 @@ export const SoundChannel = {
 export default class NodemodSound {
   emitSound(options) {
     nodemod.eng.emitSound(
-      nodemodCore.util.forceEntityObject(options.entity),
+      nodemodCore.util.forceEntityObject(options.entity) || 0,
       options.channel || 0,
       options.sound,
       1,
@@ -26,6 +26,7 @@ export default class NodemodSound {
   }
 
   emitClientSound(entity, soundName) {
-    nodemod.eng.clientCommand(nodemodCore.util.forceEntityObject(entity), `spk ${soundName}\n`);
+    console.log(soundName)
+    nodemod.eng.clientCommand(nodemodCore.util.forceEntityObject(entity), `spk sound/${soundName}.wav\n`);
   }
 }

@@ -163,7 +163,7 @@ export default class NodemodMsg extends EventEmmiter {
 
   send(options) {
     nodemod.eng.messageBegin(
-      options.dest || (options.entity ? MsgDest.one : MsgDest.all),
+      options.dest ?? (options.entity ? MsgDest.one : MsgDest.all),
       typeof options.type === 'string' ? this.getUserMsgId(options.type) : options.type,
       options.origin || [0, 0, 0],
       nodemodCore.util.forceEntityObject(options.entity)

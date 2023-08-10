@@ -6,6 +6,7 @@
 
 extern void registerDllEvents();
 extern void registerEngineEvents();
+extern void registerHamHooks();
 
 v8::Isolate* GetV8Isolate()
 {
@@ -66,7 +67,6 @@ static node::IsolateData* GetNodeIsolate()
 		v8::HandleScope handleScope(GetV8Isolate());
 		structures::createEntityTemplate(GetV8Isolate());
 
-
 		v8::Isolate::Scope isolateScope(GetV8Isolate());
 
 
@@ -74,10 +74,8 @@ static node::IsolateData* GetNodeIsolate()
 		functions::init(GetV8Isolate(), global);
 		registerDllEvents();
 		registerEngineEvents();
+		registerHamHooks();
 		//sampnode::callback::add_event_definitions(GetV8Isolate(), global);
-
-		// create a global variable for resource
-		//v8val::add_definition("__resname", name, global);
 
 		v8::Local<v8::Context> _context = node::NewContext(GetV8Isolate(), global);
 		context.Reset(GetV8Isolate(), _context);
@@ -91,7 +89,11 @@ static node::IsolateData* GetNodeIsolate()
 
 		auto env = node::CreateEnvironment(GetNodeIsolate(), _context, args, exec_args, flags);
 
+		char oldCwd[PATH_MAX];
+		getcwd(oldCwd, sizeof(oldCwd));
+		chdir("valve/addons/nodemod");
 		node::LoadEnvironment(env, node::StartExecutionCallback{});
+		chdir(oldCwd);
 
 		nodeEnvironment.reset(env);
 

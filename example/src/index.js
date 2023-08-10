@@ -3,7 +3,6 @@ import express from 'express';
 import './ads.js';
 import './blueFade.js';
 import fastdl from './fastdl.js';
-import './rampageSounds.js';
 import './serverMenu.js';
 import './vampirism.js';
 import webmap from './webmap.js';
@@ -11,8 +10,12 @@ import './welcome.js';
 
 const expressApp = express();
 expressApp.use('/fastdl', fastdl.app);
-expressApp.use('', webmap.app);
+expressApp.get('/', (req, res) => {
+  res.send('Hello World!')
+})
+
 expressApp.listen(80);
+console.log('listen')
 
 // Это пример работы с cmd
 nodemodCore.cmd.add({

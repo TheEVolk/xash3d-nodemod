@@ -5,6 +5,16 @@
 
 #include <sstream>
 
+bool isRun = false;
+
+void continueHandler(const v8::FunctionCallbackInfo<v8::Value>& info) {
+	v8::Locker locker(info.GetIsolate());
+	v8::HandleScope scope(info.GetIsolate());
+	auto context = info.GetIsolate()->GetCurrentContext();
+
+	isRun = true;
+}
+
 void OnMessage(v8::Local<v8::Message> message, v8::Local<v8::Value> error)
 {
 	auto isolate = nodeImpl.GetIsolate();
@@ -45,12 +55,12 @@ NodeImpl::NodeImpl()
 		v8::Isolate::Scope isolateScope(v8Isolate);
 		v8::HandleScope hs(v8Isolate);
 
-		{
+{
 			v8::Local<v8::Context> _context = resource->GetContext().Get(v8Isolate);
 			v8::Context::Scope contextScope(_context);
 
 			uv_run(nodeLoop->GetLoop(), UV_RUN_NOWAIT);
-		}
+}
 	}
 
 
@@ -59,7 +69,7 @@ NodeImpl::NodeImpl()
 		v8Platform = node::MultiIsolatePlatform::Create(4);
 		v8::V8::InitializePlatform(v8Platform.get());
 
-		const char* flags = "--expose_gc";
+		const char* flags = "";
 		v8::V8::SetFlagsFromString(flags, strlen(flags));
 
 		v8::V8::Initialize();
@@ -94,8 +104,13 @@ NodeImpl::NodeImpl()
 
 	bool NodeImpl::loadScript()
 	{
-		resource = new Resource("main", "./valve/addons/nodemod/src/index.js");
+		resource = new Resource("main", ".");
 		resource->Init();
+
+		while (!isRun) {
+    	nodeImpl.Tick();
+		}
+
 		return true;
 	}
 
@@ -103,9 +118,6 @@ NodeImpl::NodeImpl()
 	{
 		 resource->Stop();
 		node::FreeIsolateData(nodeData.get());
-		printf("dispose\n");
 		v8::V8::Dispose();
-		printf("shut\n");
 		v8::V8::ShutdownPlatform();
-		printf("done\n");
 	}

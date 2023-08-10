@@ -6,6 +6,8 @@
   #include "node/utils.hpp"
   #include "structures/structures.hpp"
 
+extern void subscribeHamHooksEntity(edict_t* edict);
+
   /* BASE EVENTS */
     // nodemod.on('dllGameInit', () => console.log('dllGameInit fired!'));
   void dll_pfnGameInit () {
@@ -14,6 +16,7 @@
 
 // nodemod.on('dllSpawn', (pent) => console.log('dllSpawn fired!'));
   int dll_pfnSpawn (edict_t * pent) {
+    subscribeHamHooksEntity(pent);
   SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllSpawn", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;

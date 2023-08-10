@@ -69,6 +69,7 @@ set( S_SOURCES
     ${SRC_PATH}/auto/dll_events.cpp
     ${SRC_PATH}/auto/engine_events.cpp
     ${SRC_PATH}/auto/engine_functions.cpp
+    ${SRC_PATH}/auto/hooks.cpp
 
     ${SRC_PATH}/structures/entity.cpp
 )
