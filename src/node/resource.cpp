@@ -2,7 +2,6 @@
 #include "nodeimpl.hpp"
 #include "common/logger.hpp"
 #include "bindings/bindings.hpp"
-#include "structures/structures.hpp"
 
 extern void registerDllEvents();
 extern void registerEngineEvents();
@@ -64,7 +63,6 @@ static node::IsolateData* GetNodeIsolate()
 
 		v8::Locker locker(GetV8Isolate());
 		v8::HandleScope handleScope(GetV8Isolate());
-		structures::createEntityTemplate(GetV8Isolate());
 
 		v8::Isolate::Scope isolateScope(GetV8Isolate());
 

@@ -9,5 +9,6 @@ declare global {
     const eng: EngineFunctions;
     const continueServer: () => void;
     const players: Entity[];
+    const mapname: string;
   }
 }

@@ -1,9 +1,9 @@
-// This file is generated automatically. Don't edit it.
 #include <string>
 #include "v8.h"
 #include "extdll.h"
 #include "node/utils.hpp"
 #include "structures/structures.hpp"
+#include "util/convert.hpp"
 
 #define V8_STUFF() v8::Isolate* isolate = info.GetIsolate(); \
   v8::Locker locker(isolate); \
@@ -52,9 +52,16 @@ void sf_eng_pfnModelFrames(const v8::FunctionCallbackInfo<v8::Value> &info)
 void sf_eng_pfnSetSize(const v8::FunctionCallbackInfo<v8::Value> &info)
 {
   V8_STUFF();
+
+  float minSize[3];
+  convert::js2fvec3(isolate, v8::Local<v8::Array>::Cast(info[1]), minSize);
+
+  float maxSize[3];
+  convert::js2fvec3(isolate, v8::Local<v8::Array>::Cast(info[1]), maxSize);
+
   (*g_engfuncs.pfnSetSize)(structures::unwrapEntity(isolate, info[0]),
-                           nullptr /* const float * */,
-                           nullptr /* const float * */);
+                           minSize,
+                           maxSize);
 }
 
 // nodemod.eng.changeLevel();

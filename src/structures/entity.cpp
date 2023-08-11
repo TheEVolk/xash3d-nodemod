@@ -3,6 +3,7 @@
 #include "structures.hpp"
 #include "node/utils.hpp"
 #include <unordered_map>
+#include "util/convert.hpp"
 
 extern enginefuncs_t g_engfuncs;
 
@@ -10,7 +11,7 @@ extern enginefuncs_t g_engfuncs;
 
 #define GETN(v) v
 #define GETVEC3(v) utils::vect2js(info.GetIsolate(), v)
-#define GETSTR(v) v8::String::NewFromUtf8(info.GetIsolate(), (*g_engfuncs.pfnSzFromIndex)(v), v8::NewStringType::kNormal).ToLocalChecked()
+#define GETSTR(v) convert::str2js(info.GetIsolate(), (*g_engfuncs.pfnSzFromIndex)(v))
 
 #define SETINT(v) v->Int32Value(info.GetIsolate()->GetCurrentContext()).ToChecked()
 #define SETSTR(v) (*g_engfuncs.pfnAllocString)(utils::js2string(info.GetIsolate(), v))
@@ -30,6 +31,15 @@ namespace structures
 {
   v8::Eternal<v8::ObjectTemplate> entity;
   std::unordered_map<int, v8::Persistent<v8::Object>> wrappedEntities;
+
+  void cacheEntity(const v8::FunctionCallbackInfo<v8::Value>& info) {
+    v8::Isolate* isolate = info.GetIsolate();
+    v8::Locker locker(isolate);
+    v8::HandleScope scope(isolate);
+    v8::Local<v8::Context> context = isolate->GetCurrentContext();
+
+    // wrappedEntities[convert::js2int(isolate, info[0])].Reset(isolate, info[1]);
+  }
 
   edict_t *unwrapEntity(v8::Isolate *isolate, const v8::Local<v8::Value> &obj)
   {
@@ -73,24 +83,177 @@ namespace structures
     return obj;
   }
 
-  void createEntityTemplate(v8::Isolate *isolate)
+  void createEntityTemplate(v8::Isolate *isolate, v8::Local<v8::ObjectTemplate> &global)
   {
     v8::Locker locker(isolate);
     v8::EscapableHandleScope scope(isolate);
     auto context = isolate->GetCurrentContext();
 
-    v8::Local<v8::ObjectTemplate> _entity = v8::ObjectTemplate::New(isolate);
+    v8::Local<v8::FunctionTemplate> entityConstructor = v8::FunctionTemplate::New(isolate, [](const v8::FunctionCallbackInfo<v8::Value>& args) {
+      edict_t* entity = (*g_engfuncs.pfnCreateNamedEntity)((*g_engfuncs.pfnAllocString)(utils::js2string(args.GetIsolate(), args[0])));
+
+      args.This()->SetAlignedPointerInInternalField(0, entity);
+
+      int entityId = (*g_engfuncs.pfnIndexOfEdict)(entity);
+      args.This()->Set(args.GetIsolate()->GetCurrentContext(), convert::str2js(args.GetIsolate(), "id"), v8::Number::New(args.GetIsolate(), entityId));
+
+      wrappedEntities[entityId].Reset(args.GetIsolate(), args.This());
+      args.GetReturnValue().Set(args.This());
+    });
+
+    v8::Local<v8::ObjectTemplate> _entity = entityConstructor->InstanceTemplate();
     _entity->SetInternalFieldCount(1);
 
+    // entvars
     ACCESSOR(_entity, "classname", v.classname, GETSTR, SETSTR);
     ACCESSOR(_entity, "globalname", v.globalname, GETSTR, SETSTR);
-    ACCESSOR(_entity, "model", v.model, GETSTR, SETSTR);
-    ACCESSOR(_entity, "netname", v.netname, GETSTR, SETSTR);
-    ACCESSOR(_entity, "health", v.health, GETN, SETINT);
     ACCESSORL(_entity, "origin", v.origin, GETVEC3, SETVEC3);
-    ACCESSOR(_entity, "spawnflags", v.spawnflags, GETN, SETINT);
-    ACCESSOR(_entity, "flags", v.spawnflags, GETN, SETINT);
+    ACCESSORL(_entity, "oldorigin", v.oldorigin, GETVEC3, SETVEC3);
+    ACCESSORL(_entity, "velocity", v.velocity, GETVEC3, SETVEC3);
+    ACCESSORL(_entity, "basevelocity", v.basevelocity, GETVEC3, SETVEC3);
+    ACCESSORL(_entity, "clbasevelocity", v.clbasevelocity, GETVEC3, SETVEC3);
+    ACCESSORL(_entity, "movedir", v.movedir, GETVEC3, SETVEC3);
+    ACCESSORL(_entity, "angles", v.angles, GETVEC3, SETVEC3);
+    ACCESSORL(_entity, "avelocity", v.avelocity, GETVEC3, SETVEC3);
+    ACCESSORL(_entity, "punchangle", v.punchangle, GETVEC3, SETVEC3);
+    ACCESSORL(_entity, "vAngle", v.v_angle, GETVEC3, SETVEC3);
+    ACCESSORL(_entity, "endpos", v.endpos, GETVEC3, SETVEC3);
+    ACCESSORL(_entity, "startpos", v.startpos, GETVEC3, SETVEC3);
 
+	  // float		impacttime;
+	  // float		starttime;
+
+    ACCESSOR(_entity, "fixangle", v.fixangle, GETN, SETINT);
+    // float		idealpitch;
+    // float		pitch_speed;
+    // float		ideal_yaw;
+    // float		yaw_speed;
+
+    ACCESSOR(_entity, "modelindex", v.modelindex, GETN, SETINT);
+    _entity->SetAccessor(
+        convert::str2js(isolate, "model"),
+        GETTER(v.model, GETSTR),
+        [](v8::Local<v8::String> property, v8::Local<v8::Value> value, const v8::PropertyCallbackInfo<v8::Value> &info)
+        {
+          edict_t *edict = (edict_t *)structures::unwrapEntity(info.GetIsolate(), info.Holder());
+
+          if (edict == NULL)
+            return;
+
+          (*g_engfuncs.pfnSetModel)(edict, convert::js2str(info.GetIsolate(), value));
+        });
+
+    ACCESSOR(_entity, "viewmodel", v.viewmodel, GETN, SETINT);
+    ACCESSOR(_entity, "weaponmodel", v.weaponmodel, GETN, SETINT);
+
+    ACCESSORL(_entity, "absmin", v.absmin, GETVEC3, SETVEC3);
+    ACCESSORL(_entity, "absmax", v.absmax, GETVEC3, SETVEC3);
+    ACCESSORL(_entity, "mins", v.mins, GETVEC3, SETVEC3);
+    ACCESSORL(_entity, "maxs", v.maxs, GETVEC3, SETVEC3);
+    ACCESSORL(_entity, "size", v.maxs, GETVEC3, SETVEC3);
+
+	  // float		ltime;
+	  // float		nextthink;
+
+    ACCESSOR(_entity, "movetype", v.movetype, GETN, SETINT);
+    ACCESSOR(_entity, "solid", v.solid, GETN, SETINT);
+
+    ACCESSOR(_entity, "skin", v.skin, GETN, SETINT);
+    ACCESSOR(_entity, "body", v.body, GETN, SETINT);
+    ACCESSOR(_entity, "effects", v.effects, GETN, SETINT);
+
+  	// float		gravity;		// % of "normal" gravity
+	  // float		friction;		// inverse elasticity of MOVETYPE_BOUNCE
+
+    ACCESSOR(_entity, "lightLevel", v.light_level, GETN, SETINT);
+    ACCESSOR(_entity, "sequence", v.sequence, GETN, SETINT);
+    ACCESSOR(_entity, "gaitsequence", v.gaitsequence, GETN, SETINT);
+
+	  // float		frame;		// % playback position in animation sequences (0..255)
+	  // float		animtime;		// world time when frame was set
+	  // float		framerate;	// animation playback rate (-8x to 8x)
+
+	  // byte		controller[4];	// bone controller setting (0..255)
+	  // byte		blending[2];	// blending amount between sub-sequences (0..255)
+
+	  // float		scale;		// sprites and models rendering scale (0..255)
+    ACCESSOR(_entity, "rendermode", v.rendermode, GETN, SETINT);
+	  // float		renderamt;
+    ACCESSORL(_entity, "rendercolor", v.rendercolor, GETVEC3, SETVEC3);
+    ACCESSOR(_entity, "renderfx", v.renderfx, GETN, SETINT);
+
+    ACCESSOR(_entity, "health", v.health, GETN, SETINT); // TODO: float
+    ACCESSOR(_entity, "frags", v.frags, GETN, SETINT); // TODO: float
+    ACCESSOR(_entity, "weapons", v.weapons, GETN, SETINT);
+    
+	  // float		takedamage;
+    ACCESSOR(_entity, "deadflag", v.deadflag, GETN, SETINT);
+    ACCESSORL(_entity, "viewOfs", v.view_ofs, GETVEC3, SETVEC3);
+
+    ACCESSOR(_entity, "button", v.button, GETN, SETINT);
+    ACCESSOR(_entity, "impulse", v.impulse, GETN, SETINT);
+
+    // edict_t		*chain;		// Entity pointer when linked into a linked list
+    // edict_t		*dmg_inflictor;
+    // edict_t		*enemy;
+    // edict_t		*aiment;		// entity pointer when MOVETYPE_FOLLOW
+    // edict_t		*owner;
+    // edict_t		*groundentity;
+
+    ACCESSOR(_entity, "spawnflags", v.spawnflags, GETN, SETINT);
+    ACCESSOR(_entity, "flags", v.flags, GETN, SETINT);
+    ACCESSOR(_entity, "colormap", v.colormap, GETN, SETINT);
+    ACCESSOR(_entity, "team", v.team, GETN, SETINT);
+
+	  // float		max_health;
+	  // float		teleport_time;
+	  // float		armortype;
+    ACCESSOR(_entity, "armorvalue", v.armorvalue, GETN, SETINT); // TODO: float
+
+    ACCESSOR(_entity, "waterlevel", v.waterlevel, GETN, SETINT);
+    ACCESSOR(_entity, "watertype", v.watertype, GETN, SETINT);
+
+    ACCESSOR(_entity, "target", v.target, GETSTR, SETSTR);
+    ACCESSOR(_entity, "targetname", v.targetname, GETSTR, SETSTR);
+    ACCESSOR(_entity, "netname", v.netname, GETSTR, SETSTR);
+    ACCESSOR(_entity, "message", v.message, GETSTR, SETSTR);
+
+    // float		dmg_take;
+    // float		dmg_save;
+    // float		dmg;
+    // float		dmgtime;
+
+    ACCESSOR(_entity, "noise", v.noise, GETSTR, SETSTR);
+    ACCESSOR(_entity, "noise1", v.noise, GETSTR, SETSTR);
+    ACCESSOR(_entity, "noise2", v.noise, GETSTR, SETSTR);
+    ACCESSOR(_entity, "noise3", v.noise, GETSTR, SETSTR);
+
+	  // float		speed;
+	  // float		air_finished;
+	  // float		pain_finished;
+	  // float		radsuit_finished;
+
+	  // edict_t		*pContainingEntity;
+
+    ACCESSOR(_entity, "playerclass", v.playerclass, GETN, SETINT);
+	  // float		maxspeed;
+
+	  // float		fov;
+    ACCESSOR(_entity, "weaponanim", v.weaponanim, GETN, SETINT);
+    ACCESSOR(_entity, "pushmsec", v.pushmsec, GETN, SETINT);
+    ACCESSOR(_entity, "bInDuck", v.bInDuck, GETN, SETINT);
+    ACCESSOR(_entity, "flTimeStepSound", v.flTimeStepSound, GETN, SETINT);
+    ACCESSOR(_entity, "flSwimTime", v.flSwimTime, GETN, SETINT);
+    ACCESSOR(_entity, "flDuckTime", v.flDuckTime, GETN, SETINT);
+    ACCESSOR(_entity, "iStepLeft", v.iStepLeft, GETN, SETINT);
+
+    // float		flFallVelocity;
+
+    ACCESSOR(_entity, "gamestate", v.gamestate, GETN, SETINT);
+    ACCESSOR(_entity, "oldbuttons", v.oldbuttons, GETN, SETINT);
+    ACCESSOR(_entity, "groupinfo", v.groupinfo, GETN, SETINT);
+    
     structures::entity.Set(isolate, _entity);
+    global->Set(convert::str2js(isolate, "Entity"), entityConstructor);
   }
 }
