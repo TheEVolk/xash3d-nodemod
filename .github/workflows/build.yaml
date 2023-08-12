@@ -1,12 +1,9 @@
 name: Build
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  release:
+    types:
+      - created
 
 jobs:
   build:
@@ -32,3 +29,15 @@ jobs:
         cd build
         cmake ..
         cmake --build .
+
+    - name: Prepare artifacts folder
+      run: |
+        mkdir artifacts
+        cp build/libnodemod.so artifacts/
+        cp deps/node/lib/Release/linux/libnode.so.93 artifacts/
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: my-artifacts
+        path: artifacts/
