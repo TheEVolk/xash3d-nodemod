@@ -57,7 +57,9 @@ void sf_eng_pfnSetSize(const v8::FunctionCallbackInfo<v8::Value> &info)
   convert::js2fvec3(isolate, v8::Local<v8::Array>::Cast(info[1]), minSize);
 
   float maxSize[3];
-  convert::js2fvec3(isolate, v8::Local<v8::Array>::Cast(info[1]), maxSize);
+  convert::js2fvec3(isolate, v8::Local<v8::Array>::Cast(info[2]), maxSize);
+  printf("minSize %f %f %f\n", minSize[0], minSize[1], minSize[2]);
+  printf("maxSize %f %f %f\n", maxSize[0], maxSize[1], maxSize[2]);
 
   (*g_engfuncs.pfnSetSize)(structures::unwrapEntity(isolate, info[0]),
                            minSize,
@@ -249,8 +251,12 @@ void sf_eng_pfnWalkMove(const v8::FunctionCallbackInfo<v8::Value> &info)
 void sf_eng_pfnSetOrigin(const v8::FunctionCallbackInfo<v8::Value> &info)
 {
   V8_STUFF();
+
+  float origin[3];
+  convert::js2fvec3(isolate, v8::Local<v8::Array>::Cast(info[1]), origin);
+
   (*g_engfuncs.pfnSetOrigin)(structures::unwrapEntity(isolate, info[0]),
-                             nullptr /* const float * */);
+                             origin);
 }
 
 // nodemod.eng.emitSound();

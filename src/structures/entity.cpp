@@ -13,6 +13,7 @@ extern enginefuncs_t g_engfuncs;
 #define GETVEC3(v) utils::vect2js(info.GetIsolate(), v)
 #define GETSTR(v) convert::str2js(info.GetIsolate(), (*g_engfuncs.pfnSzFromIndex)(v))
 
+#define SETFLOAT(v) v->NumberValue(info.GetIsolate()->GetCurrentContext()).ToChecked()
 #define SETINT(v) v->Int32Value(info.GetIsolate()->GetCurrentContext()).ToChecked()
 #define SETSTR(v) (*g_engfuncs.pfnAllocString)(utils::js2string(info.GetIsolate(), v))
 #define SETVEC3(v, f) utils::js2vect(info.GetIsolate(), v8::Local<v8::Array>::Cast(v), f)
@@ -153,7 +154,7 @@ namespace structures
     ACCESSORL(_entity, "size", v.maxs, GETVEC3, SETVEC3);
 
 	  // float		ltime;
-	  // float		nextthink;
+    ACCESSOR(_entity, "nextthink", v.nextthink, GETN, SETFLOAT);
 
     ACCESSOR(_entity, "movetype", v.movetype, GETN, SETINT);
     ACCESSOR(_entity, "solid", v.solid, GETN, SETINT);
@@ -178,7 +179,7 @@ namespace structures
 
 	  // float		scale;		// sprites and models rendering scale (0..255)
     ACCESSOR(_entity, "rendermode", v.rendermode, GETN, SETINT);
-	  // float		renderamt;
+    ACCESSOR(_entity, "renderamt", v.renderamt, GETN, SETFLOAT);
     ACCESSORL(_entity, "rendercolor", v.rendercolor, GETVEC3, SETVEC3);
     ACCESSOR(_entity, "renderfx", v.renderfx, GETN, SETINT);
 

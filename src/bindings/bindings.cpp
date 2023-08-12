@@ -66,6 +66,17 @@ namespace bindings
           info.GetReturnValue().Set(convert::strid2js(isolate, gpGlobals->mapname));
         });
 
+    nodemodObject->SetAccessor(
+        convert::str2js(isolate, "time"),
+        [](v8::Local<v8::String> property, const v8::PropertyCallbackInfo<v8::Value> &info)
+        {
+          v8::Isolate* isolate = info.GetIsolate();
+          v8::Locker locker(isolate);
+          v8::HandleScope scope(isolate);
+
+          info.GetReturnValue().Set(convert::strid2js(isolate, gpGlobals->time));
+        });
+
     global->Set(convert::str2js(isolate, "nodemod"), nodemodObject);
     structures::createEntityTemplate(isolate, global);
   }

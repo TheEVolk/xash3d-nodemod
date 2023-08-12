@@ -1,15 +1,34 @@
 name: Build
+
 on:
   push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
 jobs:
-  build-project:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout the repository
-        uses: actions/checkout@v3.5.3
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+        
+    - name: Pre-install dependencies
+      run: |
+        sudo dpkg --add-architecture i386
+        sudo apt-get update
+        sudo apt-get install gcc-multilib g++-multilib cmake nodejs libuv1-dev
+        
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
 
-      - name: Configure the project
-        uses: threeal/cmake-action@v1.3.0
-
-      - name: Build the project
-        runs: cmake --build build
+    - name: Clone repository and build
+      run: |
+        mkdir build
+        cd build
+        cmake ..
+        cmake --build .
