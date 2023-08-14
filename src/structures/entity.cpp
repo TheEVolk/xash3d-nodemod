@@ -117,19 +117,16 @@ namespace structures
     ACCESSORL(_entity, "angles", v.angles, GETVEC3, SETVEC3);
     ACCESSORL(_entity, "avelocity", v.avelocity, GETVEC3, SETVEC3);
     ACCESSORL(_entity, "punchangle", v.punchangle, GETVEC3, SETVEC3);
-    ACCESSORL(_entity, "vAngle", v.v_angle, GETVEC3, SETVEC3);
+    ACCESSORL(_entity, "angle", v.v_angle, GETVEC3, SETVEC3);
     ACCESSORL(_entity, "endpos", v.endpos, GETVEC3, SETVEC3);
     ACCESSORL(_entity, "startpos", v.startpos, GETVEC3, SETVEC3);
-
-	  // float		impacttime;
-	  // float		starttime;
-
+    ACCESSOR(_entity, "impacttime", v.impacttime, GETN, SETFLOAT);
+    ACCESSOR(_entity, "starttime", v.starttime, GETN, SETFLOAT);
     ACCESSOR(_entity, "fixangle", v.fixangle, GETN, SETINT);
-    // float		idealpitch;
-    // float		pitch_speed;
-    // float		ideal_yaw;
-    // float		yaw_speed;
-
+    ACCESSOR(_entity, "idealpitch", v.idealpitch, GETN, SETFLOAT);
+    ACCESSOR(_entity, "pitchSpeed", v.pitch_speed, GETN, SETFLOAT);
+    ACCESSOR(_entity, "idealYaw", v.ideal_yaw, GETN, SETFLOAT);
+    ACCESSOR(_entity, "yawSpeed", v.yaw_speed, GETN, SETFLOAT);
     ACCESSOR(_entity, "modelindex", v.modelindex, GETN, SETINT);
     _entity->SetAccessor(
         convert::str2js(isolate, "model"),
@@ -146,100 +143,77 @@ namespace structures
 
     ACCESSOR(_entity, "viewmodel", v.viewmodel, GETN, SETINT);
     ACCESSOR(_entity, "weaponmodel", v.weaponmodel, GETN, SETINT);
-
     ACCESSORL(_entity, "absmin", v.absmin, GETVEC3, SETVEC3);
     ACCESSORL(_entity, "absmax", v.absmax, GETVEC3, SETVEC3);
     ACCESSORL(_entity, "mins", v.mins, GETVEC3, SETVEC3);
     ACCESSORL(_entity, "maxs", v.maxs, GETVEC3, SETVEC3);
     ACCESSORL(_entity, "size", v.maxs, GETVEC3, SETVEC3);
-
-	  // float		ltime;
+    ACCESSOR(_entity, "ltime", v.ltime, GETN, SETFLOAT);
     ACCESSOR(_entity, "nextthink", v.nextthink, GETN, SETFLOAT);
-
     ACCESSOR(_entity, "movetype", v.movetype, GETN, SETINT);
     ACCESSOR(_entity, "solid", v.solid, GETN, SETINT);
-
     ACCESSOR(_entity, "skin", v.skin, GETN, SETINT);
     ACCESSOR(_entity, "body", v.body, GETN, SETINT);
     ACCESSOR(_entity, "effects", v.effects, GETN, SETINT);
-
-  	// float		gravity;		// % of "normal" gravity
-	  // float		friction;		// inverse elasticity of MOVETYPE_BOUNCE
-
+    ACCESSOR(_entity, "gravity", v.gravity, GETN, SETFLOAT);
+    ACCESSOR(_entity, "friction", v.friction, GETN, SETFLOAT);
     ACCESSOR(_entity, "lightLevel", v.light_level, GETN, SETINT);
     ACCESSOR(_entity, "sequence", v.sequence, GETN, SETINT);
     ACCESSOR(_entity, "gaitsequence", v.gaitsequence, GETN, SETINT);
-
-	  // float		frame;		// % playback position in animation sequences (0..255)
-	  // float		animtime;		// world time when frame was set
-	  // float		framerate;	// animation playback rate (-8x to 8x)
-
+    ACCESSOR(_entity, "frame", v.frame, GETN, SETFLOAT);
+    ACCESSOR(_entity, "animtime", v.animtime, GETN, SETFLOAT);
+    ACCESSOR(_entity, "framerate", v.framerate, GETN, SETFLOAT);
 	  // byte		controller[4];	// bone controller setting (0..255)
 	  // byte		blending[2];	// blending amount between sub-sequences (0..255)
-
-	  // float		scale;		// sprites and models rendering scale (0..255)
+    ACCESSOR(_entity, "scale", v.scale, GETN, SETFLOAT);
     ACCESSOR(_entity, "rendermode", v.rendermode, GETN, SETINT);
     ACCESSOR(_entity, "renderamt", v.renderamt, GETN, SETFLOAT);
     ACCESSORL(_entity, "rendercolor", v.rendercolor, GETVEC3, SETVEC3);
     ACCESSOR(_entity, "renderfx", v.renderfx, GETN, SETINT);
-
-    ACCESSOR(_entity, "health", v.health, GETN, SETINT); // TODO: float
-    ACCESSOR(_entity, "frags", v.frags, GETN, SETINT); // TODO: float
+    ACCESSOR(_entity, "health", v.health, GETN, SETFLOAT);
+    ACCESSOR(_entity, "frags", v.frags, GETN, SETFLOAT);
     ACCESSOR(_entity, "weapons", v.weapons, GETN, SETINT);
-    
-	  // float		takedamage;
+    ACCESSOR(_entity, "takedamage", v.takedamage, GETN, SETFLOAT);
     ACCESSOR(_entity, "deadflag", v.deadflag, GETN, SETINT);
     ACCESSORL(_entity, "viewOfs", v.view_ofs, GETVEC3, SETVEC3);
-
     ACCESSOR(_entity, "button", v.button, GETN, SETINT);
     ACCESSOR(_entity, "impulse", v.impulse, GETN, SETINT);
-
     // edict_t		*chain;		// Entity pointer when linked into a linked list
     // edict_t		*dmg_inflictor;
     // edict_t		*enemy;
     // edict_t		*aiment;		// entity pointer when MOVETYPE_FOLLOW
     // edict_t		*owner;
     // edict_t		*groundentity;
-
     ACCESSOR(_entity, "spawnflags", v.spawnflags, GETN, SETINT);
     ACCESSOR(_entity, "flags", v.flags, GETN, SETINT);
     ACCESSOR(_entity, "colormap", v.colormap, GETN, SETINT);
     ACCESSOR(_entity, "team", v.team, GETN, SETINT);
-
-	  // float		max_health;
-	  // float		teleport_time;
-	  // float		armortype;
-    ACCESSOR(_entity, "armorvalue", v.armorvalue, GETN, SETINT); // TODO: float
-
+    ACCESSOR(_entity, "maxHealth", v.max_health, GETN, SETFLOAT);
+    ACCESSOR(_entity, "teleportTime", v.teleport_time, GETN, SETFLOAT);
+    ACCESSOR(_entity, "armortype", v.armortype, GETN, SETFLOAT);
+    ACCESSOR(_entity, "armorvalue", v.armorvalue, GETN, SETFLOAT);
     ACCESSOR(_entity, "waterlevel", v.waterlevel, GETN, SETINT);
     ACCESSOR(_entity, "watertype", v.watertype, GETN, SETINT);
-
     ACCESSOR(_entity, "target", v.target, GETSTR, SETSTR);
     ACCESSOR(_entity, "targetname", v.targetname, GETSTR, SETSTR);
     ACCESSOR(_entity, "netname", v.netname, GETSTR, SETSTR);
     ACCESSOR(_entity, "message", v.message, GETSTR, SETSTR);
-
-    // float		dmg_take;
-    // float		dmg_save;
-    // float		dmg;
-    // float		dmgtime;
-
+    ACCESSOR(_entity, "dmgTake", v.dmg_take, GETN, SETFLOAT);
+    ACCESSOR(_entity, "dmgSave", v.dmg_save, GETN, SETFLOAT);
+    ACCESSOR(_entity, "dmg", v.dmg, GETN, SETFLOAT);
+    ACCESSOR(_entity, "dmgtime", v.dmgtime, GETN, SETFLOAT);
     ACCESSOR(_entity, "noise", v.noise, GETSTR, SETSTR);
-    ACCESSOR(_entity, "noise1", v.noise, GETSTR, SETSTR);
-    ACCESSOR(_entity, "noise2", v.noise, GETSTR, SETSTR);
-    ACCESSOR(_entity, "noise3", v.noise, GETSTR, SETSTR);
-
-	  // float		speed;
-	  // float		air_finished;
-	  // float		pain_finished;
-	  // float		radsuit_finished;
-
+    ACCESSOR(_entity, "noise1", v.noise1, GETSTR, SETSTR);
+    ACCESSOR(_entity, "noise2", v.noise2, GETSTR, SETSTR);
+    ACCESSOR(_entity, "noise3", v.noise3, GETSTR, SETSTR);
+    ACCESSOR(_entity, "speed", v.speed, GETN, SETFLOAT);
+    ACCESSOR(_entity, "airFinished", v.air_finished, GETN, SETFLOAT);
+    ACCESSOR(_entity, "painFinished", v.pain_finished, GETN, SETFLOAT);
+    ACCESSOR(_entity, "radsuitFinished", v.radsuit_finished, GETN, SETFLOAT);
 	  // edict_t		*pContainingEntity;
-
     ACCESSOR(_entity, "playerclass", v.playerclass, GETN, SETINT);
-	  // float		maxspeed;
-
-	  // float		fov;
+    ACCESSOR(_entity, "maxspeed", v.maxspeed, GETN, SETFLOAT);
+    ACCESSOR(_entity, "fov", v.fov, GETN, SETFLOAT);
     ACCESSOR(_entity, "weaponanim", v.weaponanim, GETN, SETINT);
     ACCESSOR(_entity, "pushmsec", v.pushmsec, GETN, SETINT);
     ACCESSOR(_entity, "bInDuck", v.bInDuck, GETN, SETINT);
@@ -247,9 +221,7 @@ namespace structures
     ACCESSOR(_entity, "flSwimTime", v.flSwimTime, GETN, SETINT);
     ACCESSOR(_entity, "flDuckTime", v.flDuckTime, GETN, SETINT);
     ACCESSOR(_entity, "iStepLeft", v.iStepLeft, GETN, SETINT);
-
-    // float		flFallVelocity;
-
+    ACCESSOR(_entity, "fallVelocity", v.flFallVelocity, GETN, SETFLOAT);
     ACCESSOR(_entity, "gamestate", v.gamestate, GETN, SETINT);
     ACCESSOR(_entity, "oldbuttons", v.oldbuttons, GETN, SETINT);
     ACCESSOR(_entity, "groupinfo", v.groupinfo, GETN, SETINT);
