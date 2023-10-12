@@ -1,9 +1,9 @@
-#include <string>
-#include "v8.h"
 #include "extdll.h"
 #include "node/utils.hpp"
 #include "structures/structures.hpp"
 #include "util/convert.hpp"
+#include <v8.h>
+#include <string>
 
 #define V8_STUFF() v8::Isolate* isolate = info.GetIsolate(); \
   v8::Locker locker(isolate); \
@@ -657,7 +657,7 @@ void sf_eng_pfnFunctionFromName(const v8::FunctionCallbackInfo<v8::Value> &info)
 void sf_eng_pfnNameForFunction(const v8::FunctionCallbackInfo<v8::Value> &info)
 {
   V8_STUFF();
-  info.GetReturnValue().Set(v8::String::NewFromUtf8(isolate, (*g_engfuncs.pfnNameForFunction)(nullptr /* void * */)).ToLocalChecked());
+  info.GetReturnValue().Set(v8::String::NewFromUtf8(isolate, (*g_engfuncs.pfnNameForFunction)(0)).ToLocalChecked());
 }
 
 // nodemod.eng.clientPrintf();
@@ -773,16 +773,19 @@ void sf_eng_pfnEndSection(const v8::FunctionCallbackInfo<v8::Value> &info)
 void sf_eng_pfnCompareFileTime(const v8::FunctionCallbackInfo<v8::Value> &info)
 {
   V8_STUFF();
-  info.GetReturnValue().Set(v8::Number::New(isolate, (*g_engfuncs.pfnCompareFileTime)(utils::js2string(isolate, info[0]),
-                                                                                      utils::js2string(isolate, info[1]),
+  info.GetReturnValue().Set(v8::Number::New(isolate, (*g_engfuncs.pfnCompareFileTime)(const_cast<char*>(utils::js2string(isolate, info[0])),
+                                                                                      const_cast<char*>(utils::js2string(isolate, info[1])),
                                                                                       nullptr /* int * */)));
 }
 
 // nodemod.eng.getGameDir();
 void sf_eng_pfnGetGameDir(const v8::FunctionCallbackInfo<v8::Value> &info)
 {
-  V8_STUFF();
-  (*g_engfuncs.pfnGetGameDir)(utils::js2string(isolate, info[0]));
+	V8_STUFF();
+    std::string buffer;
+    buffer.resize(256);
+	(*g_engfuncs.pfnGetGameDir)(buffer.data());
+	info.GetReturnValue().Set(v8::String::NewFromUtf8(isolate, buffer.c_str()).ToLocalChecked());
 }
 
 // nodemod.eng.cvarRegisterVariable();
@@ -850,16 +853,15 @@ void sf_eng_pfnGetInfoKeyBuffer(const v8::FunctionCallbackInfo<v8::Value> &info)
 void sf_eng_pfnInfoKeyValue(const v8::FunctionCallbackInfo<v8::Value> &info)
 {
   V8_STUFF();
-  info.GetReturnValue().Set(v8::String::NewFromUtf8(isolate, (*g_engfuncs.pfnInfoKeyValue)(utils::js2string(isolate, info[0]),
-                                                                                           utils::js2string(isolate, info[1])))
-                                .ToLocalChecked());
+  info.GetReturnValue().Set(v8::String::NewFromUtf8(isolate, (*g_engfuncs.pfnInfoKeyValue)(const_cast<char*>(utils::js2string(isolate, info[0])),
+                                                                                           utils::js2string(isolate, info[1]))).ToLocalChecked());
 }
 
 // nodemod.eng.setKeyValue();
 void sf_eng_pfnSetKeyValue(const v8::FunctionCallbackInfo<v8::Value> &info)
 {
   V8_STUFF();
-  (*g_engfuncs.pfnSetKeyValue)(utils::js2string(isolate, info[0]),
+  (*g_engfuncs.pfnSetKeyValue)(const_cast<char*>(utils::js2string(isolate, info[0])),
                                utils::js2string(isolate, info[1]),
                                utils::js2string(isolate, info[2]));
 }
@@ -869,7 +871,7 @@ void sf_eng_pfnSetClientKeyValue(const v8::FunctionCallbackInfo<v8::Value> &info
 {
   V8_STUFF();
   (*g_engfuncs.pfnSetClientKeyValue)(info[0]->Int32Value(context).ToChecked(),
-                                     utils::js2string(isolate, info[1]),
+                                     const_cast<char*>(utils::js2string(isolate, info[1])),
                                      utils::js2string(isolate, info[2]),
                                      utils::js2string(isolate, info[3]));
 }
@@ -947,7 +949,7 @@ void sf_eng_pfnGetPlayerWONId(const v8::FunctionCallbackInfo<v8::Value> &info)
 void sf_eng_pfnInfo_RemoveKey(const v8::FunctionCallbackInfo<v8::Value> &info)
 {
   V8_STUFF();
-  (*g_engfuncs.pfnInfo_RemoveKey)(utils::js2string(isolate, info[0]),
+  (*g_engfuncs.pfnInfo_RemoveKey)(const_cast<char*>(utils::js2string(isolate, info[0])),
                                   utils::js2string(isolate, info[1]));
 }
 
@@ -1248,7 +1250,7 @@ void sf_eng_pfnQueryClientCvarValue2(const v8::FunctionCallbackInfo<v8::Value> &
 void sf_eng_CheckParm(const v8::FunctionCallbackInfo<v8::Value> &info)
 {
   V8_STUFF();
-  info.GetReturnValue().Set(v8::Number::New(isolate, (*g_engfuncs.CheckParm)(utils::js2string(isolate, info[0]),
+  info.GetReturnValue().Set(v8::Number::New(isolate, (*g_engfuncs.CheckParm)(const_cast<char*>(utils::js2string(isolate, info[0])),
                                                                              nullptr /* char ** */)));
 }
 

@@ -40,10 +40,10 @@ namespace convert
     return value->Int32Value(isolate->GetCurrentContext()).ToChecked();
   }
 
-  inline float *js2fvec3(v8::Isolate *isolate, const v8::Local<v8::Array> &array, float vector[]) {
-		v8::Locker locker(isolate);
-    vector[0] = array->Get(isolate->GetCurrentContext(), 0).ToLocalChecked()->ToNumber(isolate->GetCurrentContext()).ToLocalChecked()->Value();
-    vector[1] = array->Get(isolate->GetCurrentContext(), 1).ToLocalChecked()->ToNumber(isolate->GetCurrentContext()).ToLocalChecked()->Value();
-    vector[2] = array->Get(isolate->GetCurrentContext(), 2).ToLocalChecked()->ToNumber(isolate->GetCurrentContext()).ToLocalChecked()->Value();
+  inline void js2fvec3(v8::Isolate *isolate, const v8::Local<v8::Array> &array, float vector[]) {
+	  v8::Locker locker(isolate);
+	  vector[0] = array->Get(isolate->GetCurrentContext(), 0).ToLocalChecked()->ToNumber(isolate->GetCurrentContext()).ToLocalChecked()->Value();
+	  vector[1] = array->Get(isolate->GetCurrentContext(), 1).ToLocalChecked()->ToNumber(isolate->GetCurrentContext()).ToLocalChecked()->Value();
+	  vector[2] = array->Get(isolate->GetCurrentContext(), 2).ToLocalChecked()->ToNumber(isolate->GetCurrentContext()).ToLocalChecked()->Value();
   }
 }
