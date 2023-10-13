@@ -72,6 +72,10 @@ if(MSVC)
 else()
 endif()
 
+# link dependency libraries
+find_package(fmt CONFIG REQUIRED)
+target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt)
+
 # set build output directory
 set(DIR_COMMON_OUTPUT 
 	${CMAKE_BINARY_DIR}/$<CONFIG>/bin
