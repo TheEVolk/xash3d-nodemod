@@ -47,6 +47,7 @@ inline void js2vect(v8::Isolate *isolate, v8::Local<v8::Array> array, vec3_t &ve
 		return std::string(str);
 	}
 
+	// TODO fix terrible memory leaking
 	inline const char* js2string(v8:: Isolate * isolate, const v8::Local<v8::Value>& value) {
 	v8::String::Utf8Value _str(isolate, value);
 					const char* str(*_str);

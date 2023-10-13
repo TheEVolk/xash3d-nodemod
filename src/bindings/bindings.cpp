@@ -1,12 +1,10 @@
-#include <utility>
-#include <string>
-#include <unistd.h>
-#include <vector>
-#include <limits.h>
-#include "v8.h"
 #include "bindings.hpp"
 #include "util/convert.hpp"
 #include "structures/structures.hpp"
+#include <v8.h>
+#include <string>
+#include <vector>
+#include <filesystem>
 
 extern std::vector<std::pair<std::string, v8::FunctionCallback>> nodemodFunctions;
 extern v8::Local<v8::ObjectTemplate> registerEngineFunctions(v8::Isolate *isolate);
@@ -42,13 +40,12 @@ namespace bindings
     nodemodObject->Set(
         convert::str2js(isolate, "dll"),
         registerDllFunctions(isolate));
-
-    char cwd[PATH_MAX];
-    getcwd(cwd, sizeof(cwd));
+    
+    auto cwd = std::filesystem::current_path();
 
     nodemodObject->Set(
         convert::str2js(isolate, "cwd"),
-        convert::str2js(isolate, cwd));
+        convert::str2js(isolate, cwd.string().c_str()));
 
     // add getters
     nodemodObject->SetAccessor(

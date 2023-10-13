@@ -2,6 +2,7 @@
 #include "nodeimpl.hpp"
 #include "common/logger.hpp"
 #include "bindings/bindings.hpp"
+#include <filesystem>
 
 extern void registerDllEvents();
 extern void registerEngineEvents();
@@ -83,13 +84,12 @@ static node::IsolateData* GetNodeIsolate()
 			flags = static_cast<node::EnvironmentFlags::Flags>(flags | node::EnvironmentFlags::kOwnsInspector);
 		}
 
+		// HACK we should use actual gamedir name instead "valve"
 		auto env = node::CreateEnvironment(GetNodeIsolate(), _context, args, exec_args, flags);
-
-		char oldCwd[PATH_MAX];
-		getcwd(oldCwd, sizeof(oldCwd));
-		chdir("valve/addons/nodemod");
+		auto old_cwd = std::filesystem::current_path();
+		std::filesystem::current_path("valve/addons/nodemod");
 		node::LoadEnvironment(env, node::StartExecutionCallback{});
-		chdir(oldCwd);
+		std::filesystem::current_path(old_cwd);
 
 		nodeEnvironment.reset(env);
 
