@@ -74,11 +74,22 @@ if(WIN32)
 else()
 	target_compile_options(${PROJECT_NAME} PRIVATE -Wfatal-errors)
 	target_compile_options(${PROJECT_NAME} PRIVATE -fpermissive)
+
+	# these will break compatibility with other architectures
+	# but for now it's required for our purposes
+	target_compile_options(${PROJECT_NAME} PRIVATE -m32)
+	target_link_options(${PROJECT_NAME} PRIVATE -m32)
 endif()
 
 # link dependency libraries
+# apply hacky workaround to bypass wrong CMAKE_SIZEOF_VOID_P value
+set(BACKUP_CMAKE_SIZEOF_VOID_P "${CMAKE_SIZEOF_VOID_P}")
+set(CMAKE_SIZEOF_VOID_P "")
+
 find_package(fmt CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt)
+
+set(CMAKE_SIZEOF_VOID_P "${BACKUP_CMAKE_SIZEOF_VOID_P}")
 
 # link platform-specific libraries
 if(NOT WIN32)
