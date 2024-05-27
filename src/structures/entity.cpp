@@ -1,9 +1,8 @@
-#include "v8.h"
 #include "extdll.h"
 #include "structures.hpp"
+#include "util/convert.hpp"
 #include "node/utils.hpp"
 #include <unordered_map>
-#include "util/convert.hpp"
 
 extern enginefuncs_t g_engfuncs;
 
@@ -18,13 +17,21 @@ extern enginefuncs_t g_engfuncs;
 #define SETSTR(v) (*g_engfuncs.pfnAllocString)(utils::js2string(info.GetIsolate(), v))
 #define SETVEC3(v, f) utils::js2vect(info.GetIsolate(), v8::Local<v8::Array>::Cast(v), f)
 
-#define GETTER(FIELD, TYPE) ([](v8::Local<v8::String> property, const v8::PropertyCallbackInfo<v8::Value> &info) { \
+#define GETTER(FIELD, TYPE) ([](v8::Local<v8::Name> property, const v8::PropertyCallbackInfo<v8::Value> &info) { \
         edict_t *edict = (edict_t *)structures::unwrapEntity(info.GetIsolate(), info.Holder()); \
         if (edict == NULL) return;\
         info.GetReturnValue().Set(TYPE(edict->FIELD)); })
 
-#define SETTER(field, TYPE) ([](v8::Local<v8::String> property, v8::Local<v8::Value> value, const v8::PropertyCallbackInfo<v8::Value> &info) { edict_t *edict = E_GET if (edict == NULL) return; edict->field = TYPE(value); })
-#define SETTERL(field, TYPE) ([](v8::Local<v8::String> property, v8::Local<v8::Value> value, const v8::PropertyCallbackInfo<v8::Value> &info) { edict_t *edict = E_GET if (edict == NULL) return; TYPE(value, edict->field); })
+#define SETTER(field, TYPE) ([](v8::Local<v8::Name> property, v8::Local<v8::Value> value, const v8::PropertyCallbackInfo<void> &info) { \
+        edict_t *edict = E_GET \
+        if (edict == NULL) return; \
+        edict->field = TYPE(value); })
+
+#define SETTERL(field, TYPE) ([](v8::Local<v8::Name> property, v8::Local<v8::Value> value, const v8::PropertyCallbackInfo<void> &info) { \
+        edict_t *edict = E_GET \
+        if (edict == NULL) return; \
+        TYPE(value, edict->field); })
+
 #define ACCESSOR(entity, name, field, GET, SET) entity->SetAccessor(v8::String::NewFromUtf8(isolate, name).ToLocalChecked(), GETTER(field, GET), SETTER(field, SET))
 #define ACCESSORL(entity, name, field, GET, SET) entity->SetAccessor(v8::String::NewFromUtf8(isolate, name).ToLocalChecked(), GETTER(field, GET), SETTERL(field, SET))
 
@@ -60,7 +67,7 @@ namespace structures
     return static_cast<edict_t *>(field);
   }
 
-  v8::Local<v8::Value> wrapEntity(v8::Isolate *isolate, edict_t *entity)
+  v8::Local<v8::Value> wrapEntity(v8::Isolate *isolate, const edict_t *entity)
   {
     v8::Locker locker(isolate);
     if (entity == NULL)
@@ -77,7 +84,7 @@ namespace structures
 
     // Create a new instance if an object doesn't exist for this ID
     v8::Local<v8::Object> obj = structures::entity.Get(isolate)->NewInstance(isolate->GetCurrentContext()).ToLocalChecked();
-    obj->SetAlignedPointerInInternalField(0, entity);
+    obj->SetAlignedPointerInInternalField(0, const_cast<edict_t*>(entity));
     obj->Set(isolate->GetCurrentContext(), v8::String::NewFromUtf8(isolate, "id").ToLocalChecked(), v8::Number::New(isolate, entityId));
 
     wrappedEntities[entityId].Reset(isolate, obj);
@@ -128,16 +135,15 @@ namespace structures
     ACCESSOR(_entity, "idealYaw", v.ideal_yaw, GETN, SETFLOAT);
     ACCESSOR(_entity, "yawSpeed", v.yaw_speed, GETN, SETFLOAT);
     ACCESSOR(_entity, "modelindex", v.modelindex, GETN, SETINT);
+
     _entity->SetAccessor(
         convert::str2js(isolate, "model"),
         GETTER(v.model, GETSTR),
-        [](v8::Local<v8::String> property, v8::Local<v8::Value> value, const v8::PropertyCallbackInfo<v8::Value> &info)
+        [](v8::Local<v8::Name> property, v8::Local<v8::Value> value, const v8::PropertyCallbackInfo<void> &info)
         {
           edict_t *edict = (edict_t *)structures::unwrapEntity(info.GetIsolate(), info.Holder());
-
           if (edict == NULL)
             return;
-
           (*g_engfuncs.pfnSetModel)(edict, convert::js2str(info.GetIsolate(), value));
         });
 

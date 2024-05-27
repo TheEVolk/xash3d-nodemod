@@ -14,15 +14,15 @@
   }
 
 // nodemod.on('dllSpawn', (pent) => console.log('dllSpawn fired!'));
-  int dll_pfnSpawn (edict_t * pent) {
-  SET_META_RESULT(MRES_IGNORED);
-    event::findAndCall("dllSpawn", [=](v8::Isolate* isolate) {
-      unsigned int v8_argCount = 1;
-       v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = structures::wrapEntity(isolate, pent); // pent (edict_t *)
-      return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
-    });
-  }
+int dll_pfnSpawn(edict_t * pent) {
+	event::findAndCall("dllSpawn", [=](v8::Isolate* isolate) {
+		unsigned int v8_argCount = 1;
+		v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
+		v8_args[0] = structures::wrapEntity(isolate, pent); // pent (edict_t *)
+		return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
+	});
+    RETURN_META_VALUE(MRES_IGNORED, 0);
+}
 
 // nodemod.on('dllThink', (pent) => console.log('dllThink fired!'));
   void dll_pfnThink (edict_t * pent) {
@@ -96,17 +96,17 @@ v8_args[1] = v8::External::New(isolate, pSaveData /* SAVERESTOREDATA  */); // pS
   }
 
 // nodemod.on('dllRestore', (pent, pSaveData, globalEntity) => console.log('dllRestore fired!'));
-  int dll_pfnRestore (edict_t * pent, SAVERESTOREDATA * pSaveData, int globalEntity) {
-  SET_META_RESULT(MRES_IGNORED);
-    event::findAndCall("dllRestore", [=](v8::Isolate* isolate) {
-      unsigned int v8_argCount = 3;
-       v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = structures::wrapEntity(isolate, pent); // pent (edict_t *)
-v8_args[1] = v8::External::New(isolate, pSaveData /* SAVERESTOREDATA  */); // pSaveData (SAVERESTOREDATA *)
-v8_args[2] = v8::Number::New(isolate, globalEntity); // globalEntity (int)
-      return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
-    });
-  }
+int dll_pfnRestore(edict_t * pent, SAVERESTOREDATA * pSaveData, int globalEntity) {
+	event::findAndCall("dllRestore", [=](v8::Isolate* isolate) {
+		unsigned int v8_argCount = 3;
+		v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
+		v8_args[0] = structures::wrapEntity(isolate, pent); // pent (edict_t *)
+		v8_args[1] = v8::External::New(isolate, pSaveData /* SAVERESTOREDATA  */); // pSaveData (SAVERESTOREDATA *)
+		v8_args[2] = v8::Number::New(isolate, globalEntity); // globalEntity (int)
+		return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
+	});
+    RETURN_META_VALUE(MRES_IGNORED, 0);
+}
 
 // nodemod.on('dllSetAbsBox', (pent) => console.log('dllSetAbsBox fired!'));
   void dll_pfnSetAbsBox (edict_t * pent) {
@@ -172,59 +172,60 @@ v8_args[4] = v8::Number::New(isolate, value4); // value4 (int)
   }
 
 // nodemod.on('dllResetGlobalState', () => console.log('dllResetGlobalState fired!'));
-  void dll_pfnResetGlobalState () {
+void dll_pfnResetGlobalState () {
     event::findAndCall("dllResetGlobalState", nullptr, 0);
-  }
+    RETURN_META(MRES_IGNORED);
+}
 
 // nodemod.on('dllClientConnect', (pEntity, pszName, pszAddress, szRejectReason) => console.log('dllClientConnect fired!'));
-  qboolean dll_pfnClientConnect (edict_t * pEntity, const char * pszName, const char * pszAddress, char* szRejectReason) {
-  SET_META_RESULT(MRES_IGNORED);
+qboolean dll_pfnClientConnect (edict_t * pEntity, const char * pszName, const char * pszAddress, char* szRejectReason) {
     event::findAndCall("dllClientConnect", [=](v8::Isolate* isolate) {
-      unsigned int v8_argCount = 4;
-       v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
-      v8_args[0] = structures::wrapEntity(isolate, pEntity); // pEntity (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, pszName).ToLocalChecked(); // pszName (const char *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, pszAddress).ToLocalChecked(); // pszAddress (const char *)
-v8_args[3] = v8::String::NewFromUtf8(isolate, szRejectReason).ToLocalChecked(); // szRejectReason (char*)
-      return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
+        unsigned int v8_argCount = 4;
+        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
+        v8_args[0] = structures::wrapEntity(isolate, pEntity); // pEntity (edict_t *)
+        v8_args[1] = v8::String::NewFromUtf8(isolate, pszName).ToLocalChecked(); // pszName (const char *)
+        v8_args[2] = v8::String::NewFromUtf8(isolate, pszAddress).ToLocalChecked(); // pszAddress (const char *)
+        v8_args[3] = v8::String::NewFromUtf8(isolate, szRejectReason).ToLocalChecked(); // szRejectReason (char*)
+        return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
-  }
+    RETURN_META_VALUE(MRES_IGNORED, FALSE);
+}
 
 // nodemod.on('dllClientDisconnect', (pEntity) => console.log('dllClientDisconnect fired!'));
-  void dll_pfnClientDisconnect (edict_t * pEntity) {
-  SET_META_RESULT(MRES_IGNORED);
+void dll_pfnClientDisconnect (edict_t * pEntity) {
     event::findAndCall("dllClientDisconnect", [=](v8::Isolate* isolate) {
-      unsigned int v8_argCount = 1;
-       v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = structures::wrapEntity(isolate, pEntity); // pEntity (edict_t *)
-      return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
+        unsigned int v8_argCount = 1;
+        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
+        v8_args[0] = structures::wrapEntity(isolate, pEntity); // pEntity (edict_t *)
+        return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
-  }
+    RETURN_META(MRES_IGNORED);
+ }
 
 // nodemod.on('dllClientKill', (pEntity) => console.log('dllClientKill fired!'));
-  void dll_pfnClientKill (edict_t * pEntity) {
-  SET_META_RESULT(MRES_IGNORED);
+void dll_pfnClientKill (edict_t * pEntity) {
     event::findAndCall("dllClientKill", [=](v8::Isolate* isolate) {
-      unsigned int v8_argCount = 1;
-       v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = structures::wrapEntity(isolate, pEntity); // pEntity (edict_t *)
-      return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
+        unsigned int v8_argCount = 1;
+        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
+        v8_args[0] = structures::wrapEntity(isolate, pEntity); // pEntity (edict_t *)
+        return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
-  }
+    RETURN_META(MRES_IGNORED);
+ }
 
 // nodemod.on('dllClientPutInServer', (pEntity) => console.log('dllClientPutInServer fired!'));
-  void dll_pfnClientPutInServer (edict_t * pEntity) {
-  SET_META_RESULT(MRES_IGNORED);
+void dll_pfnClientPutInServer (edict_t * pEntity) {
     event::findAndCall("dllClientPutInServer", [=](v8::Isolate* isolate) {
-      unsigned int v8_argCount = 1;
-       v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = structures::wrapEntity(isolate, pEntity); // pEntity (edict_t *)
-      return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
+        unsigned int v8_argCount = 1;
+        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
+        v8_args[0] = structures::wrapEntity(isolate, pEntity); // pEntity (edict_t *)
+        return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
-  }
+    RETURN_META(MRES_IGNORED);
+}
 
 // nodemod.on('dllClientCommand', (pEntity) => console.log('dllClientCommand fired!'));
-  void dll_pfnClientCommand (edict_t* ed) {
+void dll_pfnClientCommand (edict_t* ed) {
   SET_META_RESULT(MRES_IGNORED);
     event::findAndCall("dllClientCommand", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 2;
@@ -311,9 +312,10 @@ v8_args[2] = v8::Number::New(isolate, clientMax); // clientMax (int)
   }
 
 // nodemod.on('dllGetGameDescription', () => console.log('dllGetGameDescription fired!'));
-  const char * dll_pfnGetGameDescription () {
+const char * dll_pfnGetGameDescription () {
     event::findAndCall("dllGetGameDescription", nullptr, 0);
-  }
+    RETURN_META_VALUE(MRES_IGNORED, nullptr);
+}
 
 // nodemod.on('dllPlayerCustomization', (pEntity, pCustom) => console.log('dllPlayerCustomization fired!'));
   void dll_pfnPlayerCustomization (edict_t * pEntity, customization_t * pCustom) {
@@ -395,15 +397,15 @@ v8_args[1] = v8::Boolean::New(isolate, server); // server (qboolean)
   }
 
 // nodemod.on('dllPMFindTextureType', (name) => console.log('dllPMFindTextureType fired!'));
-  char dll_pfnPM_FindTextureType (const char * name) {
-  SET_META_RESULT(MRES_IGNORED);
-    event::findAndCall("dllPMFindTextureType", [=](v8::Isolate* isolate) {
-      unsigned int v8_argCount = 1;
-       v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, name).ToLocalChecked(); // name (const char *)
-      return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
-    });
-  }
+char dll_pfnPM_FindTextureType(const char * name) {
+	event::findAndCall("dllPMFindTextureType", [=](v8::Isolate* isolate) {
+		unsigned int v8_argCount = 1;
+		v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
+		v8_args[0] = v8::String::NewFromUtf8(isolate, name).ToLocalChecked(); // name (const char *)
+		return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
+	});
+    RETURN_META_VALUE(MRES_IGNORED, '\0');
+}
 
 // nodemod.on('dllSetupVisibility', (pViewEntity, pClient, pvs, pas) => console.log('dllSetupVisibility fired!'));
   void dll_pfnSetupVisibility (struct edict_s * pViewEntity, struct edict_s * pClient, unsigned char ** pvs, unsigned char ** pas) {
@@ -425,7 +427,7 @@ v8_args[3] = v8::External::New(isolate, pas /* unsigned char * */); // pas (unsi
     event::findAndCall("dllUpdateClientData", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::External::New(isolate, ent /* edict_s  */); // ent (const struct edict_s *)
+      v8_args[0] = v8::External::New(isolate, const_cast<edict_s*>(ent) /* edict_s  */); // ent (const struct edict_s *)
 v8_args[1] = v8::Number::New(isolate, sendweapons); // sendweapons (int)
 v8_args[2] = v8::External::New(isolate, cd /* clientdata_s  */); // cd (struct clientdata_s *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
@@ -433,21 +435,21 @@ v8_args[2] = v8::External::New(isolate, cd /* clientdata_s  */); // cd (struct c
   }
 
 // nodemod.on('dllAddToFullPack', (state, e, ent, host, hostflags, player, pSet) => console.log('dllAddToFullPack fired!'));
-  int dll_pfnAddToFullPack (struct entity_state_s * state, int e, edict_t * ent, edict_t * host, int hostflags, int player, unsigned char * pSet) {
-  SET_META_RESULT(MRES_IGNORED);
+int dll_pfnAddToFullPack (struct entity_state_s * state, int e, edict_t * ent, edict_t * host, int hostflags, int player, unsigned char * pSet) {
     event::findAndCall("dllAddToFullPack", [=](v8::Isolate* isolate) {
-      unsigned int v8_argCount = 7;
-       v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[7];
-      v8_args[0] = v8::External::New(isolate, state /* entity_state_s  */); // state (struct entity_state_s *)
-v8_args[1] = v8::Number::New(isolate, e); // e (int)
-v8_args[2] = structures::wrapEntity(isolate, ent); // ent (edict_t *)
-v8_args[3] = structures::wrapEntity(isolate, host); // host (edict_t *)
-v8_args[4] = v8::Number::New(isolate, hostflags); // hostflags (int)
-v8_args[5] = v8::Number::New(isolate, player); // player (int)
-v8_args[6] = v8::External::New(isolate, pSet /* unsigned char  */); // pSet (unsigned char *)
-      return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
+        unsigned int v8_argCount = 7;
+        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[7];
+        v8_args[0] = v8::External::New(isolate, state /* entity_state_s  */); // state (struct entity_state_s *)
+        v8_args[1] = v8::Number::New(isolate, e); // e (int)
+        v8_args[2] = structures::wrapEntity(isolate, ent); // ent (edict_t *)
+        v8_args[3] = structures::wrapEntity(isolate, host); // host (edict_t *)
+        v8_args[4] = v8::Number::New(isolate, hostflags); // hostflags (int)
+        v8_args[5] = v8::Number::New(isolate, player); // player (int)
+        v8_args[6] = v8::External::New(isolate, pSet /* unsigned char  */); // pSet (unsigned char *)
+        return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
-  }
+    RETURN_META_VALUE(MRES_IGNORED, 0);
+}
 
 // nodemod.on('dllCreateBaseline', (player, eindex, baseline, entity, playermodelindex, player_mins, player_maxs) => console.log('dllCreateBaseline fired!'));
   void dll_pfnCreateBaseline (int player, int eindex, struct entity_state_s * baseline, struct edict_s * entity, int playermodelindex, vec3_t player_mins, vec3_t player_maxs) {
@@ -472,16 +474,17 @@ v8_args[6] = utils::vect2js(isolate, player_maxs); // player_maxs (vec3_t)
   }
 
 // nodemod.on('dllGetWeaponData', (player, info) => console.log('dllGetWeaponData fired!'));
-  int dll_pfnGetWeaponData (struct edict_s * player, struct weapon_data_s * info) {
-  SET_META_RESULT(MRES_IGNORED);
-    event::findAndCall("dllGetWeaponData", [=](v8::Isolate* isolate) {
-      unsigned int v8_argCount = 2;
-       v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::External::New(isolate, player /* edict_s  */); // player (struct edict_s *)
-v8_args[1] = v8::External::New(isolate, info /* weapon_data_s  */); // info (struct weapon_data_s *)
-      return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
-    });
-  }
+int dll_pfnGetWeaponData(struct edict_s * player, struct weapon_data_s * info) {
+	SET_META_RESULT(MRES_IGNORED);
+	event::findAndCall("dllGetWeaponData", [=](v8::Isolate* isolate) {
+		unsigned int v8_argCount = 2;
+		v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
+		v8_args[0] = v8::External::New(isolate, player /* edict_s  */); // player (struct edict_s *)
+		v8_args[1] = v8::External::New(isolate, info /* weapon_data_s  */); // info (struct weapon_data_s *)
+		return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
+	});
+	RETURN_META_VALUE(MRES_IGNORED, 1);
+}
 
 // nodemod.on('dllCmdStart', (player, cmd, random_seed) => console.log('dllCmdStart fired!'));
   void dll_pfnCmdStart (const edict_t * player, const struct usercmd_s * cmd, unsigned int random_seed) {
@@ -489,8 +492,8 @@ v8_args[1] = v8::External::New(isolate, info /* weapon_data_s  */); // info (str
     event::findAndCall("dllCmdStart", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = structures::wrapEntity(isolate, player); // player (const edict_t *)
-v8_args[1] = v8::External::New(isolate, cmd /* usercmd_s  */); // cmd (const struct usercmd_s *)
+      v8_args[0] = structures::wrapEntity(isolate, const_cast<edict_t*>(player)); // player (const edict_t *)
+v8_args[1] = v8::External::New(isolate, const_cast<usercmd_s*>(cmd) /* usercmd_s  */); // cmd (const struct usercmd_s *)
 v8_args[2] = v8::Number::New(isolate, random_seed); // random_seed (unsigned int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
@@ -502,37 +505,37 @@ v8_args[2] = v8::Number::New(isolate, random_seed); // random_seed (unsigned int
     event::findAndCall("dllCmdEnd", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = structures::wrapEntity(isolate, player); // player (const edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, const_cast<edict_t*>(player)); // player (const edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
 
 // nodemod.on('dllConnectionlessPacket', (net_from, args, response_buffer, response_buffer_size) => console.log('dllConnectionlessPacket fired!'));
-  int dll_pfnConnectionlessPacket (const struct netadr_s * net_from, const char * args, char * response_buffer, int * response_buffer_size) {
-  SET_META_RESULT(MRES_IGNORED);
+int dll_pfnConnectionlessPacket (const struct netadr_s * net_from, const char * args, char * response_buffer, int * response_buffer_size) {
     event::findAndCall("dllConnectionlessPacket", [=](v8::Isolate* isolate) {
-      unsigned int v8_argCount = 4;
-       v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
-      v8_args[0] = v8::External::New(isolate, net_from /* netadr_s  */); // net_from (const struct netadr_s *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, args).ToLocalChecked(); // args (const char *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, response_buffer).ToLocalChecked(); // response_buffer (char *)
-v8_args[3] = v8::External::New(isolate, response_buffer_size /* int  */); // response_buffer_size (int *)
-      return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
+        unsigned int v8_argCount = 4;
+        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
+        v8_args[0] = v8::External::New(isolate, const_cast<netadr_s*>(net_from) /* netadr_s  */); // net_from (const struct netadr_s *)
+        v8_args[1] = v8::String::NewFromUtf8(isolate, args).ToLocalChecked(); // args (const char *)
+        v8_args[2] = v8::String::NewFromUtf8(isolate, response_buffer).ToLocalChecked(); // response_buffer (char *)
+        v8_args[3] = v8::External::New(isolate, response_buffer_size /* int  */); // response_buffer_size (int *)
+        return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
-  }
+    RETURN_META_VALUE(MRES_IGNORED, 0);
+}
 
 // nodemod.on('dllGetHullBounds', (hullnumber, mins, maxs) => console.log('dllGetHullBounds fired!'));
-  int dll_pfnGetHullBounds (int hullnumber, float * mins, float * maxs) {
-  SET_META_RESULT(MRES_IGNORED);
-    event::findAndCall("dllGetHullBounds", [=](v8::Isolate* isolate) {
-      unsigned int v8_argCount = 3;
-       v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::Number::New(isolate, hullnumber); // hullnumber (int)
-v8_args[1] = v8::External::New(isolate, mins /* float  */); // mins (float *)
-v8_args[2] = v8::External::New(isolate, maxs /* float  */); // maxs (float *)
-      return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
-    });
-  }
+int dll_pfnGetHullBounds(int hullnumber, float * mins, float * maxs) {
+	event::findAndCall("dllGetHullBounds", [=](v8::Isolate* isolate) {
+		unsigned int v8_argCount = 3;
+		v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
+		v8_args[0] = v8::Number::New(isolate, hullnumber); // hullnumber (int)
+		v8_args[1] = v8::External::New(isolate, mins /* float  */); // mins (float *)
+		v8_args[2] = v8::External::New(isolate, maxs /* float  */); // maxs (float *)
+		return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
+	});
+	RETURN_META_VALUE(MRES_IGNORED, 0);
+}
 
 // nodemod.on('dllCreateInstancedBaselines', () => console.log('dllCreateInstancedBaselines fired!'));
   void dll_pfnCreateInstancedBaselines () {
@@ -540,22 +543,23 @@ v8_args[2] = v8::External::New(isolate, maxs /* float  */); // maxs (float *)
   }
 
 // nodemod.on('dllInconsistentFile', (player, filename, disconnect_message) => console.log('dllInconsistentFile fired!'));
-  int dll_pfnInconsistentFile (const struct edict_s * player, const char * filename, char * disconnect_message) {
-  SET_META_RESULT(MRES_IGNORED);
-    event::findAndCall("dllInconsistentFile", [=](v8::Isolate* isolate) {
-      unsigned int v8_argCount = 3;
-       v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::External::New(isolate, player /* edict_s  */); // player (const struct edict_s *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, filename).ToLocalChecked(); // filename (const char *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, disconnect_message).ToLocalChecked(); // disconnect_message (char *)
-      return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
-    });
-  }
+int dll_pfnInconsistentFile(const struct edict_s * player, const char * filename, char * disconnect_message) {
+	event::findAndCall("dllInconsistentFile", [=](v8::Isolate* isolate) {
+		unsigned int v8_argCount = 3;
+		v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
+		v8_args[0] = v8::External::New(isolate, const_cast<edict_s*>(player) /* edict_s  */); // player (const struct edict_s *)
+		v8_args[1] = v8::String::NewFromUtf8(isolate, filename).ToLocalChecked(); // filename (const char *)
+		v8_args[2] = v8::String::NewFromUtf8(isolate, disconnect_message).ToLocalChecked(); // disconnect_message (char *)
+		return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
+	});
+    RETURN_META_VALUE(MRES_IGNORED, 0);
+}
 
 // nodemod.on('dllAllowLagCompensation', () => console.log('dllAllowLagCompensation fired!'));
-  int dll_pfnAllowLagCompensation () {
+int dll_pfnAllowLagCompensation() {
     event::findAndCall("dllAllowLagCompensation", nullptr, 0);
-  }
+    RETURN_META_VALUE(MRES_IGNORED, 1);
+}
 
     DLL_FUNCTIONS g_DllFunctionTable = {
       dll_pfnGameInit,
@@ -617,15 +621,15 @@ dll_pfnAllowLagCompensation
   }
 
 // nodemod.on('postDllSpawn', (pent) => console.log('postDllSpawn fired!'));
-  int postDll_pfnSpawn (edict_t * pent) {
-  SET_META_RESULT(MRES_IGNORED);
-    event::findAndCall("postDllSpawn", [=](v8::Isolate* isolate) {
-      unsigned int v8_argCount = 1;
-       v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = structures::wrapEntity(isolate, pent); // pent (edict_t *)
-      return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
-    });
-  }
+int postDll_pfnSpawn(edict_t * pent) {
+	event::findAndCall("postDllSpawn", [=](v8::Isolate* isolate) {
+		unsigned int v8_argCount = 1;
+		v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
+		v8_args[0] = structures::wrapEntity(isolate, pent); // pent (edict_t *)
+		return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
+	});
+    RETURN_META_VALUE(MRES_IGNORED, 0);
+}
 
 // nodemod.on('postDllThink', (pent) => console.log('postDllThink fired!'));
   void postDll_pfnThink (edict_t * pent) {
@@ -699,17 +703,17 @@ v8_args[1] = v8::External::New(isolate, pSaveData /* SAVERESTOREDATA  */); // pS
   }
 
 // nodemod.on('postDllRestore', (pent, pSaveData, globalEntity) => console.log('postDllRestore fired!'));
-  int postDll_pfnRestore (edict_t * pent, SAVERESTOREDATA * pSaveData, int globalEntity) {
-  SET_META_RESULT(MRES_IGNORED);
-    event::findAndCall("postDllRestore", [=](v8::Isolate* isolate) {
-      unsigned int v8_argCount = 3;
-       v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = structures::wrapEntity(isolate, pent); // pent (edict_t *)
-v8_args[1] = v8::External::New(isolate, pSaveData /* SAVERESTOREDATA  */); // pSaveData (SAVERESTOREDATA *)
-v8_args[2] = v8::Number::New(isolate, globalEntity); // globalEntity (int)
-      return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
-    });
-  }
+int postDll_pfnRestore(edict_t * pent, SAVERESTOREDATA * pSaveData, int globalEntity) {
+	event::findAndCall("postDllRestore", [=](v8::Isolate* isolate) {
+		unsigned int v8_argCount = 3;
+		v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
+		v8_args[0] = structures::wrapEntity(isolate, pent); // pent (edict_t *)
+		v8_args[1] = v8::External::New(isolate, pSaveData /* SAVERESTOREDATA  */); // pSaveData (SAVERESTOREDATA *)
+		v8_args[2] = v8::Number::New(isolate, globalEntity); // globalEntity (int)
+		return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
+	});
+    RETURN_META_VALUE(MRES_IGNORED, 0);
+}
 
 // nodemod.on('postDllSetAbsBox', (pent) => console.log('postDllSetAbsBox fired!'));
   void postDll_pfnSetAbsBox (edict_t * pent) {
@@ -780,18 +784,19 @@ v8_args[4] = v8::Number::New(isolate, value4); // value4 (int)
   }
 
 // nodemod.on('postDllClientConnect', (pEntity, pszName, pszAddress, szRejectReason) => console.log('postDllClientConnect fired!'));
-  qboolean postDll_pfnClientConnect (edict_t * pEntity, const char * pszName, const char * pszAddress, char* szRejectReason) {
-  SET_META_RESULT(MRES_IGNORED);
-    event::findAndCall("postDllClientConnect", [=](v8::Isolate* isolate) {
-      unsigned int v8_argCount = 4;
-       v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
-      v8_args[0] = structures::wrapEntity(isolate, pEntity); // pEntity (edict_t *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, pszName).ToLocalChecked(); // pszName (const char *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, pszAddress).ToLocalChecked(); // pszAddress (const char *)
-v8_args[3] = v8::String::NewFromUtf8(isolate, szRejectReason).ToLocalChecked(); // szRejectReason (char*)
-      return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
-    });
-  }
+qboolean postDll_pfnClientConnect(edict_t * pEntity, const char * pszName, const char * pszAddress, char* szRejectReason) {
+	SET_META_RESULT(MRES_IGNORED);
+	event::findAndCall("postDllClientConnect", [=](v8::Isolate* isolate) {
+		unsigned int v8_argCount = 4;
+		v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
+		v8_args[0] = structures::wrapEntity(isolate, pEntity); // pEntity (edict_t *)
+		v8_args[1] = v8::String::NewFromUtf8(isolate, pszName).ToLocalChecked(); // pszName (const char *)
+		v8_args[2] = v8::String::NewFromUtf8(isolate, pszAddress).ToLocalChecked(); // pszAddress (const char *)
+		v8_args[3] = v8::String::NewFromUtf8(isolate, szRejectReason).ToLocalChecked(); // szRejectReason (char*)
+		return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
+	});
+	RETURN_META_VALUE(MRES_IGNORED, TRUE);
+}
 
 // nodemod.on('postDllClientDisconnect', (pEntity) => console.log('postDllClientDisconnect fired!'));
   void postDll_pfnClientDisconnect (edict_t * pEntity) {
@@ -914,9 +919,10 @@ v8_args[2] = v8::Number::New(isolate, clientMax); // clientMax (int)
   }
 
 // nodemod.on('postDllGetGameDescription', () => console.log('postDllGetGameDescription fired!'));
-  const char * postDll_pfnGetGameDescription () {
-    event::findAndCall("postDllGetGameDescription", nullptr, 0);
-  }
+const char * postDll_pfnGetGameDescription() {
+	event::findAndCall("postDllGetGameDescription", nullptr, 0);
+	RETURN_META_VALUE(MRES_IGNORED, nullptr);
+}
 
 // nodemod.on('postDllPlayerCustomization', (pEntity, pCustom) => console.log('postDllPlayerCustomization fired!'));
   void postDll_pfnPlayerCustomization (edict_t * pEntity, customization_t * pCustom) {
@@ -998,15 +1004,15 @@ v8_args[1] = v8::Boolean::New(isolate, server); // server (qboolean)
   }
 
 // nodemod.on('postDllPMFindTextureType', (name) => console.log('postDllPMFindTextureType fired!'));
-  char postDll_pfnPM_FindTextureType (const char * name) {
-  SET_META_RESULT(MRES_IGNORED);
-    event::findAndCall("postDllPMFindTextureType", [=](v8::Isolate* isolate) {
-      unsigned int v8_argCount = 1;
-       v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = v8::String::NewFromUtf8(isolate, name).ToLocalChecked(); // name (const char *)
-      return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
-    });
-  }
+char postDll_pfnPM_FindTextureType(const char * name) {
+	event::findAndCall("postDllPMFindTextureType", [=](v8::Isolate* isolate) {
+		unsigned int v8_argCount = 1;
+		v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
+		v8_args[0] = v8::String::NewFromUtf8(isolate, name).ToLocalChecked(); // name (const char *)
+		return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
+	});
+    RETURN_META_VALUE(MRES_IGNORED, '\0');
+}
 
 // nodemod.on('postDllSetupVisibility', (pViewEntity, pClient, pvs, pas) => console.log('postDllSetupVisibility fired!'));
   void postDll_pfnSetupVisibility (struct edict_s * pViewEntity, struct edict_s * pClient, unsigned char ** pvs, unsigned char ** pas) {
@@ -1028,7 +1034,7 @@ v8_args[3] = v8::External::New(isolate, pas /* unsigned char * */); // pas (unsi
     event::findAndCall("postDllUpdateClientData", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::External::New(isolate, ent /* edict_s  */); // ent (const struct edict_s *)
+      v8_args[0] = v8::External::New(isolate, const_cast<edict_s*>(ent) /* edict_s  */); // ent (const struct edict_s *)
 v8_args[1] = v8::Number::New(isolate, sendweapons); // sendweapons (int)
 v8_args[2] = v8::External::New(isolate, cd /* clientdata_s  */); // cd (struct clientdata_s *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
@@ -1036,21 +1042,22 @@ v8_args[2] = v8::External::New(isolate, cd /* clientdata_s  */); // cd (struct c
   }
 
 // nodemod.on('postDllAddToFullPack', (state, e, ent, host, hostflags, player, pSet) => console.log('postDllAddToFullPack fired!'));
-  int postDll_pfnAddToFullPack (struct entity_state_s * state, int e, edict_t * ent, edict_t * host, int hostflags, int player, unsigned char * pSet) {
-  SET_META_RESULT(MRES_IGNORED);
-    event::findAndCall("postDllAddToFullPack", [=](v8::Isolate* isolate) {
-      unsigned int v8_argCount = 7;
-       v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[7];
-      v8_args[0] = v8::External::New(isolate, state /* entity_state_s  */); // state (struct entity_state_s *)
-v8_args[1] = v8::Number::New(isolate, e); // e (int)
-v8_args[2] = structures::wrapEntity(isolate, ent); // ent (edict_t *)
-v8_args[3] = structures::wrapEntity(isolate, host); // host (edict_t *)
-v8_args[4] = v8::Number::New(isolate, hostflags); // hostflags (int)
-v8_args[5] = v8::Number::New(isolate, player); // player (int)
-v8_args[6] = v8::External::New(isolate, pSet /* unsigned char  */); // pSet (unsigned char *)
-      return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
-    });
-  }
+int postDll_pfnAddToFullPack(struct entity_state_s * state, int e, edict_t * ent, edict_t * host, int hostflags, int player, unsigned char * pSet) {
+	SET_META_RESULT(MRES_IGNORED);
+	event::findAndCall("postDllAddToFullPack", [=](v8::Isolate* isolate) {
+		unsigned int v8_argCount = 7;
+		v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[7];
+		v8_args[0] = v8::External::New(isolate, state /* entity_state_s  */); // state (struct entity_state_s *)
+		v8_args[1] = v8::Number::New(isolate, e); // e (int)
+		v8_args[2] = structures::wrapEntity(isolate, ent); // ent (edict_t *)
+		v8_args[3] = structures::wrapEntity(isolate, host); // host (edict_t *)
+		v8_args[4] = v8::Number::New(isolate, hostflags); // hostflags (int)
+		v8_args[5] = v8::Number::New(isolate, player); // player (int)
+		v8_args[6] = v8::External::New(isolate, pSet /* unsigned char  */); // pSet (unsigned char *)
+		return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
+	});
+	RETURN_META_VALUE(MRES_IGNORED, 0);
+}
 
 // nodemod.on('postDllCreateBaseline', (player, eindex, baseline, entity, playermodelindex, player_mins, player_maxs) => console.log('postDllCreateBaseline fired!'));
   void postDll_pfnCreateBaseline (int player, int eindex, struct entity_state_s * baseline, struct edict_s * entity, int playermodelindex, vec3_t player_mins, vec3_t player_maxs) {
@@ -1075,16 +1082,16 @@ v8_args[6] = utils::vect2js(isolate, player_maxs); // player_maxs (vec3_t)
   }
 
 // nodemod.on('postDllGetWeaponData', (player, info) => console.log('postDllGetWeaponData fired!'));
-  int postDll_pfnGetWeaponData (struct edict_s * player, struct weapon_data_s * info) {
-  SET_META_RESULT(MRES_IGNORED);
-    event::findAndCall("postDllGetWeaponData", [=](v8::Isolate* isolate) {
-      unsigned int v8_argCount = 2;
-       v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
-      v8_args[0] = v8::External::New(isolate, player /* edict_s  */); // player (struct edict_s *)
-v8_args[1] = v8::External::New(isolate, info /* weapon_data_s  */); // info (struct weapon_data_s *)
-      return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
-    });
-  }
+int postDll_pfnGetWeaponData(struct edict_s * player, struct weapon_data_s * info) {
+	event::findAndCall("postDllGetWeaponData", [=](v8::Isolate* isolate) {
+		unsigned int v8_argCount = 2;
+		v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[2];
+		v8_args[0] = v8::External::New(isolate, player /* edict_s  */); // player (struct edict_s *)
+		v8_args[1] = v8::External::New(isolate, info /* weapon_data_s  */); // info (struct weapon_data_s *)
+		return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
+	});
+    RETURN_META_VALUE(MRES_IGNORED, 0);
+}
 
 // nodemod.on('postDllCmdStart', (player, cmd, random_seed) => console.log('postDllCmdStart fired!'));
   void postDll_pfnCmdStart (const edict_t * player, const struct usercmd_s * cmd, unsigned int random_seed) {
@@ -1092,8 +1099,8 @@ v8_args[1] = v8::External::New(isolate, info /* weapon_data_s  */); // info (str
     event::findAndCall("postDllCmdStart", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 3;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = structures::wrapEntity(isolate, player); // player (const edict_t *)
-v8_args[1] = v8::External::New(isolate, cmd /* usercmd_s  */); // cmd (const struct usercmd_s *)
+      v8_args[0] = structures::wrapEntity(isolate, const_cast<edict_t*>(player)); // player (const edict_t *)
+v8_args[1] = v8::External::New(isolate, const_cast<usercmd_s*>(cmd) /* usercmd_s  */); // cmd (const struct usercmd_s *)
 v8_args[2] = v8::Number::New(isolate, random_seed); // random_seed (unsigned int)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
@@ -1105,37 +1112,38 @@ v8_args[2] = v8::Number::New(isolate, random_seed); // random_seed (unsigned int
     event::findAndCall("postDllCmdEnd", [=](v8::Isolate* isolate) {
       unsigned int v8_argCount = 1;
        v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[1];
-      v8_args[0] = structures::wrapEntity(isolate, player); // player (const edict_t *)
+      v8_args[0] = structures::wrapEntity(isolate, const_cast<edict_t*>(player)); // player (const edict_t *)
       return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
     });
   }
 
 // nodemod.on('postDllConnectionlessPacket', (net_from, args, response_buffer, response_buffer_size) => console.log('postDllConnectionlessPacket fired!'));
-  int postDll_pfnConnectionlessPacket (const struct netadr_s * net_from, const char * args, char * response_buffer, int * response_buffer_size) {
-  SET_META_RESULT(MRES_IGNORED);
-    event::findAndCall("postDllConnectionlessPacket", [=](v8::Isolate* isolate) {
-      unsigned int v8_argCount = 4;
-       v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
-      v8_args[0] = v8::External::New(isolate, net_from /* netadr_s  */); // net_from (const struct netadr_s *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, args).ToLocalChecked(); // args (const char *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, response_buffer).ToLocalChecked(); // response_buffer (char *)
-v8_args[3] = v8::External::New(isolate, response_buffer_size /* int  */); // response_buffer_size (int *)
-      return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
-    });
-  }
+int postDll_pfnConnectionlessPacket(const struct netadr_s * net_from, const char * args, char * response_buffer, int * response_buffer_size) {
+	SET_META_RESULT(MRES_IGNORED);
+	event::findAndCall("postDllConnectionlessPacket", [=](v8::Isolate* isolate) {
+		unsigned int v8_argCount = 4;
+		v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[4];
+		v8_args[0] = v8::External::New(isolate, const_cast<netadr_s*>(net_from) /* netadr_s  */); // net_from (const struct netadr_s *)
+		v8_args[1] = v8::String::NewFromUtf8(isolate, args).ToLocalChecked(); // args (const char *)
+		v8_args[2] = v8::String::NewFromUtf8(isolate, response_buffer).ToLocalChecked(); // response_buffer (char *)
+		v8_args[3] = v8::External::New(isolate, response_buffer_size /* int  */); // response_buffer_size (int *)
+		return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
+	});
+    RETURN_META_VALUE(MRES_IGNORED, 0);
+}
 
 // nodemod.on('postDllGetHullBounds', (hullnumber, mins, maxs) => console.log('postDllGetHullBounds fired!'));
-  int postDll_pfnGetHullBounds (int hullnumber, float * mins, float * maxs) {
-  SET_META_RESULT(MRES_IGNORED);
-    event::findAndCall("postDllGetHullBounds", [=](v8::Isolate* isolate) {
-      unsigned int v8_argCount = 3;
-       v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::Number::New(isolate, hullnumber); // hullnumber (int)
-v8_args[1] = v8::External::New(isolate, mins /* float  */); // mins (float *)
-v8_args[2] = v8::External::New(isolate, maxs /* float  */); // maxs (float *)
-      return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
-    });
-  }
+int postDll_pfnGetHullBounds(int hullnumber, float * mins, float * maxs) {
+	event::findAndCall("postDllGetHullBounds", [=](v8::Isolate* isolate) {
+		unsigned int v8_argCount = 3;
+		v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
+		v8_args[0] = v8::Number::New(isolate, hullnumber); // hullnumber (int)
+		v8_args[1] = v8::External::New(isolate, mins /* float  */); // mins (float *)
+		v8_args[2] = v8::External::New(isolate, maxs /* float  */); // maxs (float *)
+		return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
+	});
+    RETURN_META_VALUE(MRES_IGNORED, 0);
+}
 
 // nodemod.on('postDllCreateInstancedBaselines', () => console.log('postDllCreateInstancedBaselines fired!'));
   void postDll_pfnCreateInstancedBaselines () {
@@ -1143,22 +1151,23 @@ v8_args[2] = v8::External::New(isolate, maxs /* float  */); // maxs (float *)
   }
 
 // nodemod.on('postDllInconsistentFile', (player, filename, disconnect_message) => console.log('postDllInconsistentFile fired!'));
-  int postDll_pfnInconsistentFile (const struct edict_s * player, const char * filename, char * disconnect_message) {
-  SET_META_RESULT(MRES_IGNORED);
-    event::findAndCall("postDllInconsistentFile", [=](v8::Isolate* isolate) {
-      unsigned int v8_argCount = 3;
-       v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
-      v8_args[0] = v8::External::New(isolate, player /* edict_s  */); // player (const struct edict_s *)
-v8_args[1] = v8::String::NewFromUtf8(isolate, filename).ToLocalChecked(); // filename (const char *)
-v8_args[2] = v8::String::NewFromUtf8(isolate, disconnect_message).ToLocalChecked(); // disconnect_message (char *)
-      return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
-    });
-  }
+int postDll_pfnInconsistentFile(const struct edict_s * player, const char * filename, char * disconnect_message) {
+	event::findAndCall("postDllInconsistentFile", [=](v8::Isolate* isolate) {
+		unsigned int v8_argCount = 3;
+		v8::Local<v8::Value>* v8_args = new v8::Local<v8::Value>[3];
+		v8_args[0] = v8::External::New(isolate, const_cast<edict_s*>(player) /* edict_s  */); // player (const struct edict_s *)
+		v8_args[1] = v8::String::NewFromUtf8(isolate, filename).ToLocalChecked(); // filename (const char *)
+		v8_args[2] = v8::String::NewFromUtf8(isolate, disconnect_message).ToLocalChecked(); // disconnect_message (char *)
+		return std::pair<unsigned int, v8::Local<v8::Value>*>(v8_argCount, v8_args);
+	});
+	RETURN_META_VALUE(MRES_IGNORED, 0);
+}
 
 // nodemod.on('postDllAllowLagCompensation', () => console.log('postDllAllowLagCompensation fired!'));
-  int postDll_pfnAllowLagCompensation () {
-    event::findAndCall("postDllAllowLagCompensation", nullptr, 0);
-  }
+int postDll_pfnAllowLagCompensation() {
+	event::findAndCall("postDllAllowLagCompensation", nullptr, 0);
+	RETURN_META_VALUE(MRES_IGNORED, 1);
+}
 
     DLL_FUNCTIONS g_DllFunctionTable_Post = {
       postDll_pfnGameInit,
