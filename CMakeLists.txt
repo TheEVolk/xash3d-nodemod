@@ -18,8 +18,8 @@ if(NOT DEFINED CMAKE_POSITION_INDEPENDENT_CODE)
 endif()
 
 include(VcpkgIntegration)
-include(CompilerRuntime)
 project(nodemod)
+include(CompilerRuntime)
 
 add_library(${PROJECT_NAME} SHARED
 	"src/lib/dllapi.cpp"
