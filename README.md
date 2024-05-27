@@ -1,6 +1,5 @@
 # GS-NODEMOD
-This is an integration of Node JS directly into GoldSource, something like amxmod (and my old luamod)
-> compatible with xash3d
+This is an integration of Node.js directly into GoldSrc, something like amxmodx (and my old luamod). Compatible with Xash3D FWGS too.
 
 ## Features
 * high performance (with V8 engine)
@@ -25,21 +24,22 @@ This is an integration of Node JS directly into GoldSource, something like amxmo
 ```
 
 ## Compilation
+> Disclaimer: for now, Nodemod locked for only x86 architecture. In future we plans to support other architectures too.
+
 Pre-installing dependencies
 ```
 sudo dpkg --add-architecture i386
 sudo apt-get update
-sudo apt-get install gcc-multilib g++-multilib cmake nodejs libuv1-dev
+sudo apt-get install gcc-multilib g++-multilib cmake ninja-build
 ```
   
-Compilation requires node js installed.
+Building instruction
 ```
 git clone --recursive https://github.com/TheEVolk/xash3d-nodemod.git
 cd xash3d-nodemod
-node scripts/buildEvents.js
 cmake -E make_directory build
 cd build
-cmake ..
+cmake .. --preset linux-x86-debug
 cmake --build . --config Debug
 ```
 
@@ -69,3 +69,4 @@ you can run your typescript code using the [ts-node](https://www.npmjs.com/packa
 ## Credits
 - [iAmir (Amyr Aahmady)](https://github.com/AmyrAhmady) for his [samp-node project](https://github.com/AmyrAhmady/samp-node).
 - [TheEVolk (Maksim Nikiforov)](https://github.com/theevolk) that's me.
+- [SNMetamorph](https://github.com/SNMetamorph) for moving code to C++17 and build system refactoring
