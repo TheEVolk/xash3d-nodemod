@@ -2,7 +2,6 @@
 #include "structures.hpp"
 #include "util/convert.hpp"
 #include "node/utils.hpp"
-#include <v8.h>
 #include <unordered_map>
 
 extern enginefuncs_t g_engfuncs;

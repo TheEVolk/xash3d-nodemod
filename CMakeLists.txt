@@ -65,16 +65,31 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 	CXX_EXTENSIONS NO
 )
 
-if(MSVC)
+# compiler options
+if(WIN32)
 	target_compile_definitions(${PROJECT_NAME} PRIVATE
 		_CRT_SECURE_NO_WARNINGS=1 # disable CRT warnings
 	)
 else()
+	target_compile_options(${PROJECT_NAME} PRIVATE -Wfatal-errors)
+	target_compile_options(${PROJECT_NAME} PRIVATE -fpermissive)
 endif()
 
 # link dependency libraries
 find_package(fmt CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt)
+
+# link platform-specific libraries
+if(NOT WIN32)
+	target_link_libraries(${PROJECT_NAME} PRIVATE dl pthread)
+endif()
+
+# link Node.js library (in future this should be entirely handled by vcpkg)
+if(WIN32)
+	target_link_libraries(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/deps/node/lib/Release/win32/libnode.lib")
+else()
+	target_link_libraries(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/deps/node/lib/Release/linux/libnode.so.93")
+endif()
 
 # set build output directory
 set(DIR_COMMON_OUTPUT 
