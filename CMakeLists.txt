@@ -18,6 +18,7 @@ if(NOT DEFINED CMAKE_POSITION_INDEPENDENT_CODE)
 endif()
 
 include(VcpkgIntegration)
+include(CompilerRuntime)
 project(nodemod)
 
 add_library(${PROJECT_NAME} SHARED
@@ -90,6 +91,9 @@ if(WIN32)
 else()
 	target_link_libraries(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/deps/node/lib/Release/linux/libnode.so.93")
 endif()
+
+# enable static runtime linking
+set_compiler_runtime(${PROJECT_NAME} STATIC)
 
 # set build output directory
 set(DIR_COMMON_OUTPUT 
