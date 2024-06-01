@@ -21,7 +21,8 @@ include(VcpkgIntegration)
 project(nodemod)
 include(CompilerRuntime)
 
-add_library(${PROJECT_NAME} SHARED
+
+list(APPEND SOURCES_LIST
 	"src/lib/dllapi.cpp"
 	"src/lib/engine_api.cpp"
 	"src/lib/h_export.cpp"
@@ -41,6 +42,13 @@ add_library(${PROJECT_NAME} SHARED
 	"src/auto/engine_functions.cpp"
 	"src/structures/entity.cpp"
 )
+
+# required for proper plugin loading from metamod, don't touch
+if(WIN32)
+	list(APPEND SOURCES_LIST "src/nodemod.def")
+endif()
+
+add_library(${PROJECT_NAME} SHARED ${SOURCES_LIST})
 
 find_path(HLSDK_DIRECTORY "cl_dll/GameStudioModelRenderer.h" PATH_SUFFIXES "hlsdk")
 find_path(METAMOD_DIRECTORY "metamod/api_info.h" PATH_SUFFIXES "metamod")
@@ -68,6 +76,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 
 # compiler options
 if(WIN32)
+	target_link_options(${PROJECT_NAME} PRIVATE /SUBSYSTEM:CONSOLE)
 	target_compile_definitions(${PROJECT_NAME} PRIVATE
 		_CRT_SECURE_NO_WARNINGS=1 # disable CRT warnings
 	)

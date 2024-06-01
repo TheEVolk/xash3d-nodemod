@@ -1,6 +1,5 @@
 #pragma once
 #define NODE_WANT_INTERNALS 1
-#define USING_UV_SHARED 1
 
 #include "node.h"
 #include "env.h"
