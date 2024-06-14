@@ -1,11 +1,5 @@
-# GS-NODEMOD
-This is an integration of Node.js directly into GoldSrc, something like amxmodx (and my old luamod). Compatible with Xash3D FWGS too.
-
-## Features
-* high performance (with V8 engine)
-* asynchronous
-* lightness (JS is very light)
-* high support (npm modules and more JS code)
+# Nodemod
+This is an Metamod plugin for integrating Node.js directly into Half-Life 1 engine. Plugin is intended as a more functional and convenient replacement for AMX Mod X or LuaMod. Also, it is compatible with Xash3D FWGS too.
 
 ## Directory structure
 ```
@@ -44,19 +38,19 @@ cmake --build . --config Debug
 ```
 
 ## Installation and launch
-> ⚠️ we are planning to move examples to another repository
+> ⚠️ We are planning to move examples to another repository
 
-1. Install metamod in your game server
-2. Create a nodemod directory in addons
-3. Move all files from example to `addons/nodemod`
+1. You should make sure that Metamod is already installed on your server
+2. Create a `nodemod` directory in `addons`
+3. Move all files from `/example` to `addons/nodemod`
 4. Create the `addons/nodemod/dlls` directory
-5. Move the compiled libnodemod.so to the `addons/nodemod/dlls` directory
+5. Move the compiled *libnodemod.so* to the `addons/nodemod/dlls` directory
 6. In plugins.ini from metamod, add the line `linux addons/nodemod/dlls/libnodemod.so`
-7. Install npm or yarn and run the command `npm i` for npm or `yarn` for yarn in the addons/nodemod directory
-8. You can write your scripts in the 'addons/nodemod/src` directory.
+7. Install npm or yarn and run the command `npm i` for npm or `yarn` for yarn in the `addons/nodemod` directory
+8. You can place your scripts in the `addons/nodemod/src` directory.
 
 ## TypeScript
-you can run your typescript code using the [ts-node](https://www.npmjs.com/package/ts-node) library
+You can run your TypeScript code using the [ts-node](https://www.npmjs.com/package/ts-node) library.
 
 1. Install ts-node: `npm i ts-node`
 2. Pass there env variable to your start script: `export NODE_OPTIONS="--loader ts-node/esm"`
